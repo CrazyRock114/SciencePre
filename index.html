@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Plants: Nature's Green Magic 🌱 小学生科学英语自然探索营</title>
-  <meta name="description" content="基于经典植物英文诗的小学生科学与英语双语探索站，生动形象、图文并茂、音节拼读、互动实验与趣味游戏！">
+  <title>SciencePre 🌱 小学生自然科学英语探索营 · Theme 01: Plants</title>
+  <meta name="description" content="SciencePre: 基于经典植物英文诗的小学生科学与英语双语探索站，生动形象、图文并茂、音节拼读、互动实验与趣味游戏！">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
   <style>
     /* ==========================================================================
@@ -1378,8 +1378,8 @@
       <a href="#home" class="logo-area">
         <div class="logo-badge">🌱</div>
         <div class="logo-text">
-          <h1>Junior Nature Lab <span class="badge-sub">小学生自然探索</span></h1>
-          <p>Plants: Nature's Green Magic · 植物与英文诗专题篇</p>
+          <h1>SciencePre <span class="badge-sub">小学生科学启蒙</span></h1>
+          <p>Theme 01: Plants · 经典植物英文诗与自然探秘</p>
         </div>
       </a>
 
@@ -1408,13 +1408,18 @@
 
   <main class="container">
 
-    <!-- 顶部横幅：系列专题与中学生版本互通指引 -->
+    <!-- 顶部横幅：主题选择器与进阶版互通指引 -->
     <div class="announcement-banner">
-      <div class="announcement-text">
+      <div class="announcement-text" style="flex:1;">
         <span class="sparkle">✨</span>
-        <div>
-          <strong>欢迎来到小学生双语科学探索世界！</strong> 
-          这是面向小学阶段的自然英语专栏。已规划系列专题：植物 → 动物 → 天气 → 宇宙！
+        <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+          <strong>📚 当前探索主题:</strong>
+          <select id="global-theme-selector" onchange="handleThemeChange(this.value)" style="padding:0.4rem 0.8rem; border-radius:10px; border:1.5px solid #10b981; font-weight:800; font-size:0.9rem; background:white; color:#065f46; cursor:pointer;">
+            <option value="plants" selected>🌿 Theme 01: Plants (植物与这首英文诗) · 正在学习</option>
+            <option value="animals">🐝 Theme 02: Animals & Insects (昆虫与小动物) · 即将上线</option>
+            <option value="weather">💧 Theme 03: Water Cycle & Weather (水循环与天气) · 规划中</option>
+            <option value="solar">🪐 Theme 04: The Solar System (太阳系与行星) · 规划中</option>
+          </select>
         </div>
       </div>
       <a href="https://sky.igcse.xyz" target="_blank" class="portal-link" title="前往高年级 IGCSE 科学单词实验室">
@@ -1922,9 +1927,9 @@
       <a href="#vocab">🔤 查阅单词宝盒</a>
       <a href="#games">🎮 再次闯关游戏</a>
     </div>
-    <p>© 2026 Junior Nature Lab · 平行于 IGCSE Science Word Lab 的小学生专题自然科学探索营</p>
+    <p>© 2026 SciencePre · 平行于 IGCSE Science Word Lab 的小学生专题自然科学探索营</p>
     <div class="domain-note">
-      🚀 独立二级域名规划：<strong>plants.igcse.xyz</strong> · 对应全新独立 GitHub 仓库
+      🚀 独立二级域名规划：<strong>pre.igcse.xyz</strong> · 对应 GitHub 开源仓库：<strong>CrazyRock114/SciencePre</strong>
     </div>
   </footer>
 
@@ -2789,7 +2794,22 @@
       setTimeout(() => p.remove(), 2000);
     }
 
-    // ==================== 10. 页面初始化启动 ====================
+    // ==================== 10. 专题切换逻辑 (未来支持多主题扩展) ====================
+    function handleThemeChange(val) {
+      if (val === 'plants') {
+        scrollToSection('poem-hero');
+      } else {
+        const themeNames = {
+          animals: '🐝 Theme 02: Animals & Insects (昆虫与小动物的微观世界)',
+          weather: '💧 Theme 03: Water Cycle & Weather (神奇天气与小水滴历险记)',
+          solar: '🪐 Theme 04: The Solar System (太阳系与行星星空探秘)'
+        };
+        alert(`🎉 ${themeNames[val] || '新主题'} 正在全力制作中，即将上线！\n今天先让我们彻底掌握植物王国的秘密吧！🌱`);
+        document.getElementById('global-theme-selector').value = 'plants';
+      }
+    }
+
+    // ==================== 11. 页面初始化启动 ====================
     window.addEventListener('DOMContentLoaded', () => {
       renderVocabGrid('all');
       initSproutGame();
