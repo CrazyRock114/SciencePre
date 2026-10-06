@@ -1,0 +1,2804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Plants: Nature's Green Magic 🌱 小学生科学英语自然探索营</title>
+  <meta name="description" content="基于经典植物英文诗的小学生科学与英语双语探索站，生动形象、图文并茂、音节拼读、互动实验与趣味游戏！">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  <style>
+    /* ==========================================================================
+       主题风格：自然森林、温暖生机、儿童友好、大字号高对比度
+       ========================================================================== */
+    :root {
+      --primary: #10b981;        /* 嫩芽翠绿 */
+      --primary-dark: #047857;   /* 深森林绿 */
+      --primary-light: #d1fae5;  /* 浅薄荷绿 */
+      --secondary: #0ea5e9;      /* 晴空蓝 / 清水蓝 */
+      --secondary-light: #e0f2fe;/* 浅水蓝 */
+      --accent-warm: #f59e0b;    /* 向日葵暖黄 */
+      --accent-warm-light: #fef3c7;
+      --earth: #92400e;          /* 泥土暖棕 */
+      --earth-light: #fef2f2;
+      --flower-pink: #ec4899;    /* 花朵粉 */
+      --flower-pink-light: #fce7f3;
+      --bg: #f7fee7;             /* 极浅春草底色 */
+      --card-bg: #ffffff;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --success: #16a34a;
+      --danger: #ef4444;
+      --shadow-sm: 0 2px 8px rgba(16, 185, 129, 0.08);
+      --shadow-md: 0 8px 24px rgba(16, 185, 129, 0.12);
+      --shadow-lg: 0 16px 36px rgba(16, 185, 129, 0.18);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 32px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Comic Sans MS", "Chalkboard SE", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* 顶部彩虹装饰条 */
+    .rainbow-bar {
+      height: 6px;
+      background: linear-gradient(90deg, #ec4899, #f59e0b, #10b981, #0ea5e9, #8b5cf6);
+      width: 100%;
+    }
+
+    /* ==================== 顶部导航 ==================== */
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 2px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #34d399, #10b981);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      animation: gentle-bounce 3s infinite;
+    }
+    @keyframes gentle-bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .logo-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .logo-text .badge-sub {
+      background: #fef08a;
+      color: #854d0e;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .logo-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* 工具栏按钮组 */
+    .nav-tools {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .pill-btn {
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      user-select: none;
+    }
+    .pill-btn:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
+    .pill-btn.active {
+      background: var(--primary);
+      border-color: var(--primary-dark);
+      color: white;
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.35);
+    }
+    .pill-btn.gold {
+      background: linear-gradient(135deg, #fef08a, #fde047);
+      border-color: #eab308;
+      color: #713f12;
+    }
+    .pill-btn.gold:hover {
+      background: linear-gradient(135deg, #fde047, #facc15);
+    }
+
+    /* ==================== 顶部 Tab 切换 ==================== */
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: #f8fafc;
+      padding: 0.3rem;
+      border-radius: 999px;
+      border: 1.5px solid #e2e8f0;
+    }
+    .nav-tabs button {
+      background: transparent;
+      border: none;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-tabs button.active {
+      background: white;
+      color: var(--primary-dark);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    /* ==================== 容器通用 ==================== */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 4rem;
+    }
+
+    /* 醒目的横幅通知 */
+    .announcement-banner {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px dashed #34d399;
+      border-radius: var(--radius-md);
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .announcement-text {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #065f46;
+    }
+    .announcement-text .sparkle {
+      font-size: 1.5rem;
+      animation: rotate-sparkle 6s linear infinite;
+    }
+    @keyframes rotate-sparkle {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .portal-link {
+      background: white;
+      color: #047857;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      border: 1.5px solid #a7f3d0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .portal-link:hover {
+      background: #047857;
+      color: white;
+      transform: scale(1.03);
+    }
+
+    /* ==========================================================================
+       HERO 区：左侧诗歌剧场 + 右侧植物解剖探险 (互动画布)
+       ========================================================================== */
+    .hero-stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 900px) {
+      .hero-stage {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 诗歌剧场卡片 */
+    .poem-theater-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 3px solid #bbf7d0;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .poem-theater-card::before {
+      content: "🌸";
+      position: absolute;
+      top: -15px;
+      right: -10px;
+      font-size: 5rem;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .poem-header {
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px dashed #e2e8f0;
+      padding-bottom: 1rem;
+    }
+    .poem-title-box h2 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+    }
+    .poem-title-box p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .poem-actions {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .play-all-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .play-all-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
+    }
+    .play-all-btn.playing {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+    }
+
+    /* 诗句列表 */
+    .poem-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .poem-line-group {
+      background: #f8fafc;
+      border-radius: 16px;
+      padding: 0.85rem 1.15rem;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .poem-line-group:hover {
+      background: #ecfdf5;
+      border-color: #6ee7b7;
+      transform: translateX(6px);
+    }
+    .poem-line-group.active {
+      background: #ecfdf5;
+      border-color: var(--primary);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+      transform: translateX(8px) scale(1.02);
+    }
+    .poem-line-group.karaoke-current {
+      background: #fef3c7;
+      border-color: #f59e0b;
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+      animation: karaoke-pulse 1.2s infinite alternate;
+    }
+    @keyframes karaoke-pulse {
+      from { transform: scale(1.01); }
+      to { transform: scale(1.03); }
+    }
+    .line-tag {
+      position: absolute;
+      right: 12px;
+      top: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: #e2e8f0;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .poem-line-group.active .line-tag {
+      background: var(--primary);
+      color: white;
+    }
+    .line-en {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+    .line-speaker {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      transition: transform 0.2s;
+    }
+    .poem-line-group:hover .line-speaker {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    .line-zh {
+      font-size: 0.95rem;
+      color: #047857;
+      font-weight: 600;
+    }
+    .line-zh.hidden-zh {
+      display: none;
+    }
+    .keyword-badge {
+      display: inline-block;
+      background: #fef08a;
+      color: #854d0e;
+      border-radius: 6px;
+      padding: 1px 6px;
+      font-weight: 800;
+      border-bottom: 2px solid #eab308;
+      cursor: pointer;
+    }
+    .keyword-badge:hover {
+      background: #fde047;
+    }
+
+    /* 诗歌脚部小贴士 */
+    .poem-footer-hint {
+      background: #f0fdf4;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ==========================================================================
+       右侧：植物互动探险画布 (Living Plant Anatomy Interactive)
+       ========================================================================== */
+    .plant-canvas-card {
+      background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 45%, #86efac 70%, #d4a373 70.1%, #a66a38 100%);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      border: 3px solid #7dd3fc;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 540px;
+      overflow: hidden;
+    }
+    /* 天空背景云彩与太阳 */
+    .sky-elements {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+    }
+    .sun-icon {
+      font-size: 3rem;
+      animation: spin-sun 20s linear infinite;
+      cursor: pointer;
+      pointer-events: auto;
+      filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.8));
+    }
+    @keyframes spin-sun {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .cloud-icon {
+      font-size: 2.2rem;
+      opacity: 0.85;
+      animation: float-cloud 8s ease-in-out infinite alternate;
+    }
+    @keyframes float-cloud {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(30px); }
+    }
+
+    /* 植物 SVG 主体容器 */
+    .plant-svg-wrapper {
+      position: relative;
+      width: 100%;
+      height: 440px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .plant-svg-wrapper svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    /* 部位热点可交互按钮与标签 */
+    .hotspot {
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .hotspot:hover {
+      filter: brightness(1.2) drop-shadow(0 0 12px rgba(255,255,255,0.9));
+      transform: scale(1.05);
+      transform-origin: center;
+    }
+    .hotspot.active-part {
+      filter: drop-shadow(0 0 16px #f59e0b) brightness(1.15);
+      animation: hotspot-glow 1.5s infinite alternate;
+    }
+    @keyframes hotspot-glow {
+      from { stroke-width: 3; }
+      to { stroke-width: 7; }
+    }
+
+    /* 地面分割线指示 */
+    .ground-label {
+      position: absolute;
+      bottom: 27%;
+      left: 15px;
+      background: rgba(0, 0, 0, 0.65);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    /* 底部器官快速点击器 */
+    .anatomy-nav {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 0.6rem;
+      border-radius: 999px;
+      backdrop-filter: blur(8px);
+      box-shadow: var(--shadow-sm);
+    }
+    .organ-btn {
+      background: white;
+      border: 1.5px solid #cbd5e1;
+      padding: 0.35rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+    .organ-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+      background: #f0fdf4;
+    }
+    .organ-btn.active {
+      background: var(--primary-dark);
+      color: white;
+      border-color: var(--primary-dark);
+    }
+
+    /* ==========================================================================
+       弹出器官特工卡片 (Modal / Drawer / Highlight Box)
+       ========================================================================== */
+    .organ-inspect-panel {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1rem;
+      border: 2px solid #bbf7d0;
+      box-shadow: var(--shadow-md);
+      display: none;
+      animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .organ-inspect-panel.visible {
+      display: block;
+    }
+    @keyframes slide-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .inspect-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+    .inspect-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .inspect-title .icon {
+      font-size: 2rem;
+    }
+    .inspect-title h3 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--primary-dark);
+    }
+    .inspect-title .phonetic-badge {
+      font-family: monospace;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 0.85rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .inspect-audio-btn {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      color: #047857;
+      font-weight: 700;
+      padding: 0.4rem 0.8rem;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.85rem;
+    }
+    .inspect-body {
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .inspect-secret {
+      margin-top: 0.6rem;
+      padding: 0.6rem 0.9rem;
+      background: #fef3c7;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      color: #92400e;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ==========================================================================
+       SECTION 1: 4 大深度浅出科学探索站 (The 4 Science Wonder Stations)
+       ========================================================================== */
+    .section-title-wrap {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+    .section-tag {
+      display: inline-block;
+      background: #dcfce7;
+      color: #15803d;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+    }
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 700px;
+      margin: 0.5rem auto 0;
+    }
+
+    .stations-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+    @media (max-width: 850px) {
+      .stations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .station-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      border: 3px solid #e2e8f0;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+    .station-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: #86efac;
+    }
+    .station-card.s-roots { border-top: 8px solid #b45309; }
+    .station-card.s-stem { border-top: 8px solid #059669; }
+    .station-card.s-leaves { border-top: 8px solid #10b981; }
+    .station-card.s-flowers { border-top: 8px solid #ec4899; }
+
+    .station-number {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #f1f5f9;
+      line-height: 1;
+      user-select: none;
+    }
+    .station-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 2;
+    }
+    .station-icon-wrap {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+    .s-roots .station-icon-wrap { background: #fef3c7; color: #b45309; }
+    .s-stem .station-icon-wrap { background: #ecfdf5; color: #059669; }
+    .s-leaves .station-icon-wrap { background: #dcfce7; color: #10b981; }
+    .s-flowers .station-icon-wrap { background: #fce7f3; color: #ec4899; }
+
+    .station-title h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .station-title p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .station-poem-quote {
+      background: #f8fafc;
+      border-left: 4px solid var(--primary);
+      padding: 0.75rem 1rem;
+      border-radius: 0 12px 12px 0;
+      margin-bottom: 1.25rem;
+      font-size: 0.95rem;
+    }
+    .station-poem-quote .quote-en {
+      font-weight: 800;
+      color: #1e293b;
+      font-style: italic;
+    }
+    .station-poem-quote .quote-zh {
+      font-size: 0.85rem;
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .station-content {
+      font-size: 0.95rem;
+      color: #334155;
+      line-height: 1.65;
+      margin-bottom: 1.25rem;
+      flex: 1;
+    }
+    .station-content strong {
+      color: #0f172a;
+    }
+
+    /* 站内趣味微互动按钮/实验卡 */
+    .station-interactive {
+      background: #f0fdf4;
+      border: 1.5px dashed #86efac;
+      border-radius: 14px;
+      padding: 1rem;
+      margin-top: auto;
+    }
+    .interactive-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #166534;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+    .interactive-body {
+      font-size: 0.88rem;
+      color: #14532d;
+    }
+    .interactive-btn {
+      background: white;
+      border: 1.5px solid #86efac;
+      color: #047857;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 0.35rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      transition: all 0.2s;
+    }
+    .interactive-btn:hover {
+      background: #047857;
+      color: white;
+      border-color: #047857;
+    }
+
+    /* ==========================================================================
+       SECTION 2: 超强单词魔法工坊 (Word Magic Lab with Phonics & Syllables)
+       ========================================================================== */
+    .vocab-section {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      border: 3px solid #bbf7d0;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 4rem;
+    }
+    .vocab-filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: #f1f5f9;
+      border: 1.5px solid #cbd5e1;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover {
+      background: #e2e8f0;
+    }
+    .filter-btn.active {
+      background: var(--primary);
+      border-color: var(--primary-dark);
+      color: white;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+
+    .vocab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .word-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .word-card:hover {
+      background: white;
+      border-color: #34d399;
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+    .word-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .word-en {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: #0f172a;
+      letter-spacing: -0.01em;
+    }
+    .syllable-chips {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .syllable-chip {
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px dashed #f59e0b;
+    }
+    .word-phonetic {
+      font-family: monospace;
+      color: #64748b;
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .word-zh {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #047857;
+      margin-bottom: 0.75rem;
+    }
+    .word-fun-fact {
+      background: #f0fdf4;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      color: #166534;
+      margin-top: auto;
+      line-height: 1.4;
+    }
+    .word-audio-actions {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.75rem;
+    }
+    .audio-play-btn {
+      flex: 1;
+      background: white;
+      border: 1.5px solid #cbd5e1;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      transition: all 0.2s;
+    }
+    .audio-play-btn:hover {
+      background: #ecfdf5;
+      border-color: #34d399;
+      color: #065f46;
+    }
+    .audio-play-btn.slow-btn {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #b45309;
+    }
+    .audio-play-btn.slow-btn:hover {
+      background: #fef3c7;
+      border-color: #f59e0b;
+    }
+
+    /* ==========================================================================
+       SECTION 3: 小学生专属趣味游戏乐园 (Kids Game Arcade)
+       ========================================================================== */
+    .arcade-section {
+      margin-bottom: 4rem;
+    }
+    .arcade-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .arcade-tab-btn {
+      background: white;
+      border: 2px solid #cbd5e1;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #334155;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s;
+    }
+    .arcade-tab-btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .arcade-tab-btn.active {
+      background: linear-gradient(135deg, #10b981, #047857);
+      border-color: #047857;
+      color: white;
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+    }
+
+    .game-viewport {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      border: 3px solid #bbf7d0;
+      box-shadow: var(--shadow-md);
+      min-height: 480px;
+    }
+
+    /* 游戏 1: 拼写小萌芽 (Spelling Sprout) */
+    .sprout-game-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .sprout-plant-visual {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ecfdf5 0%, #d1fae5 70%, #a7f3d0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4.5rem;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .sprout-clue {
+      text-align: center;
+    }
+    .sprout-zh {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #0f172a;
+      margin-bottom: 0.25rem;
+    }
+    .sprout-syllable-hint {
+      font-size: 0.95rem;
+      color: #047857;
+      font-weight: 700;
+      background: #dcfce7;
+      padding: 3px 12px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+    .sprout-slots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 0.5rem 0;
+    }
+    .letter-slot {
+      width: 44px;
+      height: 52px;
+      border-bottom: 4px solid #94a3b8;
+      background: #f8fafc;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #0f172a;
+      transition: all 0.2s;
+    }
+    .letter-slot.filled {
+      border-bottom-color: var(--primary);
+      background: #ecfdf5;
+      color: var(--primary-dark);
+    }
+    .sprout-keyboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      max-width: 520px;
+    }
+    .key-btn {
+      width: 42px;
+      height: 46px;
+      background: white;
+      border: 2px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #1e293b;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #94a3b8;
+      transition: all 0.15s;
+    }
+    .key-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 #94a3b8;
+    }
+    .key-btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+    .key-btn.action-key {
+      width: auto;
+      padding: 0 14px;
+      font-size: 0.9rem;
+    }
+
+    /* 游戏 2: 翻牌记忆花园 (Memory Match) */
+    .memory-game-area {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .memory-stats-bar {
+      display: flex;
+      justify-content: space-between;
+      background: #f8fafc;
+      padding: 0.75rem 1.5rem;
+      border-radius: 14px;
+      border: 1.5px solid #e2e8f0;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      color: #475569;
+    }
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.85rem;
+    }
+    @media (max-width: 500px) {
+      .memory-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .memory-card {
+      height: 105px;
+      background: #f1f5f9;
+      border: 2.5px solid #cbd5e1;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #334155;
+      text-align: center;
+      padding: 0.5rem;
+      user-select: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.04);
+    }
+    .memory-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+    .memory-card.flipped {
+      background: white;
+      border-color: var(--secondary);
+      box-shadow: 0 6px 16px rgba(14, 165, 233, 0.2);
+      transform: rotateY(180deg);
+    }
+    .memory-card.matched {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #15803d;
+      cursor: default;
+      animation: match-pop 0.4s ease;
+    }
+    @keyframes match-pop {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    /* 游戏 3: 植物小学者问答挑战 (Junior Quiz) */
+    .quiz-game-area {
+      max-width: 650px;
+      margin: 0 auto;
+    }
+    .quiz-progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #10b981, #0ea5e9);
+      width: 25%;
+      transition: width 0.3s ease;
+    }
+    .quiz-question-card {
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 1.5rem;
+      border: 2px solid #e2e8f0;
+      margin-bottom: 1.5rem;
+    }
+    .quiz-q-num {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #047857;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .quiz-q-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.4;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .quiz-opt-btn {
+      background: white;
+      border: 2px solid #cbd5e1;
+      padding: 0.9rem 1.25rem;
+      border-radius: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.2s;
+    }
+    .quiz-opt-btn:hover {
+      background: #f0fdf4;
+      border-color: #86efac;
+      transform: translateX(4px);
+    }
+    .quiz-opt-btn.correct {
+      background: #dcfce7;
+      border-color: #22c55e;
+      color: #15803d;
+    }
+    .quiz-opt-btn.wrong {
+      background: #fee2e2;
+      border-color: #ef4444;
+      color: #b91c1c;
+    }
+
+    /* ==========================================================================
+       SECTION 4: 荣誉殿堂与证书生成 (Junior Botanist Certificate)
+       ========================================================================== */
+    .certificate-section {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 3px dashed #f59e0b;
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      margin-bottom: 3rem;
+    }
+    .cert-badge-large {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+      border: 4px solid white;
+    }
+    .certificate-card {
+      background: white;
+      border: 3px solid #fde68a;
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 580px;
+      margin: 1.5rem auto;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+    }
+    .certificate-card::after {
+      content: "OFFICIAL JUNIOR BOTANIST";
+      position: absolute;
+      bottom: 12px;
+      right: 16px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: #cbd5e1;
+      letter-spacing: 0.1em;
+    }
+    .cert-student-input {
+      font-size: 1.25rem;
+      font-weight: 900;
+      text-align: center;
+      border: none;
+      border-bottom: 2px dashed #f59e0b;
+      padding: 0.3rem 0.6rem;
+      color: #0f172a;
+      outline: none;
+      width: 200px;
+      background: transparent;
+    }
+    .cert-student-input:focus {
+      border-bottom-style: solid;
+    }
+
+    /* ==========================================================================
+       页脚信息与二级域名说明
+       ========================================================================== */
+    footer {
+      background: white;
+      border-top: 2px solid #e2e8f0;
+      padding: 2.5rem 1.25rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: #047857;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+    .domain-note {
+      background: #f1f5f9;
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      color: #475569;
+      margin-top: 0.75rem;
+    }
+
+    /* 浮动水滴和飞虫微特效 */
+    .particle {
+      position: absolute;
+      pointer-events: none;
+      animation: float-up-fade 2s ease-out forwards;
+    }
+    @keyframes float-up-fade {
+      0% { opacity: 1; transform: translateY(0) scale(1); }
+      100% { opacity: 0; transform: translateY(-50px) scale(1.4); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 彩虹装饰线 -->
+  <div class="rainbow-bar"></div>
+
+  <!-- 顶部导航条 -->
+  <header>
+    <div class="nav-container">
+      <a href="#home" class="logo-area">
+        <div class="logo-badge">🌱</div>
+        <div class="logo-text">
+          <h1>Junior Nature Lab <span class="badge-sub">小学生自然探索</span></h1>
+          <p>Plants: Nature's Green Magic · 植物与英文诗专题篇</p>
+        </div>
+      </a>
+
+      <!-- 快速切换标签 -->
+      <nav class="nav-tabs">
+        <button class="active" onclick="scrollToSection('poem-hero')">📖 读诗与探险</button>
+        <button onclick="scrollToSection('stations')">🔬 科学四维站</button>
+        <button onclick="scrollToSection('vocab')">🔤 单词魔法库</button>
+        <button onclick="scrollToSection('games')">🎮 趣味游戏馆</button>
+      </nav>
+
+      <!-- 工具控制按钮 -->
+      <div class="nav-tools">
+        <button class="pill-btn" id="tts-speed-btn" onclick="toggleSpeechRate()" title="切换语音朗读语速">
+          🐇 常速 1.0x
+        </button>
+        <button class="pill-btn" id="lang-toggle-btn" onclick="toggleTranslation()" title="显示/隐藏中文诗意翻译">
+          🇨🇳 中英双语
+        </button>
+        <button class="pill-btn active" id="sound-btn" onclick="toggleSound()" title="音效开关">
+          🔊 音效开
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 顶部横幅：系列专题与中学生版本互通指引 -->
+    <div class="announcement-banner">
+      <div class="announcement-text">
+        <span class="sparkle">✨</span>
+        <div>
+          <strong>欢迎来到小学生双语科学探索世界！</strong> 
+          这是面向小学阶段的自然英语专栏。已规划系列专题：植物 → 动物 → 天气 → 宇宙！
+        </div>
+      </div>
+      <a href="https://sky.igcse.xyz" target="_blank" class="portal-link" title="前往高年级 IGCSE 科学单词实验室">
+        🚀 切换到高年级 IGCSE 版 →
+      </a>
+    </div>
+
+    <!-- ====================================================================
+         HERO 区：左侧诗歌剧场 + 右侧植物解剖探险 (SVG 动态模型)
+         ==================================================================== -->
+    <div class="hero-stage" id="poem-hero">
+
+      <!-- 左侧：经典英文诗剧场 -->
+      <div class="poem-theater-card">
+        <div class="poem-header">
+          <div class="poem-title-box">
+            <h2>Plants · 植物的秘密</h2>
+            <p>点击任一句朗读 · 观察右侧植物器官共鸣</p>
+          </div>
+          <div class="poem-actions">
+            <button class="play-all-btn" id="play-poem-btn" onclick="handlePlayFullPoem()">
+              ▶ 全诗朗诵
+            </button>
+          </div>
+        </div>
+
+        <!-- 诗句列表 -->
+        <div class="poem-lines" id="poem-lines-container">
+
+          <!-- Line 1 & 2: 根 -->
+          <div class="poem-line-group" data-organ="roots" data-line-index="0" onclick="handleLineClick(0)">
+            <span class="line-tag">地下根系 Roots</span>
+            <div class="line-en">
+              <span class="line-speaker">🔊</span>
+              <span><span class="keyword-badge" onclick="event.stopPropagation(); inspectWord('roots')">Roots</span> go down beneath the ground,</span>
+            </div>
+            <div class="line-zh">根系深深扎入泥土，</div>
+            <div class="line-en" style="margin-top: 0.35rem;">
+              <span class="line-speaker">🔊</span>
+              <span>Drink up water, safe and sound.</span>
+            </div>
+            <div class="line-zh">汲取清水，安然茁壮。</div>
+          </div>
+
+          <!-- Line 3 & 4: 茎 -->
+          <div class="poem-line-group" data-organ="stem" data-line-index="1" onclick="handleLineClick(1)">
+            <span class="line-tag">挺拔茎干 Stem</span>
+            <div class="line-en">
+              <span class="line-speaker">🔊</span>
+              <span><span class="keyword-badge" onclick="event.stopPropagation(); inspectWord('stem')">Stem</span> stands straight and grows so tall,</span>
+            </div>
+            <div class="line-zh">枝干笔直，高高生长，</div>
+            <div class="line-en" style="margin-top: 0.35rem;">
+              <span class="line-speaker">🔊</span>
+              <span>Carries water, one and all.</span>
+            </div>
+            <div class="line-zh">输送雨露，滋养八方。</div>
+          </div>
+
+          <!-- Line 5 & 6: 叶 -->
+          <div class="poem-line-group" data-organ="leaves" data-line-index="2" onclick="handleLineClick(2)">
+            <span class="line-tag">阳光绿叶 Leaves</span>
+            <div class="line-en">
+              <span class="line-speaker">🔊</span>
+              <span>Green <span class="keyword-badge" onclick="event.stopPropagation(); inspectWord('leaves')">leaves</span> catch the sunny light,</span>
+            </div>
+            <div class="line-zh">翠绿叶片，拥抱阳光，</div>
+            <div class="line-en" style="margin-top: 0.35rem;">
+              <span class="line-speaker">🔊</span>
+              <span>Make the food day after night.</span>
+            </div>
+            <div class="line-zh">日夜劳作，积蓄能量。</div>
+          </div>
+
+          <!-- Line 7 & 8: 花与种子 -->
+          <div class="poem-line-group" data-organ="flowers" data-line-index="3" onclick="handleLineClick(3)">
+            <span class="line-tag">美丽花种 Flowers & Seeds</span>
+            <div class="line-en">
+              <span class="line-speaker">🔊</span>
+              <span>Pretty <span class="keyword-badge" onclick="event.stopPropagation(); inspectWord('flowers')">flowers</span> open wide,</span>
+            </div>
+            <div class="line-zh">美丽花朵，肆意绽放，</div>
+            <div class="line-en" style="margin-top: 0.35rem;">
+              <span class="line-speaker">🔊</span>
+              <span><span class="keyword-badge" onclick="event.stopPropagation(); inspectWord('seeds')">Seeds</span> are hidden deep inside.</span>
+            </div>
+            <div class="line-zh">小小种子，深藏心房。</div>
+          </div>
+
+        </div>
+
+        <div class="poem-footer-hint">
+          <span>💡 <strong>学习小贴士</strong>：点击诗歌中的黄色高亮单词，可一键呼叫单词音节发音与自然拼读！</span>
+        </div>
+      </div>
+
+      <!-- 右侧：植物活体探险互动画布 (Living Plant Anatomy Interactive) -->
+      <div class="plant-canvas-card">
+        <!-- 天空背景元素 -->
+        <div class="sky-elements">
+          <div class="sun-icon" onclick="triggerSunburst()" title="太阳：光合作用的光能源泉">☀️</div>
+          <div class="cloud-icon" title="白云与雨露">☁️</div>
+        </div>
+
+        <!-- 地面分界提示 -->
+        <div class="ground-label">🌱 地表 Ground Level</div>
+
+        <!-- 精美矢量植物主体 -->
+        <div class="plant-svg-wrapper">
+          <svg viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg">
+            <!-- 太阳光线动画 -->
+            <defs>
+              <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#15803d" />
+                <stop offset="50%" stop-color="#4ade80" />
+                <stop offset="100%" stop-color="#15803d" />
+              </linearGradient>
+              <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22c55e" />
+                <stop offset="100%" stop-color="#166534" />
+              </linearGradient>
+              <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            <!-- 地下部分：泥土根系 ROOTS -->
+            <g class="hotspot" id="svg-roots" onclick="selectOrgan('roots')">
+              <!-- 主根与侧根网 -->
+              <path d="M160 320 Q160 370 160 430" stroke="#78350f" stroke-width="8" stroke-linecap="round" fill="none" />
+              <!-- 侧根分支 -->
+              <path d="M160 335 Q130 355 105 385 Q90 405 75 425" stroke="#92400e" stroke-width="4.5" stroke-linecap="round" fill="none" />
+              <path d="M160 345 Q190 365 215 390 Q235 415 245 435" stroke="#92400e" stroke-width="4.5" stroke-linecap="round" fill="none" />
+              <path d="M160 370 Q140 395 125 425" stroke="#b45309" stroke-width="3" stroke-linecap="round" fill="none" />
+              <path d="M160 380 Q175 405 195 430" stroke="#b45309" stroke-width="3" stroke-linecap="round" fill="none" />
+              <!-- 根毛细支 -->
+              <path d="M105 385 Q85 390 70 385" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" fill="none" />
+              <path d="M215 390 Q235 395 250 388" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" fill="none" />
+              <circle cx="160" cy="380" r="14" fill="#f59e0b" opacity="0.2" />
+              <!-- 水滴吸收动态粒子标记 -->
+              <circle cx="110" cy="405" r="4" fill="#38bdf8" />
+              <circle cx="210" cy="415" r="4" fill="#38bdf8" />
+              <circle cx="160" cy="425" r="4" fill="#38bdf8" />
+              <text x="160" y="450" text-anchor="middle" font-size="12" font-weight="900" fill="#fef3c7">ROOTS 根系</text>
+            </g>
+
+            <!-- 地上部分：挺拔茎干 STEM (导管向上输水) -->
+            <g class="hotspot" id="svg-stem" onclick="selectOrgan('stem')">
+              <rect x="153" y="110" width="14" height="210" rx="7" fill="url(#stemGrad)" />
+              <!-- 导管输水动画点线 -->
+              <line x1="160" y1="315" x2="160" y2="120" stroke="#bae6fd" stroke-width="3" stroke-dasharray="6,4" />
+              <text x="180" y="225" font-size="12" font-weight="900" fill="#065f46">STEM 茎</text>
+            </g>
+
+            <!-- 绿叶 LEAVES (光合作用) -->
+            <g class="hotspot" id="svg-leaves" onclick="selectOrgan('leaves')">
+              <!-- 左侧大绿叶 -->
+              <path d="M153 230 C90 230 60 180 80 150 C120 150 150 190 155 225 Z" fill="url(#leafGrad)" stroke="#14532d" stroke-width="2" />
+              <!-- 左叶主脉 -->
+              <path d="M153 230 Q110 190 80 150" stroke="#86efac" stroke-width="2" fill="none" />
+              <!-- 右侧大绿叶 -->
+              <path d="M167 180 C230 180 260 130 240 100 C200 100 170 140 165 175 Z" fill="url(#leafGrad)" stroke="#14532d" stroke-width="2" />
+              <!-- 右叶主脉 -->
+              <path d="M167 180 Q210 140 240 100" stroke="#86efac" stroke-width="2" fill="none" />
+              <!-- 阳光光斑 -->
+              <circle cx="105" cy="180" r="10" fill="#fef08a" opacity="0.5" />
+              <circle cx="215" cy="135" r="10" fill="#fef08a" opacity="0.5" />
+              <text x="65" y="140" font-size="12" font-weight="900" fill="#14532d">LEAVES 叶片</text>
+            </g>
+
+            <!-- 顶端美丽大花朵 FLOWERS & 心中种子 SEEDS -->
+            <g class="hotspot" id="svg-flowers" onclick="selectOrgan('flowers')">
+              <!-- 5 瓣粉红鲜艳花瓣 -->
+              <!-- 瓣 1 (上) -->
+              <path d="M160 100 C145 50 175 50 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <!-- 瓣 2 (右上) -->
+              <path d="M160 100 C205 65 220 90 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <!-- 瓣 3 (右下) -->
+              <path d="M160 100 C210 135 185 155 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <!-- 瓣 4 (左下) -->
+              <path d="M160 100 C110 135 135 155 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <!-- 瓣 5 (左上) -->
+              <path d="M160 100 C100 70 120 45 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+
+              <!-- 花芯大金黄果盘 (深藏的种子 SEEDS) -->
+              <circle cx="160" cy="100" r="26" fill="#fbbf24" stroke="#d97706" stroke-width="3" />
+              
+              <!-- 隐藏的种子 Seeds 点点 -->
+              <g id="svg-seeds" onclick="event.stopPropagation(); selectOrgan('seeds')">
+                <circle cx="152" cy="94" r="3.5" fill="#78350f" />
+                <circle cx="168" cy="94" r="3.5" fill="#78350f" />
+                <circle cx="160" cy="102" r="3.5" fill="#78350f" />
+                <circle cx="152" cy="110" r="3.5" fill="#78350f" />
+                <circle cx="168" cy="110" r="3.5" fill="#78350f" />
+              </g>
+
+              <text x="160" y="35" text-anchor="middle" font-size="12" font-weight="900" fill="#9d174d">FLOWERS 花朵</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- 底部快速器官点击器 -->
+        <div class="anatomy-nav">
+          <button class="organ-btn active" id="btn-roots" onclick="selectOrgan('roots')">🪱 根 Roots</button>
+          <button class="organ-btn" id="btn-stem" onclick="selectOrgan('stem')">🎋 茎 Stem</button>
+          <button class="organ-btn" id="btn-leaves" onclick="selectOrgan('leaves')">🍃 叶 Leaves</button>
+          <button class="organ-btn" id="btn-flowers" onclick="selectOrgan('flowers')">🌸 花 Flower</button>
+          <button class="organ-btn" id="btn-seeds" onclick="selectOrgan('seeds')">🌰 种子 Seeds</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 动态器官特工展开卡片 (展示该器官的科学秘密与发音) -->
+    <div class="organ-inspect-panel visible" id="organ-panel">
+      <div class="inspect-top">
+        <div class="inspect-title">
+          <div class="icon" id="inspect-icon">🪱</div>
+          <div>
+            <h3 id="inspect-name">Roots [ruːts] · 根系</h3>
+            <span class="phonetic-badge" id="inspect-phonetic">/ruːts/ · 包含长音 /uː/</span>
+          </div>
+        </div>
+        <button class="inspect-audio-btn" id="inspect-sound-btn" onclick="playCurrentOrganVoice()">
+          🔊 听地道发音
+        </button>
+      </div>
+      <div class="inspect-body" id="inspect-desc">
+        根系深深扎进泥土中，不仅是植物的“定海神针”，牢牢抓住土壤不被大风刮倒，还能像成千上万根小吸管一样，把土壤里的水和矿物质“咕咚咕咚”喝饱！
+      </div>
+      <div class="inspect-secret" id="inspect-secret">
+        🔍 <strong>科学小秘密</strong>：诗里的 "safe and sound" 意思是“安然无恙、健健康康”。有了根，植物就能稳稳当当生活啦！
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         SECTION 1: 4 大深度浅出科学探索站 (The 4 Science Wonder Stations)
+         ==================================================================== -->
+    <section class="stations-section" id="stations" style="margin-top: 4rem;">
+      <div class="section-title-wrap">
+        <span class="section-tag">Science Stations · 科学启蒙</span>
+        <h2 class="section-title">4 个科学奇迹站 · 揭秘大自然</h2>
+        <p class="section-subtitle">从一首诗出发，看懂一株植物是如何呼吸、喝水、制造食物和繁衍生命的！</p>
+      </div>
+
+      <div class="stations-grid">
+
+        <!-- Station 1: 根 -->
+        <div class="station-card s-roots">
+          <div class="station-number">01</div>
+          <div class="station-header">
+            <div class="station-icon-wrap">🪱</div>
+            <div class="station-title">
+              <h3>地下秘密吸水特工 · 根</h3>
+              <p>Underground Drinking Straws & Anchor</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            <div class="quote-en">“Roots go down beneath the ground, Drink up water, safe and sound.”</div>
+            <div class="quote-zh">根系深深扎入泥土，汲取清水，安然茁壮。</div>
+          </div>
+          <div class="station-content">
+            植物虽然不会走路，但它们在地下建起了一座巨大的“地下城市”！
+            <br><br>
+            • <strong>定海神针 (Anchor)</strong>：如果暴风雨来了，小树为什么不被吹跑？因为根须像一张大网把泥土牢牢抓紧。<br>
+            • <strong>数亿根超级吸管 (Root Hairs)</strong>：根的尖端长满了微小的“根毛”，水分子只要一碰到它，就会被咕咚咕咚吸进植物体内！
+          </div>
+          <div class="station-interactive">
+            <div class="interactive-title">💧 互动小实验：喂植物喝水</div>
+            <div class="interactive-body">点击按钮给土壤灌溉，观察水分吸收动画！</div>
+            <button class="interactive-btn" onclick="triggerWateringAction()">
+              💦 浇一点水 (Water the soil)
+            </button>
+          </div>
+        </div>
+
+        <!-- Station 2: 茎 -->
+        <div class="station-card s-stem">
+          <div class="station-number">02</div>
+          <div class="station-header">
+            <div class="station-icon-wrap">🚀</div>
+            <div class="station-title">
+              <h3>绿色摩天大厦的超级电梯 · 茎</h3>
+              <p>The Super Water Elevator (Xylem)</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            <div class="quote-en">“Stem stands straight and grows so tall, Carries water, one and all.”</div>
+            <div class="quote-zh">枝干笔直，高高生长，输送雨露，滋养八方。</div>
+          </div>
+          <div class="station-content">
+            几十米高的参天大树，没有机械水泵，是怎么把地下几十米深处的水送到树顶每一片叶子的呢？
+            <br><br>
+            • <strong>植物的脊梁骨 (Support)</strong>：茎直挺挺地站着（stands straight），让叶子能够举高高迎接太阳。<br>
+            • <strong>内部超微水管——导管 (Xylem)</strong>：水分子之间有一股神奇的“手拉手吸力”（内聚力与蒸腾拉力），就像坐上了高速电梯，一口气冲上云霄！诗里的 "one and all" 就是指“送到每一个角落”！
+          </div>
+          <div class="station-interactive">
+            <div class="interactive-title">🌈 居家小实验：彩虹芹菜</div>
+            <div class="interactive-body">把芹菜插进一杯加了红墨水的水里，明天早上你会发现芹菜的茎变红了！这就是导管在工作！</div>
+            <button class="interactive-btn" onclick="speakText('Try placing a celery stalk into red water, and watch the stem carry the color!')">
+              🔊 听实验说明
+            </button>
+          </div>
+        </div>
+
+        <!-- Station 3: 叶 -->
+        <div class="station-card s-leaves">
+          <div class="station-number">03</div>
+          <div class="station-header">
+            <div class="station-icon-wrap">☀️</div>
+            <div class="station-title">
+              <h3>全球最神奇太阳能美食厨房 · 叶</h3>
+              <p>The Solar Food Kitchen (Photosynthesis)</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            <div class="quote-en">“Green leaves catch the sunny light, Make the food day after night.”</div>
+            <div class="quote-zh">翠绿叶片，拥抱阳光，日夜劳作，积蓄能量。</div>
+          </div>
+          <div class="station-content">
+            世界上最神奇的大厨不是米其林餐厅，而是每一片绿叶！它们在进行一项神奇的魔法——<strong>光合作用 (Photosynthesis)</strong>。
+            <br><br>
+            • <strong>叶绿素太阳能电池 (Chlorophyll)</strong>：叶子里的绿色小颗粒像小锅灶，把阳光抓进来（catch the sunny light）。<br>
+            • <strong>超级美味配方</strong>：阳光 + 水 + 二氧化碳 = <strong>甜甜的糖分 (Plant Food)</strong> + <strong>新鲜氧气 (Oxygen)</strong>！叶子做饱了饭，还顺便给地球上的我们制造了清新的空气！
+          </div>
+          <div class="station-interactive">
+            <div class="interactive-title">🧪 美食配方公式</div>
+            <div class="interactive-body" style="font-weight: 700; color: #166534;">
+              ☀️ 阳光 + 💧 水 + 💨 空气 ➔ 🍬 植物糖点心 + 🍃 纯净氧气
+            </div>
+            <button class="interactive-btn" onclick="triggerPhotosynthesisEffect()">
+              ✨ 点亮光合作用魔法
+            </button>
+          </div>
+        </div>
+
+        <!-- Station 4: 花与种子 -->
+        <div class="station-card s-flowers">
+          <div class="station-number">04</div>
+          <div class="station-header">
+            <div class="station-icon-wrap">🌸</div>
+            <div class="station-title">
+              <h3>蜜蜂派对与生命时间胶囊 · 花与种子</h3>
+              <p>Pollination Party & Life Time Capsules</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            <div class="quote-en">“Pretty flowers open wide, Seeds are hidden deep inside.”</div>
+            <div class="quote-zh">美丽花朵，肆意绽放，小小种子，深藏心房。</div>
+          </div>
+          <div class="station-content">
+            为什么花朵要盛大绽放、五彩斑斓还香气扑鼻呢？它们是在举行一场盛大的派对！
+            <br><br>
+            • <strong>蜜蜂派对请柬 (Pollination)</strong>：花朵不能走动，所以用艳丽的花瓣和甜美的花蜜，邀请蜜蜂和蝴蝶来帮忙传花粉。<br>
+            • <strong>深藏的生命时间胶囊 (Seeds deep inside)</strong>：花心深处悄悄孕育着种子。种子像带着小被子和小午餐盒的宝宝，沉睡在泥土中，只要遇到<strong>水、温暖和空气 (WOW: Water, Oxygen, Warmth)</strong>，就会破壳而出，成为新的小生命！
+          </div>
+          <div class="station-interactive">
+            <div class="interactive-title">🌰 种子发芽三要素 (WOW 口诀)</div>
+            <div class="interactive-body">
+              <strong>W</strong>ater (水分) + <strong>O</strong>xygen (氧气) + <strong>W</strong>armth (温暖) = 萌发发芽！
+            </div>
+            <button class="interactive-btn" onclick="speakText('Water, Oxygen, and Warmth make seeds sprout!')">
+              🔊 朗读发芽口诀
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 2: 超强单词魔法工坊 (Word Magic Lab with Phonics & Syllables)
+         ==================================================================== -->
+    <section class="vocab-section" id="vocab">
+      <div class="section-title-wrap">
+        <span class="section-tag">Word Magic Lab · 单词工坊</span>
+        <h2 class="section-title">全方位单词宝盒 · 音节拼读与精解</h2>
+        <p class="section-subtitle">掌握音节拆分、发音规律与生动释义，让孩子爱上科学专业英语！</p>
+      </div>
+
+      <!-- 分类筛选器 -->
+      <div class="vocab-filter-bar">
+        <button class="filter-btn active" onclick="filterVocab('all', this)">🌟 全部词汇 (All 12)</button>
+        <button class="filter-btn" onclick="filterVocab('organ', this)">🌱 植物器官核心词 (Organs)</button>
+        <button class="filter-btn" onclick="filterVocab('poem', this)">📖 诗歌意境与动词 (Poem Words)</button>
+        <button class="filter-btn" onclick="filterVocab('science', this)">🔬 科学探秘高阶词 (Science Secrets)</button>
+      </div>
+
+      <!-- 词卡网格容器 -->
+      <div class="vocab-grid" id="vocab-cards-grid">
+        <!-- 动态通过 JS 渲染词汇卡片 -->
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 3: 小学生专属趣味游戏乐园 (Kids Game Arcade)
+         ==================================================================== -->
+    <section class="arcade-section" id="games">
+      <div class="section-title-wrap">
+        <span class="section-tag">Kids Game Arcade · 游戏闯关</span>
+        <h2 class="section-title">植物小博士游乐园 · 闯关挑战</h2>
+        <p class="section-subtitle">玩中学、学中练！完成挑战即可解锁皇家植物学者勋章与证书！</p>
+      </div>
+
+      <!-- 游戏模式切换 Tab -->
+      <div class="arcade-tabs">
+        <button class="arcade-tab-btn active" id="tab-sprout" onclick="switchGameMode('sprout')">
+          🌱 拼写小萌芽 (Spelling Sprout)
+        </button>
+        <button class="arcade-tab-btn" id="tab-memory" onclick="switchGameMode('memory')">
+          🃏 翻牌记忆花园 (Memory Match)
+        </button>
+        <button class="arcade-tab-btn" id="tab-quiz" onclick="switchGameMode('quiz')">
+          🧠 植物小学者问答 (Botanist Quiz)
+        </button>
+      </div>
+
+      <!-- 游戏视口区域 -->
+      <div class="game-viewport">
+
+        <!-- 游戏 1: 拼写小萌芽 -->
+        <div id="game-sprout-view" class="sprout-game-area">
+          <div class="sprout-plant-visual" id="sprout-stage-visual">🌱</div>
+          <div class="sprout-clue">
+            <div class="sprout-zh" id="sprout-target-zh">根系</div>
+            <div class="sprout-syllable-hint" id="sprout-target-hint">长音 /uː/ · 单音节词</div>
+          </div>
+          <!-- 字母槽 -->
+          <div class="sprout-slots" id="sprout-slots-container"></div>
+          <!-- 软键盘 -->
+          <div class="sprout-keyboard" id="sprout-keyboard-container"></div>
+          <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+            <button class="pill-btn" onclick="speakCurrentSproutWord()">🔊 听发音提示</button>
+            <button class="pill-btn" onclick="giveSproutHint()">💡 提示一个字母</button>
+            <button class="pill-btn" onclick="nextSproutQuestion()">⏭ 下一题</button>
+          </div>
+        </div>
+
+        <!-- 游戏 2: 翻牌记忆花园 -->
+        <div id="game-memory-view" class="memory-game-area" style="display:none;">
+          <div class="memory-stats-bar">
+            <div>⏱️ 用时: <span id="mem-time">00:00</span></div>
+            <div>👣 翻牌步数: <span id="mem-moves">0</span></div>
+            <div>✅ 配对成功: <span id="mem-pairs">0/6</span></div>
+            <button class="pill-btn" onclick="initMemoryGame()" style="padding:2px 10px; font-size:0.8rem;">🔄 重新洗牌</button>
+          </div>
+          <div class="memory-grid" id="memory-cards-grid"></div>
+        </div>
+
+        <!-- 游戏 3: 植物小学者问答 -->
+        <div id="game-quiz-view" class="quiz-game-area" style="display:none;">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+          </div>
+          <div class="quiz-question-card">
+            <div class="quiz-q-num" id="quiz-q-num">Question 1 of 4</div>
+            <div class="quiz-q-title" id="quiz-q-title">植物的哪一个部分负责像吸管一样从泥土中吸取水分？</div>
+          </div>
+          <div class="quiz-options" id="quiz-options-container"></div>
+          <div id="quiz-feedback-box" style="margin-top:1rem; font-weight:700; text-align:center;"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 4: 荣誉殿堂与证书生成 (Junior Botanist Certificate)
+         ==================================================================== -->
+    <section class="certificate-section" id="cert-section">
+      <div class="cert-badge-large">🏆</div>
+      <h2 style="font-size:2rem; font-weight:900; color:#78350f;">颁奖时刻 · 皇家自然植物小学者</h2>
+      <p style="color:#92400e; font-weight:600; margin-top:0.4rem;">
+        恭喜完成植物诗歌探索与全部关卡！在下方输入你的名字，领取专属成就奖状吧！
+      </p>
+
+      <div class="certificate-card" id="official-cert">
+        <div style="font-size:1.6rem; font-weight:900; color:#15803d; margin-bottom:0.5rem;">
+          🌱 JUNIOR BOTANIST AWARD
+        </div>
+        <p style="color:#64748b; font-size:0.9rem;">兹证明小探险家</p>
+        <div style="margin: 0.8rem 0;">
+          <input type="text" class="cert-student-input" id="student-name-input" value="Sky" placeholder="输入姓名" oninput="updateCertName()">
+        </div>
+        <p style="color:#334155; font-size:0.95rem; line-height:1.6;">
+          在《Plants: Nature's Green Magic》专题中深入掌握了<strong>根、茎、叶、花、种子</strong>的英文表达与科学机理，获得<strong>“植物小学者”</strong>荣誉称号！
+        </div>
+        <div style="display:flex; justify-content:space-around; margin-top:1.2rem; font-size:0.85rem; color:#475569; font-weight:700;">
+          <div>📅 日期: <span id="cert-date">2026.10</span></div>
+          <div>🏅 认证: Junior Science Word Lab</div>
+        </div>
+      </div>
+
+      <button class="play-all-btn" style="margin: 0 auto; background:linear-gradient(135deg, #f59e0b, #d97706);" onclick="celebrateCertificate()">
+        🎉 洒花庆祝 & 复制分享奖状
+      </button>
+    </section>
+
+  </main>
+
+  <!-- ==================== 页脚与子域名部署信息 ==================== -->
+  <footer>
+    <div class="footer-links">
+      <a href="https://sky.igcse.xyz" target="_blank">🌐 Sky's Science Word Lab (初高中版)</a>
+      <a href="#poem-hero">📖 返回本诗顶部</a>
+      <a href="#vocab">🔤 查阅单词宝盒</a>
+      <a href="#games">🎮 再次闯关游戏</a>
+    </div>
+    <p>© 2026 Junior Nature Lab · 平行于 IGCSE Science Word Lab 的小学生专题自然科学探索营</p>
+    <div class="domain-note">
+      🚀 独立二级域名规划：<strong>plants.igcse.xyz</strong> · 对应全新独立 GitHub 仓库
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       JAVASCRIPT 核心逻辑 (音频合成、TTS、诗歌点读、器官联动、3个小游戏)
+       ========================================================================== -->
+  <script>
+    // ==================== 1. 全局数据配置 ====================
+    // 诗歌行配置
+    const POEM_DATA = [
+      {
+        en: "Roots go down beneath the ground, Drink up water, safe and sound.",
+        lines: ["Roots go down beneath the ground,", "Drink up water, safe and sound."],
+        zh: ["根系深深扎入泥土，", "汲取清水，安然茁壮。"],
+        organ: "roots"
+      },
+      {
+        en: "Stem stands straight and grows so tall, Carries water, one and all.",
+        lines: ["Stem stands straight and grows so tall,", "Carries water, one and all."],
+        zh: ["枝干笔直，高高生长，", "输送雨露，滋养八方。"],
+        organ: "stem"
+      },
+      {
+        en: "Green leaves catch the sunny light, Make the food day after night.",
+        lines: ["Green leaves catch the sunny light,", "Make the food day after night."],
+        zh: ["翠绿叶片，拥抱阳光，", "日夜劳作，积蓄能量。"],
+        organ: "leaves"
+      },
+      {
+        en: "Pretty flowers open wide, Seeds are hidden deep inside.",
+        lines: ["Pretty flowers open wide,", "Seeds are hidden deep inside."],
+        zh: ["美丽花朵，肆意绽放，", "小小种子，深藏心房。"],
+        organ: "flowers"
+      }
+    ];
+
+    // 器官百科与科学小秘密数据
+    const ORGAN_INFO = {
+      roots: {
+        icon: "🪱",
+        name: "Roots [ruːts] · 根系",
+        phonetic: "/ruːts/ · 长音 /uː/",
+        word: "roots",
+        desc: "根系深深扎进泥土中，不仅是植物的“定海神针”，牢牢抓住土壤不被大风刮倒，还能像成千上万根小吸管一样，把土壤里的水和矿物质“咕咚咕咚”喝饱！",
+        secret: "🔍 科学小秘密：诗里的 \"safe and sound\" 意思是“安然无恙、健健康康”。有了根，植物就能稳稳当当生活啦！"
+      },
+      stem: {
+        icon: "🎋",
+        name: "Stem [stem] · 茎干",
+        phonetic: "/stem/ · 短元音 /e/",
+        word: "stem",
+        desc: "茎挺拔笔直地向上生长，把叶子举得高高去晒太阳。茎里面还藏着无数根神奇的“导管水梯”（Xylem），水分子手拉手顺着导管从根一直送到顶端花瓣！",
+        secret: "🔍 科学小秘密：诗里的 \"one and all\" 是个成语，意思是“每一个个体”。茎把水精准输送给植物的每一个角落！"
+      },
+      leaves: {
+        icon: "🍃",
+        name: "Leaves [liːvz] · 叶片",
+        phonetic: "/liːvz/ · 单数是 Leaf",
+        word: "leaves",
+        desc: "叶片是绿色超级大厨房！它们张开双臂迎接阳光，利用阳光、水和空气中的二氧化碳，做成甜甜的糖分（光合作用 Photosynthesis），同时吐出我们呼吸需要的氧气！",
+        secret: "🔍 词汇小秘密：英文里单数是 leaf，变成复数时把 f 变成 ves 成为 leaves！"
+      },
+      flowers: {
+        icon: "🌸",
+        name: "Flowers [ˈflaʊərz] · 花朵",
+        phonetic: "/ˈflaʊərz/ · 双元音 /aʊ/",
+        word: "flowers",
+        desc: "花朵绽放得非常美丽，不仅为了好看，更是在向蜜蜂和蝴蝶发“请柬”！蜜蜂来喝香甜的花蜜，顺便帮花朵传递花粉（Pollination），这样植物才能结出果实！",
+        secret: "🔍 科学小秘密：许多花朵的花瓣上还有人类肉眼看不到、但小蜜蜂能看清的“紫外线跑道”，指引蜜蜂降落！"
+      },
+      seeds: {
+        icon: "🌰",
+        name: "Seeds [siːdz] · 种子",
+        phonetic: "/siːdz/ · 长元音 /iː/",
+        word: "seeds",
+        desc: "种子深藏在花心或果实的肚子里。每一粒小小的种子都是一个“生命时间胶囊”，里面睡着一棵微型的植物宝宝和小午餐盒，遇到水、温暖和空气就会破土发芽！",
+        secret: "🔍 记忆口诀：记住种子萌发的发芽口诀 WOW —— Water (水), Oxygen (氧), Warmth (温暖)！"
+      }
+    };
+
+    // 单词魔法宝库数据
+    const VOCAB_DATA = [
+      {
+        en: "roots",
+        syllables: ["roots"],
+        phonetic: "/ruːts/",
+        zh: "根系 (吸水与固定)",
+        category: "organ",
+        funFact: "单音节词，oo 发长音 /uː/。像吸管一样吸水！"
+      },
+      {
+        en: "stem",
+        syllables: ["stem"],
+        phonetic: "/stem/",
+        zh: "茎 (支撑与运输)",
+        category: "organ",
+        funFact: "短元音 /e/。植物的超级水管电梯！"
+      },
+      {
+        en: "leaves",
+        syllables: ["leaves"],
+        phonetic: "/liːvz/",
+        zh: "树叶 (叶片复数)",
+        category: "organ",
+        funFact: "单数是 leaf，复数变形为 leaves！太阳能小厨房。"
+      },
+      {
+        en: "flowers",
+        syllables: ["flow", "ers"],
+        phonetic: "/ˈflaʊərz/",
+        zh: "花朵 (吸引昆虫传粉)",
+        category: "organ",
+        funFact: "双音节 flow·ers。盛大绽放邀请小蜜蜂。"
+      },
+      {
+        en: "seeds",
+        syllables: ["seeds"],
+        phonetic: "/siːdz/",
+        zh: "种子 (生命时间胶囊)",
+        category: "organ",
+        funFact: "ee 发长元音 /iː/。WOW三要素才能发芽！"
+      },
+      {
+        en: "beneath",
+        syllables: ["be", "neath"],
+        phonetic: "/bɪˈniːθ/",
+        zh: "在...下方 / 深处",
+        category: "poem",
+        funFact: "be·neath，结尾 th 咬舌音。比 under 更优美诗意！"
+      },
+      {
+        en: "drink up",
+        syllables: ["drink", "up"],
+        phonetic: "/drɪŋk ʌp/",
+        zh: "喝干 / 咕咚咕咚喝饱",
+        category: "poem",
+        funFact: "短语动词，拟人化写出植物根部大口喝水。"
+      },
+      {
+        en: "safe and sound",
+        syllables: ["safe", "and", "sound"],
+        phonetic: "/seɪf ænd saʊnd/",
+        zh: "安然无恙 / 健康茁壮",
+        category: "poem",
+        funFact: "经典成语！不仅指安全，还指身体健壮无损。"
+      },
+      {
+        en: "straight",
+        syllables: ["straight"],
+        phonetic: "/streɪt/",
+        zh: "笔直地 / 挺拔的",
+        category: "poem",
+        funFact: "gh 不发音！描写枝干昂首挺拔直立的样子。"
+      },
+      {
+        en: "carries",
+        syllables: ["car", "ries"],
+        phonetic: "/ˈkæriz/",
+        zh: "运送 / 挑起重任",
+        category: "poem",
+        funFact: "原形 carry，变 y 为 ies。导管把水分一路送到顶端！"
+      },
+      {
+        en: "photosynthesis",
+        syllables: ["pho", "to", "syn", "the", "sis"],
+        phonetic: "/ˌfoʊtoʊˈsɪnθəsɪs/",
+        zh: "光合作用 (制造食物)",
+        category: "science",
+        funFact: "5个音节！photo(光) + synthesis(合成制造)！"
+      },
+      {
+        en: "pollination",
+        syllables: ["pol", "li", "na", "tion"],
+        phonetic: "/ˌpɑːləˈneɪʃən/",
+        zh: "传粉 (花粉传递)",
+        category: "science",
+        funFact: "蜜蜂和蝴蝶是植物最好的传粉小使者！"
+      }
+    ];
+
+    // ==================== 2. 语音与音效合成系统 ====================
+    let audioEnabled = true;
+    let speechRate = 1.0;
+    let showZh = true;
+    let currentOrganKey = "roots";
+    let isPoemPlaying = false;
+
+    // Web Audio 音效发生器
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudioContext() {
+      if (!audioCtx && AudioCtx) {
+        audioCtx = new AudioCtx();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // 播放可爱的小泡泡声 / 叮咚声
+    function playBeep(freq = 600, type = 'sine', duration = 0.15) {
+      if (!audioEnabled) return;
+      try {
+        initAudioContext();
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn("Audio effect error:", e);
+      }
+    }
+
+    function playSuccessSound() {
+      playBeep(523.25, 'triangle', 0.1); // C5
+      setTimeout(() => playBeep(659.25, 'triangle', 0.1), 100); // E5
+      setTimeout(() => playBeep(783.99, 'triangle', 0.2), 200); // G5
+    }
+
+    function playWaterPop() {
+      playBeep(420, 'sine', 0.08);
+      setTimeout(() => playBeep(580, 'sine', 0.08), 60);
+    }
+
+    // Web Speech API 朗读文本
+    function speakText(text, customRate = null) {
+      if (!('speechSynthesis' in window) || !text) return;
+      initAudioContext();
+      window.speechSynthesis.cancel(); // 停止先前的朗读
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'en-US';
+      utter.rate = customRate !== null ? customRate : speechRate;
+      utter.pitch = 1.05; // 稍微清脆一点，适合小朋友
+      window.speechSynthesis.speak(utter);
+    }
+
+    // 语速切换
+    function toggleSpeechRate() {
+      const btn = document.getElementById('tts-speed-btn');
+      if (speechRate === 1.0) {
+        speechRate = 0.72; // 慢速
+        btn.innerHTML = '🐢 慢速 0.7x';
+        btn.classList.add('gold');
+      } else {
+        speechRate = 1.0; // 常速
+        btn.innerHTML = '🐇 常速 1.0x';
+        btn.classList.remove('gold');
+      }
+      playBeep(880, 'sine', 0.08);
+    }
+
+    // 中英显示切换
+    function toggleTranslation() {
+      showZh = !showZh;
+      const btn = document.getElementById('lang-toggle-btn');
+      btn.innerHTML = showZh ? '🇨🇳 中英双语' : '🇬🇧 纯英文沉浸';
+      document.querySelectorAll('.line-zh').forEach(el => {
+        el.classList.toggle('hidden-zh', !showZh);
+      });
+      playBeep(700, 'sine', 0.08);
+    }
+
+    // 声音开/关
+    function toggleSound() {
+      audioEnabled = !audioEnabled;
+      const btn = document.getElementById('sound-btn');
+      if (audioEnabled) {
+        btn.innerHTML = '🔊 音效开';
+        btn.className = 'pill-btn active';
+        playSuccessSound();
+      } else {
+        btn.innerHTML = '🔇 音效关';
+        btn.className = 'pill-btn';
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    // 锚点平滑滚动
+    function scrollToSection(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // ==================== 3. 诗歌卡拉OK与朗诵逻辑 ====================
+    let poemPlayTimer = null;
+
+    function handleLineClick(index) {
+      const p = POEM_DATA[index];
+      if (!p) return;
+      // 高亮该行
+      document.querySelectorAll('.poem-line-group').forEach((g, idx) => {
+        g.classList.toggle('active', idx === index);
+      });
+      selectOrgan(p.organ);
+      speakText(p.en);
+      playWaterPop();
+    }
+
+    function handlePlayFullPoem() {
+      if (isPoemPlaying) {
+        // 停止播放
+        stopFullPoem();
+        return;
+      }
+      isPoemPlaying = true;
+      const btn = document.getElementById('play-poem-btn');
+      btn.innerHTML = '⏹ 停止播放';
+      btn.classList.add('playing');
+
+      let currentLine = 0;
+      function playStep() {
+        if (!isPoemPlaying || currentLine >= POEM_DATA.length) {
+          stopFullPoem();
+          return;
+        }
+        const data = POEM_DATA[currentLine];
+        // 高亮行与联动器官
+        document.querySelectorAll('.poem-line-group').forEach((g, idx) => {
+          g.classList.toggle('karaoke-current', idx === currentLine);
+          g.classList.toggle('active', idx === currentLine);
+        });
+        selectOrgan(data.organ, false);
+
+        // 朗诵
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(data.en);
+        utter.lang = 'en-US';
+        utter.rate = speechRate * 0.9;
+        utter.pitch = 1.02;
+        utter.onend = () => {
+          currentLine++;
+          poemPlayTimer = setTimeout(playStep, 600);
+        };
+        window.speechSynthesis.speak(utter);
+      }
+      playStep();
+    }
+
+    function stopFullPoem() {
+      isPoemPlaying = false;
+      window.speechSynthesis.cancel();
+      clearTimeout(poemPlayTimer);
+      const btn = document.getElementById('play-poem-btn');
+      btn.innerHTML = '▶ 全诗朗诵';
+      btn.classList.remove('playing');
+      document.querySelectorAll('.poem-line-group').forEach(g => {
+        g.classList.remove('karaoke-current');
+      });
+    }
+
+    // ==================== 4. 器官联动与交互检查 ====================
+    function selectOrgan(key, shouldSpeak = true) {
+      currentOrganKey = key;
+      const info = ORGAN_INFO[key];
+      if (!info) return;
+
+      // 更新下方器官特工面板
+      document.getElementById('inspect-icon').innerText = info.icon;
+      document.getElementById('inspect-name').innerText = info.name;
+      document.getElementById('inspect-phonetic').innerText = info.phonetic;
+      document.getElementById('inspect-desc').innerHTML = info.desc;
+      document.getElementById('inspect-secret').innerHTML = info.secret;
+
+      // 更新按钮与高亮态
+      document.querySelectorAll('.organ-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-${key}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // 更新 SVG 高亮
+      document.querySelectorAll('.hotspot').forEach(el => el.classList.remove('active-part'));
+      const svgPart = document.getElementById(`svg-${key}`);
+      if (svgPart) svgPart.classList.add('active-part');
+
+      if (shouldSpeak) {
+        speakText(info.word);
+        playBeep(520, 'sine', 0.1);
+      }
+    }
+
+    function playCurrentOrganVoice() {
+      const info = ORGAN_INFO[currentOrganKey];
+      if (info) {
+        speakText(info.name.split(' ')[0]);
+      }
+    }
+
+    function inspectWord(wordEn) {
+      speakText(wordEn);
+      playSuccessSound();
+      scrollToSection('vocab');
+      // 闪烁对应词卡
+      setTimeout(() => {
+        const card = document.getElementById(`word-card-${wordEn.toLowerCase()}`);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.style.borderColor = '#f59e0b';
+          card.style.transform = 'scale(1.05)';
+          setTimeout(() => {
+            card.style.borderColor = '';
+            card.style.transform = '';
+          }, 1500);
+        }
+      }, 400);
+    }
+
+    // 太阳照射互动
+    function triggerSunburst() {
+      playBeep(784, 'triangle', 0.2);
+      speakText('The warm sun shines down, powering the green leaves!');
+      alert('☀️ 太阳发射了满满的阳光！绿叶开心地说：“开火做饭啦！”');
+    }
+
+    // 浇水动作互动
+    function triggerWateringAction() {
+      playWaterPop();
+      speakText('Water goes down, the roots are drinking up happily!');
+      alert('💧 泥土吸饱了清冽的泉水！根须像小吸管一样开动啦！');
+    }
+
+    // 光合作用特效互动
+    function triggerPhotosynthesisEffect() {
+      playSuccessSound();
+      speakText('Sunlight, water, and carbon dioxide make food and fresh oxygen!');
+      alert('🍃 光合作用魔法发动！叶绿素制作了美味的糖糖，并释放出清新氧气！呼——吸——！');
+    }
+
+    // ==================== 5. 单词魔法工坊渲染与筛选 ====================
+    function renderVocabGrid(category = 'all') {
+      const grid = document.getElementById('vocab-cards-grid');
+      grid.innerHTML = '';
+
+      const filtered = category === 'all' 
+        ? VOCAB_DATA 
+        : VOCAB_DATA.filter(item => item.category === category);
+
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'word-card';
+        card.id = `word-card-${item.en.replace(/\s+/g, '-')}`;
+
+        const syllableHtml = item.syllables
+          .map(s => `<span class="syllable-chip">${s}</span>`)
+          .join('');
+
+        card.innerHTML = `
+          <div class="word-card-top">
+            <div class="word-en">${item.en}</div>
+          </div>
+          <div class="syllable-chips">${syllableHtml}</div>
+          <div class="word-phonetic">${item.phonetic}</div>
+          <div class="word-zh">${item.zh}</div>
+          <div class="word-fun-fact">💡 ${item.funFact}</div>
+          <div class="word-audio-actions">
+            <button class="audio-play-btn" onclick="speakText('${item.en}', 1.0)">
+              🔊 常速 1.0x
+            </button>
+            <button class="audio-play-btn slow-btn" onclick="speakText('${item.en}', 0.65)">
+              🐢 慢速 0.7x
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterVocab(cat, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderVocabGrid(cat);
+      playBeep(640, 'sine', 0.08);
+    }
+
+    // ==================== 6. 游戏 1: 拼写小萌芽 (Spelling Sprout) ====================
+    const SPROUT_WORDS = [
+      { en: "roots", zh: "根系 (吸收水分)", hint: "长音 /uː/ · 单音节词" },
+      { en: "stem", zh: "枝干 (挺拔支撑)", hint: "短元音 /e/ · 笔直直立" },
+      { en: "leaves", zh: "翠绿叶片 (光合作用)", hint: "单数是 leaf · 变复数" },
+      { en: "flower", zh: "美丽花朵 (吸引昆虫)", hint: "flow·er 双音节" },
+      { en: "seeds", zh: "小小种子 (深藏心房)", hint: "生命时间胶囊 · ee 发长音" },
+      { en: "ground", zh: "泥土大地 (地下深处)", hint: "ou 发 /aʊ/ · 扎根大地" }
+    ];
+
+    let currentSproutIndex = 0;
+    let sproutEntered = [];
+    const sproutStages = ["🌰 种子眠", "🌱 破土发芽", "🌿 抽生嫩茎", "🍃 茂盛绿叶", "🌸 繁花盛放", "🌳 茁壮大树"];
+
+    function initSproutGame() {
+      const wordObj = SPROUT_WORDS[currentSproutIndex];
+      sproutEntered = [];
+      document.getElementById('sprout-target-zh').innerText = wordObj.zh;
+      document.getElementById('sprout-target-hint').innerText = wordObj.hint;
+
+      // 更新植物外观阶段
+      const stageIdx = Math.min(currentSproutIndex, sproutStages.length - 1);
+      document.getElementById('sprout-stage-visual').innerText = sproutStages[stageIdx].split(' ')[0];
+
+      // 渲染槽位
+      const slotsContainer = document.getElementById('sprout-slots-container');
+      slotsContainer.innerHTML = '';
+      for (let i = 0; i < wordObj.en.length; i++) {
+        const slot = document.createElement('div');
+        slot.className = 'letter-slot';
+        slot.id = `sprout-slot-${i}`;
+        slotsContainer.appendChild(slot);
+      }
+
+      // 渲染键盘（包含目标单词的所有字母 + 混淆字母）
+      renderSproutKeyboard(wordObj.en);
+    }
+
+    function renderSproutKeyboard(targetWord) {
+      const kb = document.getElementById('sprout-keyboard-container');
+      kb.innerHTML = '';
+
+      // 生成候选字母池并打乱
+      const pool = targetWord.split('');
+      const extras = "abcdefghijklmnopqrstuvwxyz".split('').filter(c => !pool.includes(c));
+      for (let i = 0; i < 4; i++) {
+        pool.push(extras[Math.floor(Math.random() * extras.length)]);
+      }
+      pool.sort(() => Math.random() - 0.5);
+
+      pool.forEach(char => {
+        const btn = document.createElement('button');
+        btn.className = 'key-btn';
+        btn.innerText = char.toUpperCase();
+        btn.onclick = () => handleSproutKey(char);
+        kb.appendChild(btn);
+      });
+
+      // 删除退格按钮
+      const backBtn = document.createElement('button');
+      backBtn.className = 'key-btn action-key';
+      backBtn.innerText = '⌫ 退格';
+      backBtn.onclick = handleSproutBackspace;
+      kb.appendChild(backBtn);
+    }
+
+    function handleSproutKey(char) {
+      const wordObj = SPROUT_WORDS[currentSproutIndex];
+      if (sproutEntered.length >= wordObj.en.length) return;
+
+      const idx = sproutEntered.length;
+      sproutEntered.push(char.toLowerCase());
+      const slot = document.getElementById(`sprout-slot-${idx}`);
+      if (slot) {
+        slot.innerText = char.toUpperCase();
+        slot.classList.add('filled');
+      }
+      playBeep(440 + idx * 60, 'sine', 0.08);
+
+      // 检查是否拼完
+      if (sproutEntered.length === wordObj.en.length) {
+        const enteredStr = sproutEntered.join('');
+        if (enteredStr === wordObj.en.toLowerCase()) {
+          playSuccessSound();
+          speakText(`Awesome! ${wordObj.en}!`);
+          document.getElementById('sprout-stage-visual').innerText = "🎉";
+          setTimeout(() => {
+            nextSproutQuestion();
+          }, 1200);
+        } else {
+          playBeep(240, 'sawtooth', 0.2);
+          alert('😊 哎呀，顺序不太对，再试一次吧！');
+          sproutEntered = [];
+          document.querySelectorAll('.letter-slot').forEach(s => {
+            s.innerText = '';
+            s.classList.remove('filled');
+          });
+        }
+      }
+    }
+
+    function handleSproutBackspace() {
+      if (sproutEntered.length === 0) return;
+      const idx = sproutEntered.length - 1;
+      sproutEntered.pop();
+      const slot = document.getElementById(`sprout-slot-${idx}`);
+      if (slot) {
+        slot.innerText = '';
+        slot.classList.remove('filled');
+      }
+      playBeep(300, 'sine', 0.05);
+    }
+
+    function speakCurrentSproutWord() {
+      const wordObj = SPROUT_WORDS[currentSproutIndex];
+      speakText(wordObj.en);
+    }
+
+    function giveSproutHint() {
+      const wordObj = SPROUT_WORDS[currentSproutIndex];
+      const nextChar = wordObj.en[sproutEntered.length];
+      if (nextChar) {
+        handleSproutKey(nextChar);
+      }
+    }
+
+    function nextSproutQuestion() {
+      currentSproutIndex = (currentSproutIndex + 1) % SPROUT_WORDS.length;
+      initSproutGame();
+    }
+
+    // ==================== 7. 游戏 2: 翻牌记忆花园 (Memory Match) ====================
+    const MEMORY_CARDS_DATA = [
+      { id: 1, text: "Roots 🪱", matchId: 1, type: "icon" },
+      { id: 2, text: "吸收水分锚定", matchId: 1, type: "desc" },
+      { id: 3, text: "Stem 🎋", matchId: 2, type: "icon" },
+      { id: 4, text: "挺拔支撑导管", matchId: 2, type: "desc" },
+      { id: 5, text: "Leaves 🍃", matchId: 3, type: "icon" },
+      { id: 6, text: "阳光光合作用", matchId: 3, type: "desc" },
+      { id: 7, text: "Flowers 🌸", matchId: 4, type: "icon" },
+      { id: 8, text: "美丽绽放传粉", matchId: 4, type: "desc" },
+      { id: 9, text: "Seeds 🌰", matchId: 5, type: "icon" },
+      { id: 10, text: "深藏生命胶囊", matchId: 5, type: "desc" },
+      { id: 11, text: "Sunlight ☀️", matchId: 6, type: "icon" },
+      { id: 12, text: "金黄光能燃料", matchId: 6, type: "desc" }
+    ];
+
+    let memoryFlipped = [];
+    let memoryMatchedCount = 0;
+    let memoryMoves = 0;
+    let memoryTimer = null;
+    let memorySeconds = 0;
+
+    function initMemoryGame() {
+      memoryFlipped = [];
+      memoryMatchedCount = 0;
+      memoryMoves = 0;
+      memorySeconds = 0;
+      clearInterval(memoryTimer);
+
+      document.getElementById('mem-moves').innerText = '0';
+      document.getElementById('mem-pairs').innerText = '0/6';
+      document.getElementById('mem-time').innerText = '00:00';
+
+      memoryTimer = setInterval(() => {
+        memorySeconds++;
+        const mins = String(Math.floor(memorySeconds / 60)).padStart(2, '0');
+        const secs = String(memorySeconds % 60).padStart(2, '0');
+        document.getElementById('mem-time').innerText = `${mins}:${secs}`;
+      }, 1000);
+
+      const grid = document.getElementById('memory-cards-grid');
+      grid.innerHTML = '';
+
+      // 洗牌
+      const deck = [...MEMORY_CARDS_DATA].sort(() => Math.random() - 0.5);
+
+      deck.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'memory-card';
+        card.dataset.matchId = item.matchId;
+        card.dataset.text = item.text;
+        card.innerText = '❓';
+        card.onclick = () => handleMemoryCardClick(card);
+        grid.appendChild(card);
+      });
+    }
+
+    function handleMemoryCardClick(card) {
+      if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+      if (memoryFlipped.length >= 2) return;
+
+      playBeep(520, 'sine', 0.08);
+      card.classList.add('flipped');
+      card.innerText = card.dataset.text;
+      memoryFlipped.push(card);
+
+      if (memoryFlipped.length === 2) {
+        memoryMoves++;
+        document.getElementById('mem-moves').innerText = memoryMoves;
+        const [c1, c2] = memoryFlipped;
+
+        if (c1.dataset.matchId === c2.dataset.matchId) {
+          // 配对成功！
+          setTimeout(() => {
+            playSuccessSound();
+            c1.classList.add('matched');
+            c2.classList.add('matched');
+            memoryMatchedCount++;
+            document.getElementById('mem-pairs').innerText = `${memoryMatchedCount}/6`;
+            memoryFlipped = [];
+
+            if (memoryMatchedCount === 6) {
+              clearInterval(memoryTimer);
+              celebrateCertificate();
+              alert(`🎉 太厉害了！全部翻牌成功！用时 ${document.getElementById('mem-time').innerText}，步数 ${memoryMoves}！`);
+            }
+          }, 350);
+        } else {
+          // 配对失败，翻回背面
+          setTimeout(() => {
+            playBeep(260, 'sawtooth', 0.15);
+            c1.classList.remove('flipped');
+            c2.classList.remove('flipped');
+            c1.innerText = '❓';
+            c2.innerText = '❓';
+            memoryFlipped = [];
+          }, 900);
+        }
+      }
+    }
+
+    // ==================== 8. 游戏 3: 植物小学者问答 (Botanist Quiz) ====================
+    const QUIZ_DATA = [
+      {
+        question: "1. 植物的哪一个部分负责像吸管一样，从泥土中吸取水分？",
+        options: [
+          { text: "🪱 根系 (Roots)", correct: true },
+          { text: "🍃 绿叶 (Leaves)", correct: false },
+          { text: "🌸 花朵 (Flowers)", correct: false }
+        ],
+        explain: "对啦！根系 (Roots) 深深扎入泥土，不仅抓紧土壤，还吸收水分！"
+      },
+      {
+        question: "2. 诗句中说“Stem stands straight and grows so tall”，茎的主要本领是什么？",
+        options: [
+          { text: "让植物直立支撑，并运送水分 (Carry water)", correct: true },
+          { text: "在地下沉睡休眠", correct: false },
+          { text: "捉小飞虫吃", correct: false }
+        ],
+        explain: "非常棒！茎 (Stem) 笔直挺拔，里面有超微导管向全身输送水分！"
+      },
+      {
+        question: "3. 绿叶制造植物食物的过程叫什么？",
+        options: [
+          { text: "🌱 光合作用 (Photosynthesis)", correct: true },
+          { text: "💤 冬眠睡觉 (Sleeping)", correct: false },
+          { text: "🌧️ 人工降雨 (Raining)", correct: false }
+        ],
+        explain: "正确！光合作用利用阳光、水和二氧化碳制造出糖分和新鲜氧气！"
+      },
+      {
+        question: "4. 种子深藏在哪里，等待发芽的时机？",
+        options: [
+          { text: "🌰 花心或果实深处 (Deep inside flowers)", correct: true },
+          { text: "☁️ 高高的白云上", correct: false },
+          { text: "🌊 大海海底", correct: false }
+        ],
+        explain: "完全正确！种子深藏在花朵和果实的心房中，是生命的奇迹！"
+      }
+    ];
+
+    let currentQuizIndex = 0;
+    let quizScore = 0;
+
+    function initQuizGame() {
+      currentQuizIndex = 0;
+      quizScore = 0;
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const q = QUIZ_DATA[currentQuizIndex];
+      document.getElementById('quiz-q-num').innerText = `Question ${currentQuizIndex + 1} of ${QUIZ_DATA.length}`;
+      document.getElementById('quiz-q-title').innerText = q.question;
+      document.getElementById('quiz-progress-fill').style.width = `${((currentQuizIndex + 1) / QUIZ_DATA.length) * 100}%`;
+      document.getElementById('quiz-feedback-box').innerText = '';
+
+      const optContainer = document.getElementById('quiz-options-container');
+      optContainer.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.innerHTML = `<span>${String.fromCharCode(65 + idx)}.</span> <span>${opt.text}</span>`;
+        btn.onclick = () => handleQuizAnswer(opt.correct, btn, q.explain);
+        optContainer.appendChild(btn);
+      });
+    }
+
+    function handleQuizAnswer(isCorrect, btn, explanation) {
+      const allBtns = document.querySelectorAll('.quiz-opt-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const fBox = document.getElementById('quiz-feedback-box');
+      if (isCorrect) {
+        btn.classList.add('correct');
+        playSuccessSound();
+        fBox.style.color = '#15803d';
+        fBox.innerText = `🎉 太棒啦！${explanation}`;
+        quizScore++;
+      } else {
+        btn.classList.add('wrong');
+        playBeep(220, 'sawtooth', 0.2);
+        fBox.style.color = '#b91c1c';
+        fBox.innerText = `💡 没关系，记住小窍门：${explanation}`;
+      }
+
+      setTimeout(() => {
+        currentQuizIndex++;
+        if (currentQuizIndex < QUIZ_DATA.length) {
+          renderQuizQuestion();
+        } else {
+          showQuizComplete();
+        }
+      }, 1800);
+    }
+
+    function showQuizComplete() {
+      const container = document.getElementById('game-quiz-view');
+      container.innerHTML = `
+        <div style="text-align:center; padding: 2rem 1rem;">
+          <div style="font-size:4rem; margin-bottom:1rem;">🏅</div>
+          <h2 style="font-size:1.8rem; font-weight:900; color:#15803d;">通关大吉！答对 ${quizScore}/${QUIZ_DATA.length} 题！</h2>
+          <p style="color:#64748b; margin:0.5rem 0 1.5rem;">你已经掌握了植物诗歌的所有科学奥秘！快去下方领取专属小学者证书吧！</p>
+          <button class="play-all-btn" style="margin:0 auto;" onclick="initQuizGame()">🔄 再练一次</button>
+        </div>
+      `;
+      celebrateCertificate();
+    }
+
+    // 游戏模式切换
+    function switchGameMode(mode) {
+      document.querySelectorAll('.arcade-tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(`tab-${mode}`).classList.add('active');
+
+      document.getElementById('game-sprout-view').style.display = mode === 'sprout' ? 'flex' : 'none';
+      document.getElementById('game-memory-view').style.display = mode === 'memory' ? 'block' : 'none';
+      document.getElementById('game-quiz-view').style.display = mode === 'quiz' ? 'block' : 'none';
+
+      if (mode === 'sprout') initSproutGame();
+      if (mode === 'memory') initMemoryGame();
+      if (mode === 'quiz') initQuizGame();
+      playBeep(600, 'sine', 0.08);
+    }
+
+    // ==================== 9. 证书生成与撒花庆祝 ====================
+    function updateCertName() {
+      // 动态更新名字
+    }
+
+    function celebrateCertificate() {
+      playSuccessSound();
+      // 屏幕飘落花瓣微动画
+      for (let i = 0; i < 24; i++) {
+        createConfettiParticle();
+      }
+      scrollToSection('cert-section');
+    }
+
+    function createConfettiParticle() {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const emojis = ['🌸', '🍃', '🌱', '☀️', '💧', '✨', '⭐'];
+      p.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      p.style.fontSize = `${16 + Math.random() * 20}px`;
+      p.style.left = `${Math.random() * 95}vw`;
+      p.style.top = `${window.scrollY + 100 + Math.random() * 300}px`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 2000);
+    }
+
+    // ==================== 10. 页面初始化启动 ====================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderVocabGrid('all');
+      initSproutGame();
+      selectOrgan('roots', false);
+
+      // 填充证书日期
+      const d = new Date();
+      document.getElementById('cert-date').innerText = `${d.getFullYear()}.${d.getMonth() + 1}`;
+    });
+  </script>
+</body>
+</html>
