@@ -11,7 +11,7 @@ import { CertificateController } from "./certificate.js";
 import { SCIENCE_VS_POETRY } from "../data/plants-data.js";
 import { audio } from "../core/audio.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+function initPlants() {
   let poemTheater = null;
   let plantCanvas = null;
   let vocabLab = null;
@@ -137,4 +137,10 @@ function bindGlobalControls(poemTheater) {
       audio.playTone(700, "sine", 0.08);
     });
   }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initPlants);
+} else {
+  initPlants();
 }

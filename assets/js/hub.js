@@ -6,10 +6,16 @@
 import { THEMES_DATA } from "./data/themes.js";
 import { audio } from "./core/audio.js";
 
-document.addEventListener("DOMContentLoaded", () => {
+function initHub() {
   renderThemesGrid();
   bindGlobalControls();
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initHub);
+} else {
+  initHub();
+}
 
 function renderThemesGrid() {
   const container = document.getElementById("themes-grid-container");

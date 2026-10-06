@@ -7,6 +7,7 @@ import { spawn } from "child_process";
 
 const CHROME_PATH = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
 const PORT = 9222;
+const BASE_URL = (process.argv[2] || "http://localhost:8765").replace(/\/+$/, "");
 
 class CDPClient {
   constructor(wsUrl) {
@@ -112,8 +113,20 @@ async function main() {
     // -------------------------------------------------------------
     // Test 1: Theme Hub -> Plants 导航可达性
     // -------------------------------------------------------------
-    await cdp.send("Page.navigate", { url: "http://localhost:8765/" });
-    await new Promise((r) => setTimeout(r, 600));
+    console.log(`Testing target URL: ${BASE_URL}`);
+    await cdp.send("Page.navigate", { url: `${BASE_URL}/` });
+    await cdp.eval(`
+      new Promise((resolve) => {
+        if (document.querySelector('.theme-card.active-theme .theme-enter-btn')) return resolve();
+        const timer = setInterval(() => {
+          if (document.querySelector('.theme-card.active-theme .theme-enter-btn')) {
+            clearInterval(timer);
+            resolve();
+          }
+        }, 50);
+        setTimeout(() => { clearInterval(timer); resolve(); }, 4000);
+      })
+    `);
 
     const hubToPlantsHref = await cdp.eval(`
       (() => {
@@ -126,7 +139,7 @@ async function main() {
     // -------------------------------------------------------------
     // Test 2 & 19: Plants -> Theme Hub 导航与 /plants/ 直接刷新
     // -------------------------------------------------------------
-    await cdp.send("Page.navigate", { url: "http://localhost:8765/plants/" });
+    await cdp.send("Page.navigate", { url: `${BASE_URL}/plants/` });
 
     // 等待 ES Module 与 DOM 完全初始化就绪
     await cdp.eval(`
