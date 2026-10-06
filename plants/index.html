@@ -214,9 +214,9 @@
         <span class="lab-badge">🌟 3D & 交互科学探险馆 · IGCSE Junior Lab</span>
         <h2>小小植物学家科学实验室</h2>
         <p>
-          单词记牢了，自然背后的科学原理更奇妙！转动 <strong>3D 植物细胞</strong>、
-          亲手操控<strong>叶片阳光厨房</strong>、看<strong>水流电梯与甜蜜快递</strong>高速奔跑、
-          揭秘<strong>小蜜蜂授粉与种子诞生</strong>的生命奇迹！
+          单词记牢了，自然背后的科学原理更奇妙！转动 <strong>3D 拟真植物细胞</strong>、
+          亲手操控<strong>叶片微观厨房与金鱼藻放氧实验</strong>、看<strong>水流电梯与芹菜红墨水实验</strong>、
+          揭秘<strong>小蜜蜂授粉与种子破土萌发</strong>的生命奇迹！
         </p>
       </div>
 
@@ -225,13 +225,16 @@
         <!-- JS 动态渲染 4 个展厅按钮 -->
       </div>
 
-      <!-- 展厅 1: 植物细胞 3D 展厅 -->
+      <!-- 展厅 1: 植物细胞 3D 展厅 + 显微镜真图对照 -->
       <div class="science-station-panel active" id="station-cell-3d">
         <div class="cell-3d-layout">
           <!-- 左侧：3D 舞台与液泡实验 -->
           <div class="cell-3d-stage">
             <div class="cell-3d-overlay-bar">
-              <span class="cell-3d-tip">👆 鼠标按住拖拽可 360° 旋转 · 滚轮缩放 · 点击器官点读</span>
+              <div class="cell-view-toggle">
+                <button class="cell-view-btn active" id="btn-view-3d">🎮 3D 拟真模型</button>
+                <button class="cell-view-btn" id="btn-view-microscope">🔬 显微镜真图对照</button>
+              </div>
               <div class="cell-3d-controls">
                 <button class="cell-ctrl-btn active" id="btn-cell-autospin">🔄 自动旋转</button>
                 <button class="cell-ctrl-btn" id="btn-cell-reset">🎯 视角复位</button>
@@ -240,6 +243,34 @@
 
             <!-- 3D WebGL 画布挂载点 -->
             <div class="cell-3d-viewport" id="cell-3d-canvas-container"></div>
+
+            <!-- 显微镜真实切片对照视图 (默认隐藏，切换显示) -->
+            <div class="cell-microscope-viewport" id="cell-microscope-container" style="display:none;">
+              <div class="microscope-split-grid">
+                <div class="microscope-diagram-card">
+                  <span class="microscope-card-badge">📐 权威植物细胞微观结构图</span>
+                  <div class="microscope-img-wrapper" id="cell-microscope-pin-area">
+                    <img src="/assets/images/science/plant-root-hair-cell-structure.png" alt="Plant Cell Anatomical Diagram" class="microscope-cell-img" />
+                    <!-- 热点引脚 -->
+                    <button class="microscope-pin" style="top:31%; left:74%;" data-part="cell-wall" title="细胞壁 Cell Wall">🏰</button>
+                    <button class="microscope-pin" style="top:19%; left:70%;" data-part="membrane" title="细胞膜 Membrane">🛡️</button>
+                    <button class="microscope-pin" style="top:34%; left:36%;" data-part="nucleus" title="细胞核 Nucleus">🧠</button>
+                    <button class="microscope-pin" style="top:64%; left:52%;" data-part="vacuole" title="大液泡 Vacuole">💧</button>
+                    <button class="microscope-pin" style="top:22%; left:32%;" data-part="mitochondria" title="线粒体 Mitochondria">⚡</button>
+                  </div>
+                  <p class="microscope-caption">👆 点击上方图钉图标，即可联动点读右侧各器官详细科学原理！</p>
+                </div>
+
+                <div class="microscope-real-card">
+                  <span class="microscope-card-badge">🔬 光学显微镜实拍切片 (Micrograph)</span>
+                  <img src="/assets/images/science/microscope-root-hair-cell.jpg" alt="Real root hair cell under microscope" class="microscope-real-img" />
+                  <div class="microscope-real-info">
+                    <h5>🌱 植物根毛细胞 (Root Hair Cell) 显微实拍</h5>
+                    <p>看！深色小圆点正是<strong>细胞核 (Nucleus)</strong>！细长突起的根毛伸入土壤颗粒间，表面积大增，大口吸收水分！</p>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- 底部：液泡充水膨胀实验 -->
             <div class="vacuole-experiment-bar">
@@ -274,68 +305,36 @@
           <!-- 左侧：叶片微观横截面交互图 -->
           <div class="leaf-diagram-box">
             <h4>🍃 叶片微观“摩天大楼”横截面</h4>
-            <div class="section-subtext">点击下方各层结构，透视叶片每一层专属的工作使命！</div>
+            <div class="section-subtext">经典 Cambridge IGCSE 生物解剖图：点击图钉或下方卡片，透视每一层的工作使命！</div>
             
-            <div class="leaf-svg-wrapper">
-              <svg viewBox="0 0 400 240" class="leaf-slice-svg" xmlns="http://www.w3.org/2000/svg">
-                <!-- 蜡质角质层与上表皮 -->
-                <rect x="20" y="20" width="360" height="25" rx="5" fill="#86efac" stroke="#16a34a" stroke-width="2" class="svg-leaf-slice-layer" data-layer="cuticle-epidermis" />
-                <text x="200" y="37" font-size="12" font-weight="bold" fill="#14532d" text-anchor="middle">上表皮 &amp; 角质层 Upper Epidermis (防雨冲锋衣)</text>
+            <div class="leaf-anatomy-interactive" id="leaf-anatomy-wrapper">
+              <div class="leaf-img-container">
+                <img src="/assets/images/science/leaf-anatomy-diagram.png" alt="Leaf Cross Section Diagram" class="leaf-anatomy-img" />
+                <!-- 交互图钉 -->
+                <button class="leaf-pin" style="top:10%; left:35%;" data-layer="cuticle-epidermis" title="上表皮与角质层">1</button>
+                <button class="leaf-pin active" style="top:32%; left:26%;" data-layer="palisade" title="栅栏组织">2</button>
+                <button class="leaf-pin" style="top:58%; left:55%;" data-layer="spongy" title="海绵组织">3</button>
+                <button class="leaf-pin" style="top:38%; left:80%;" data-layer="vein" title="叶脉 (木质部与韧皮部)">4</button>
+                <button class="leaf-pin" style="top:88%; left:42%;" data-layer="stoma-guard" title="气孔与保卫细胞">5</button>
+              </div>
+            </div>
 
-                <!-- 栅栏组织 -->
-                <g class="svg-leaf-slice-layer" data-layer="palisade">
-                  <rect x="20" y="52" width="360" height="65" rx="4" fill="#22c55e" stroke="#15803d" stroke-width="2" />
-                  <!-- 栅栏细胞小圆柱 -->
-                  <rect x="30" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="70" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="110" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="150" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="190" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="230" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="270" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="310" y="56" width="30" height="56" rx="4" fill="#16a34a" />
-                  <rect x="350" y="56" width="22" height="56" rx="4" fill="#16a34a" />
-                  <text x="200" y="90" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">栅栏组织 Palisade Mesophyll (塞满叶绿体的做饭工厂)</text>
-                </g>
-
-                <!-- 海绵组织与叶脉 -->
-                <g class="svg-leaf-slice-layer" data-layer="spongy">
-                  <rect x="20" y="124" width="360" height="65" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="2" />
-                  <circle cx="50" cy="155" r="14" fill="#4ade80" />
-                  <circle cx="100" cy="145" r="12" fill="#4ade80" />
-                  <circle cx="300" cy="150" r="14" fill="#4ade80" />
-                  <circle cx="350" cy="160" r="13" fill="#4ade80" />
-                  <text x="130" y="160" font-size="11" font-weight="bold" fill="#166534">海绵组织 (空气穿梭游乐场)</text>
-                </g>
-
-                <!-- 叶脉管道群 -->
-                <g class="svg-leaf-slice-layer" data-layer="vein">
-                  <circle cx="200" cy="155" r="24" fill="#38bdf8" stroke="#0284c7" stroke-width="2" />
-                  <circle cx="192" cy="155" r="8" fill="#bae6fd" />
-                  <circle cx="208" cy="155" r="8" fill="#fed7aa" />
-                  <text x="200" y="159" font-size="9" font-weight="bold" fill="#0369a1" text-anchor="middle">叶脉 Vein</text>
-                </g>
-
-                <!-- 下表皮与保卫细胞/气孔 -->
-                <rect x="20" y="196" width="360" height="24" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="2" class="svg-leaf-slice-layer" data-layer="cuticle-epidermis" />
-                <g class="svg-leaf-slice-layer" data-layer="stoma-guard">
-                  <!-- 气孔开孔 -->
-                  <ellipse cx="140" cy="208" rx="14" ry="7" fill="#15803d" />
-                  <ellipse cx="140" cy="208" rx="5" ry="3" fill="#0f172a" />
-                  <ellipse cx="260" cy="208" rx="14" ry="7" fill="#15803d" />
-                  <ellipse cx="260" cy="208" rx="5" ry="3" fill="#0f172a" />
-                  <text x="200" y="213" font-size="11" font-weight="bold" fill="#14532d" text-anchor="middle">保卫细胞 &amp; 气孔 Stomata (会呼吸的门卫)</text>
-                </g>
-              </svg>
+            <!-- 扫描电镜实拍：真实气孔 callout -->
+            <div class="stoma-sem-card">
+              <img src="/assets/images/science/leaf-stoma-sem.jpg" alt="Scanning Electron Micrograph of Leaf Stoma" class="stoma-sem-img" />
+              <div class="stoma-sem-info">
+                <h5>🔍 扫描电镜实拍：叶片下表皮真实气孔 (SEM ×1000)</h5>
+                <p>这就是植物叶片背面的真实“小嘴巴”（标尺 10 微米）！成对的保卫细胞守在两侧。白天大口吸入二氧化碳（CO₂），呼出氧气（O₂）；天热缺水时自动闭合防口渴！</p>
+              </div>
             </div>
 
             <div class="leaf-layers-list" id="leaf-layers-container"></div>
           </div>
 
-          <!-- 右侧：光合作用模拟器 -->
+          <!-- 右侧：光合作用模拟器与金鱼藻放氧实验 -->
           <div class="photosynthesis-sim-box">
             <h4>🧪 小小科学家阳光厨房 · 模拟器</h4>
-            <div class="section-subtext">动手拖动三样原料滑块，看看叶片怎样烘焙能量甜点！</div>
+            <div class="section-subtext">动手拖动三样原料滑块，观察金鱼藻在试管中加速冒出纯净氧气泡泡！</div>
 
             <!-- 控制滑块组 -->
             <div class="sim-controls-group">
@@ -361,6 +360,26 @@
                   <span class="slider-val-tag" id="val-water">90%</span>
                 </div>
                 <input type="range" min="0" max="100" value="90" class="science-range" id="slider-water">
+              </div>
+            </div>
+
+            <!-- 金鱼藻放氧实验交互窗口 -->
+            <div class="elodea-exp-panel">
+              <div class="elodea-beaker-box">
+                <img src="/assets/images/science/photosynthesis-experiment-elodea.png" alt="Elodea Pondweed Photosynthesis Experiment" class="elodea-diagram-img" />
+                <div class="elodea-bubble-spawner" id="elodea-bubble-spawner">
+                  <!-- 动态气泡生成 -->
+                </div>
+              </div>
+              <div class="elodea-data-card">
+                <span class="elodea-exp-badge">🌿 经典实验：金鱼藻水下放氧</span>
+                <div class="elodea-counter-row">
+                  <span>🫧 氧气产生速率：</span>
+                  <strong id="elodea-bubble-rate-num">48 泡/分钟</strong>
+                </div>
+                <p class="elodea-exp-desc">
+                  倒扣漏斗与试管正在收集由光合作用产生的纯净氧气！光线越强，冒泡速度越快！
+                </p>
               </div>
             </div>
 
@@ -400,17 +419,51 @@
           </div>
 
           <div class="transport-layout-grid">
-            <!-- 管道粒子动画窗口 -->
-            <div class="transport-pipeline-box xylem-mode" id="transport-pipeline-view">
-              <div class="pipe-label-top">🌿 叶片树梢 (Leaves)</div>
-              <div class="pipe-stem-tube">
-                <div class="pipe-particle-stream"></div>
+            <!-- 管道粒子动画窗口 + 芹菜染色小实验 -->
+            <div class="transport-pipeline-column">
+              <div class="transport-pipeline-box xylem-mode" id="transport-pipeline-view">
+                <div class="pipe-label-top">🌿 叶片树梢 (Leaves)</div>
+                <div class="pipe-stem-tube">
+                  <div class="pipe-particle-stream" id="transport-particles-stream"></div>
+                </div>
+                <div class="pipe-label-bottom">🌱 土壤深根 (Roots)</div>
               </div>
-              <div class="pipe-label-bottom">🌱 土壤深根 (Roots)</div>
+
+              <!-- 芹菜吸墨水互动实验操作台 -->
+              <div class="celery-lab-box">
+                <div class="celery-lab-header">
+                  <h5>🧪 经典实验：芹菜吸墨水小探险</h5>
+                  <div class="celery-buttons">
+                    <button class="celery-btn active" id="btn-dye-water">💧 清水对照</button>
+                    <button class="celery-btn" id="btn-dye-red">🔴 红墨水组</button>
+                    <button class="celery-btn" id="btn-dye-blue">🔵 蓝墨水组</button>
+                  </div>
+                </div>
+                <div class="celery-obs-toast" id="celery-obs-toast">
+                  💧 <strong>清水对照：</strong> 水分在木质部空心导管中静静向上攀爬，滋润全身细胞。
+                </div>
+              </div>
             </div>
 
-            <!-- 科学详情网格 -->
-            <div class="transport-details-card" id="transport-mode-details"></div>
+            <!-- 科学详情网格 + 真实显微切片与卡通工厂对照 -->
+            <div class="transport-details-column">
+              <div class="transport-details-card" id="transport-mode-details"></div>
+
+              <!-- 双栏对照图：卡通运输工厂 vs 真实茎切片显微图 -->
+              <div class="transport-figures-duo">
+                <div class="figure-duo-card">
+                  <span class="figure-duo-badge">🎨 运输工厂童话</span>
+                  <img src="/assets/images/science/plant-transport-factory.png" alt="Plant Transport Factory Cartoon" class="figure-duo-img" />
+                  <p class="figure-duo-caption">水滴搭乘 Up Only 木质部直达电梯；方糖推车沿韧皮部穿梭送往花果与储藏库！</p>
+                </div>
+
+                <div class="figure-duo-card">
+                  <span class="figure-duo-badge">🔬 真实茎横切片 (Micrograph)</span>
+                  <img src="/assets/images/science/plant-stem-cross-section-micrograph.png" alt="Stem cross section under microscope" class="figure-duo-img" />
+                  <p class="figure-duo-caption">显微镜下切开植物茎：外圈排列着一圈圈维管束环，里面清晰分布着木质部与韧皮部！</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -418,10 +471,25 @@
       <!-- 展厅 4: 花朵大解剖与小蜜蜂授粉奇遇 -->
       <div class="science-station-panel" id="station-flower">
         <div class="flower-station-layout">
-          <!-- 左侧：花朵结构卡片 -->
+          <!-- 左侧：花朵结构解剖 -->
           <div class="flower-parts-box">
-            <h4>🌸 花朵立体解剖 · 四大成员</h4>
-            <div class="section-subtext">点击卡片可收听英文发音，看懂花儿为什么这样红！</div>
+            <div class="flower-box-header">
+              <h4>🌸 花朵立体解剖 · 四大成员</h4>
+              <div class="flower-view-tabs">
+                <button class="flower-view-tab-btn active" id="btn-flower-diagram-view">🎨 经典解剖图</button>
+                <button class="flower-view-tab-btn" id="btn-flower-real-view">📸 真实百合解剖实拍</button>
+              </div>
+            </div>
+            <div class="section-subtext">一朵花包含四大关键部件！点击卡片听发音，探索花心深处的种子摇篮！</div>
+
+            <!-- 花朵大图展示区 (切换示意图 / 真实实拍) -->
+            <div class="flower-figure-display-box">
+              <img src="/assets/images/science/flower-dissection-diagram.png" alt="Flower Anatomical Diagram" class="flower-current-img" id="flower-main-display-img" />
+              <p class="flower-figure-caption" id="flower-figure-caption">
+                雌蕊居中（柱头+花柱+子房+胚珠），雄蕊环绕（花药+花丝），花瓣引客，花萼护蕾。
+              </p>
+            </div>
+
             <div class="flower-parts-grid" id="flower-parts-list"></div>
           </div>
 

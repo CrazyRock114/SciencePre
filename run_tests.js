@@ -349,6 +349,124 @@ async function main() {
     record(24, "花朵大解剖与小蜜蜂授粉 4 步故事书交互步进", flowerStoryRes === true);
 
     // -------------------------------------------------------------
+    // Test 25: 显微镜真图对照模式切换与微观切片展示 (Station 1)
+    // -------------------------------------------------------------
+    const microscopeViewRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-cell-3d"]');
+        if (tabBtn) tabBtn.click();
+
+        const btnMicroscope = document.getElementById('btn-view-microscope');
+        const btn3D = document.getElementById('btn-view-3d');
+        const container = document.getElementById('cell-microscope-container');
+        if (!btnMicroscope || !container) return false;
+
+        btnMicroscope.click();
+        const isMicroscopeVisible = container.style.display !== 'none';
+        const hasPins = document.querySelectorAll('.microscope-pin').length >= 4;
+        const pinWall = document.querySelector('.microscope-pin[data-part="cell-wall"]');
+        if (pinWall) pinWall.click();
+        const activePin = document.querySelector('.microscope-pin.active');
+
+        // 切回 3D
+        btn3D.click();
+        return isMicroscopeVisible && hasPins && activePin !== null;
+      })()
+    `);
+    record(25, "Station 1: 显微镜真图对照视图切换与细胞微观热点引脚交互", microscopeViewRes === true);
+
+    // -------------------------------------------------------------
+    // Test 26: 叶片横剖面微观解剖图交互图钉与 SEM 电镜气孔 (Station 2)
+    // -------------------------------------------------------------
+    const leafPinsRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-leaf-photo"]');
+        if (tabBtn) tabBtn.click();
+
+        const pinStoma = document.querySelector('.leaf-pin[data-layer="stoma-guard"]');
+        if (!pinStoma) return false;
+        pinStoma.click();
+
+        const layerStoma = document.querySelector('.leaf-layer-card[data-layer="stoma-guard"]');
+        const hasSemImg = document.querySelector('.stoma-sem-img') !== null;
+        return layerStoma && layerStoma.classList.contains('active') && hasSemImg;
+      })()
+    `);
+    record(26, "Station 2: 叶片解剖图热点引脚联动与扫描电镜(SEM)真实气孔对照", leafPinsRes === true);
+
+    // -------------------------------------------------------------
+    // Test 27: 金鱼藻水下放氧实验与动态气泡生成器 (Station 2)
+    // -------------------------------------------------------------
+    const elodeaExpRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-leaf-photo"]');
+        if (tabBtn) tabBtn.click();
+
+        const sunInput = document.getElementById('slider-sunlight');
+        const co2Input = document.getElementById('slider-co2');
+        const waterInput = document.getElementById('slider-water');
+        const bubbleNum = document.getElementById('elodea-bubble-rate-num');
+        const spawner = document.getElementById('elodea-bubble-spawner');
+        if (!sunInput || !bubbleNum || !spawner) return false;
+
+        sunInput.value = '100';
+        co2Input.value = '100';
+        waterInput.value = '100';
+        sunInput.dispatchEvent(new Event('input'));
+
+        const highRate = bubbleNum.textContent.includes('80');
+        const hasBubbles = spawner.querySelectorAll('.beaker-rising-bubble').length > 0;
+        return highRate && hasBubbles;
+      })()
+    `);
+    record(27, "Station 2: 金鱼藻水下放氧实验模拟与试管动态上升氧气泡", elodeaExpRes === true);
+
+    // -------------------------------------------------------------
+    // Test 28: 芹菜吸墨水经典实验组与染色粒子流 (Station 3)
+    // -------------------------------------------------------------
+    const celeryExpRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-transport"]');
+        if (tabBtn) tabBtn.click();
+
+        const btnRed = document.getElementById('btn-dye-red');
+        const btnBlue = document.getElementById('btn-dye-blue');
+        const pipeBox = document.getElementById('transport-pipeline-view');
+        const toast = document.getElementById('celery-obs-toast');
+        if (!btnRed || !btnBlue || !pipeBox || !toast) return false;
+
+        btnRed.click();
+        const isRedDye = pipeBox.classList.contains('red-dye') && toast.innerText.includes('红墨水');
+        btnBlue.click();
+        const isBlueDye = pipeBox.classList.contains('blue-dye') && toast.innerText.includes('蓝墨水');
+        return isRedDye && isBlueDye;
+      })()
+    `);
+    record(28, "Station 3: 芹菜红/蓝墨水吸收实验操作与木质部单向染色流", celeryExpRes === true);
+
+    // -------------------------------------------------------------
+    // Test 29: 花朵大解剖经典图 vs 真实百合解剖实拍切换 (Station 4)
+    // -------------------------------------------------------------
+    const flowerViewToggleRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-flower"]');
+        if (tabBtn) tabBtn.click();
+
+        const btnReal = document.getElementById('btn-flower-real-view');
+        const btnDiag = document.getElementById('btn-flower-diagram-view');
+        const mainImg = document.getElementById('flower-main-display-img');
+        if (!btnReal || !btnDiag || !mainImg) return false;
+
+        btnReal.click();
+        const isRealImg = mainImg.src.includes('flower-dissection-real-photo.jpg');
+        btnDiag.click();
+        const isDiagImg = mainImg.src.includes('flower-dissection-diagram.png');
+        return isRealImg && isDiagImg;
+      })()
+    `);
+    record(29, "Station 4: 花朵结构图与真实百合解剖实拍高清照片即时切换", flowerViewToggleRes === true);
+
+    // -------------------------------------------------------------
     // Test 10: Spelling plant-growth progression (5 阶成长形态)
     // -------------------------------------------------------------
     const growthStagesRes = await cdp.eval(`

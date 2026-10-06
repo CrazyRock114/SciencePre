@@ -1,10 +1,10 @@
 // ==========================================================================
 // SciencePre: Junior Botanist Science Lab (小学生自然科学交互实验室)
 // 包含 4 大主题展厅：
-// 1. 植物细胞 3D 奇幻积木 (Three.js 3D 渲染，支持旋转/缩放/器官点选/液泡膨压实验)
-// 2. 叶片微观横剖面与阳光厨房光合模拟器 (实时光合速率与限制因素发现)
-// 3. 水流直达梯与甜蜜双向快递 (木质部蒸腾拉力 vs 韧皮部源库运输粒子图)
-// 4. 花朵大解剖与小蜜蜂授粉奇遇 (互动解剖 + 四步蜕变绘本)
+// 1. 植物细胞 3D 拟真积木 + 显微镜真图对照 (Three.js 3D 贴图材质 / 显微切片对照 / 液泡膨压实验)
+// 2. 叶片微观横剖面与金鱼藻放氧实验 (真实 Cambridge 解剖图 / SEM 气孔实拍 / 光合速率与限制因素)
+// 3. 水流直达梯与甜蜜双向快递 (木质部 vs 韧皮部 / 芹菜红墨水实验 / 真实茎横切显微图)
+// 4. 花朵大解剖与小蜜蜂授粉奇遇 (真实百合花解剖实拍 / 蜜蜂采蜜 / 幼苗萌发摄影序列)
 // ==========================================================================
 
 import * as THREE from "../lib/three.module.js";
@@ -25,6 +25,7 @@ export class ScienceLab {
     this.cell3D = null;
     this.currentStep = 1;
     this.transportMode = "xylem";
+    this.celeryDyeMode = "water";
     this.photoState = { sunlight: 80, co2: 60, water: 90 };
   }
 
@@ -64,7 +65,6 @@ export class ScienceLab {
   }
 
   bindStationSwitching() {
-    // 默认展示 station-cell-3d
     this.updateStationVisibility();
   }
 
@@ -80,7 +80,7 @@ export class ScienceLab {
 
     // 触发 3D 画布尺寸更新
     if (stationId === "station-cell-3d" && this.cell3D) {
-      setTimeout(() => this.cell3D.onResize(), 50);
+      setTimeout(() => this.cell3D.onResize(), 60);
     }
 
     if (progressTracker && typeof progressTracker.markPoemExplored === "function") {
@@ -95,7 +95,7 @@ export class ScienceLab {
   }
 
   // ========================================================================
-  // 展厅 1: 植物细胞 3D 奇幻积木 (Three.js WebGL)
+  // 展厅 1: 植物细胞 3D 拟真积木 + 显微镜真图对照
   // ========================================================================
   initStation1_Cell3D() {
     const container = document.getElementById("cell-3d-canvas-container");
@@ -124,6 +124,43 @@ export class ScienceLab {
 
     // 默认展示第一个细胞结构（细胞壁）
     this.inspectCellPart(PLANT_CELL_PARTS[0].id);
+
+    // 绑定 3D 拟真模型 vs 显微镜真图对照切换
+    const btnView3D = document.getElementById("btn-view-3d");
+    const btnViewMicroscope = document.getElementById("btn-view-microscope");
+    const canvasContainer = document.getElementById("cell-3d-canvas-container");
+    const microscopeContainer = document.getElementById("cell-microscope-container");
+
+    if (btnView3D && btnViewMicroscope && canvasContainer && microscopeContainer) {
+      btnView3D.addEventListener("click", () => {
+        btnView3D.classList.add("active");
+        btnViewMicroscope.classList.remove("active");
+        canvasContainer.style.display = "block";
+        microscopeContainer.style.display = "none";
+        if (this.cell3D) this.cell3D.onResize();
+        audio.playTone(600, "sine", 0.08);
+      });
+
+      btnViewMicroscope.addEventListener("click", () => {
+        btnViewMicroscope.classList.add("active");
+        btnView3D.classList.remove("active");
+        canvasContainer.style.display = "none";
+        microscopeContainer.style.display = "block";
+        audio.playTone(720, "sine", 0.08);
+        audio.speak("Microscopic comparison view");
+      });
+    }
+
+    // 绑定显微镜图纸热点引脚点击
+    document.querySelectorAll(".microscope-pin").forEach((pin) => {
+      pin.addEventListener("click", () => {
+        const partId = pin.dataset.part;
+        if (partId) {
+          this.inspectCellPart(partId);
+          if (this.cell3D) this.cell3D.focusPart(partId);
+        }
+      });
+    });
 
     // 绑定大液泡浇水实验
     const waterBtn = document.getElementById("btn-vacuole-water");
@@ -179,6 +216,11 @@ export class ScienceLab {
       pill.classList.toggle("active", pill.dataset.part === partId);
     });
 
+    // 高亮激活显微镜引脚
+    document.querySelectorAll(".microscope-pin").forEach((pin) => {
+      pin.classList.toggle("active", pin.dataset.part === partId);
+    });
+
     const infoCard = document.getElementById("cell-part-detail-card");
     if (!infoCard) return;
 
@@ -192,6 +234,12 @@ export class ScienceLab {
       </div>
       <div class="card-part-metaphor">${part.metaphor}</div>
       <p class="card-part-desc">${part.summary}</p>
+      
+      <div class="card-part-microscope-detail">
+        <span class="microscope-sub-badge">🔬 显微镜实拍细节</span>
+        <p>${part.microscopeDetail || "高倍显微镜下，该结构具有鲜明的细胞生物学识别特征！"}</p>
+      </div>
+
       <div class="card-part-fact">${part.kidFact}</div>
       <div class="card-part-qa">
         <strong>❓ ${part.funQuestion}</strong>
@@ -213,6 +261,7 @@ export class ScienceLab {
   // ========================================================================
   initStation2_LeafPhotosynthesis() {
     this.renderLeafLayersList();
+    this.bindLeafPins();
     this.bindPhotosynthesisSimulator();
   }
 
@@ -233,19 +282,36 @@ export class ScienceLab {
         <p class="layer-desc">${layer.desc}</p>
       `;
       item.addEventListener("click", () => {
-        document.querySelectorAll(".leaf-layer-card").forEach((c) => c.classList.remove("active"));
-        item.classList.add("active");
-        this.highlightLeafSvgLayer(layer.id);
-        audio.speak(layer.nameEn);
+        this.selectLeafLayer(layer.id);
       });
       container.appendChild(item);
     });
   }
 
-  highlightLeafSvgLayer(layerId) {
-    document.querySelectorAll(".svg-leaf-slice-layer").forEach((el) => {
-      el.classList.toggle("focused-layer", el.dataset.layer === layerId);
+  bindLeafPins() {
+    document.querySelectorAll(".leaf-pin").forEach((pin) => {
+      pin.addEventListener("click", () => {
+        const layerId = pin.dataset.layer;
+        if (layerId) {
+          this.selectLeafLayer(layerId);
+        }
+      });
     });
+  }
+
+  selectLeafLayer(layerId) {
+    document.querySelectorAll(".leaf-layer-card").forEach((c) => {
+      c.classList.toggle("active", c.dataset.layer === layerId);
+    });
+    document.querySelectorAll(".leaf-pin").forEach((p) => {
+      p.classList.toggle("active", p.dataset.layer === layerId);
+    });
+
+    const layer = LEAF_LAYERS.find((l) => l.id === layerId);
+    if (layer) {
+      audio.speak(layer.nameEn);
+      audio.playTone(700, "triangle", 0.08);
+    }
   }
 
   bindPhotosynthesisSimulator() {
@@ -279,16 +345,37 @@ export class ScienceLab {
   calcPhotosynthesisRate() {
     const { sunlight, co2, water } = this.photoState;
 
-    // 科学核心：限制因素！木桶效应：取决于供给最短缺的原料
+    // 科学核心：限制因素木桶效应，取决于供给最短缺的原料
     const rate = Math.min(sunlight, co2, water);
 
     const rateMeter = document.getElementById("photosynthesis-rate-meter");
     const rateNumber = document.getElementById("photosynthesis-rate-num");
     const bubblesContainer = document.getElementById("oxygen-bubbles-cloud");
     const toastBox = document.getElementById("limiting-factor-toast");
+    const elodeaRateNum = document.getElementById("elodea-bubble-rate-num");
+    const elodeaSpawner = document.getElementById("elodea-bubble-spawner");
 
     if (rateMeter) rateMeter.style.width = `${rate}%`;
     if (rateNumber) rateNumber.textContent = `${rate}%`;
+
+    // 金鱼藻放氧实验冒泡速率换算 (0~80 泡/分钟)
+    const bubbleRate = Math.round(rate * 0.8);
+    if (elodeaRateNum) {
+      elodeaRateNum.textContent = `${bubbleRate} 泡/分钟`;
+    }
+
+    // 金鱼藻试管中生成动态微型气泡
+    if (elodeaSpawner) {
+      const elodeaBubbleCount = Math.floor(bubbleRate / 12);
+      let elodeaBubblesHtml = "";
+      for (let i = 0; i < elodeaBubbleCount; i++) {
+        const left = 45 + (Math.random() * 10 - 5);
+        const delay = Math.random() * 1.8;
+        const dur = Math.max(1.0, 2.5 - rate * 0.015);
+        elodeaBubblesHtml += `<span class="beaker-rising-bubble" style="left:${left}%; animation-delay:${delay}s; animation-duration:${dur}s;"></span>`;
+      }
+      elodeaSpawner.innerHTML = elodeaBubblesHtml;
+    }
 
     // 产生气泡密度与糖块动画
     if (bubblesContainer) {
@@ -327,7 +414,7 @@ export class ScienceLab {
   }
 
   // ========================================================================
-  // 展厅 3: 水流电梯与双向甜蜜快递 (木质部 vs 韧皮部)
+  // 展厅 3: 水流电梯与双向甜蜜快递 (木质部 vs 韧皮部 + 芹菜吸墨水实验)
   // ========================================================================
   initStation3_Transport() {
     const btnXylem = document.getElementById("btn-mode-xylem");
@@ -340,6 +427,17 @@ export class ScienceLab {
       btnPhloem.addEventListener("click", () => {
         this.setTransportMode("phloem");
       });
+    }
+
+    // 芹菜吸墨水互动实验组切换
+    const btnDyeWater = document.getElementById("btn-dye-water");
+    const btnDyeRed = document.getElementById("btn-dye-red");
+    const btnDyeBlue = document.getElementById("btn-dye-blue");
+
+    if (btnDyeWater && btnDyeRed && btnDyeBlue) {
+      btnDyeWater.addEventListener("click", () => this.setCeleryDye("water"));
+      btnDyeRed.addEventListener("click", () => this.setCeleryDye("red"));
+      btnDyeBlue.addEventListener("click", () => this.setCeleryDye("blue"));
     }
 
     this.setTransportMode("xylem");
@@ -387,7 +485,40 @@ export class ScienceLab {
     // 管道视觉粒子流向切换
     const pipelineView = document.getElementById("transport-pipeline-view");
     if (pipelineView) {
-      pipelineView.className = `transport-pipeline-box ${mode}-mode`;
+      pipelineView.className = `transport-pipeline-box ${mode}-mode ${this.celeryDyeMode}-dye`;
+    }
+  }
+
+  setCeleryDye(dye) {
+    this.celeryDyeMode = dye;
+    const btnWater = document.getElementById("btn-dye-water");
+    const btnRed = document.getElementById("btn-dye-red");
+    const btnBlue = document.getElementById("btn-dye-blue");
+    const toast = document.getElementById("celery-obs-toast");
+    const pipelineView = document.getElementById("transport-pipeline-view");
+
+    if (btnWater) btnWater.classList.toggle("active", dye === "water");
+    if (btnRed) btnRed.classList.toggle("active", dye === "red");
+    if (btnBlue) btnBlue.classList.toggle("active", dye === "blue");
+
+    if (pipelineView) {
+      pipelineView.classList.remove("water-dye", "red-dye", "blue-dye");
+      pipelineView.classList.add(`${dye}-dye`);
+    }
+
+    if (toast) {
+      if (dye === "water") {
+        toast.innerHTML = `💧 <strong>清水对照：</strong> 水分在木质部空心导管中静静向上攀爬，滋润全身细胞。`;
+        audio.playTone(550, "sine", 0.08);
+      } else if (dye === "red") {
+        toast.innerHTML = `🔴 <strong>红墨水浸泡：</strong> 红色食用色素沿着木质部导管一路飞驰向上，切开芹菜茎截面，那一圈小圆点（木质部）被染成鲜艳红斑，叶脉也变红了！证明水分子只在木质部中单向向上飙升！`;
+        audio.playTone(720, "triangle", 0.1);
+        audio.speak("Red ink stains the xylem vessels only!");
+      } else {
+        toast.innerHTML = `🔵 <strong>蓝墨水浸泡：</strong> 蓝色色素随着叶片强大的蒸腾拉力快速直达叶缘，蓝色脉络清晰可见！`;
+        audio.playTone(660, "triangle", 0.1);
+        audio.speak("Water moves up to every leaf vein!");
+      }
     }
   }
 
@@ -396,7 +527,34 @@ export class ScienceLab {
   // ========================================================================
   initStation4_Flower() {
     this.renderFlowerPartsList();
+    this.bindFlowerViewSwitcher();
     this.bindPollinationStoryCarousel();
+  }
+
+  bindFlowerViewSwitcher() {
+    const btnDiag = document.getElementById("btn-flower-diagram-view");
+    const btnReal = document.getElementById("btn-flower-real-view");
+    const mainImg = document.getElementById("flower-main-display-img");
+    const caption = document.getElementById("flower-figure-caption");
+
+    if (btnDiag && btnReal && mainImg && caption) {
+      btnDiag.addEventListener("click", () => {
+        btnDiag.classList.add("active");
+        btnReal.classList.remove("active");
+        mainImg.src = "/assets/images/science/flower-dissection-diagram.png";
+        caption.textContent = "经典模式示意图：雌蕊居中（柱头+花柱+子房+胚珠），雄蕊环绕（花药+花丝），花瓣引客，花萼护蕾。";
+        audio.playTone(620, "sine", 0.08);
+      });
+
+      btnReal.addEventListener("click", () => {
+        btnReal.classList.add("active");
+        btnDiag.classList.remove("active");
+        mainImg.src = "/assets/images/science/flower-dissection-real-photo.jpg";
+        caption.textContent = "真实百合花解剖实拍：粉嫩花瓣已被整齐展开，清晰展现出中央挺拔的雌蕊（柱头与花柱），四周环绕着顶着棕红花粉的花药与花丝！";
+        audio.playTone(740, "sine", 0.08);
+        audio.speak("Real flower dissection photograph");
+      });
+    }
   }
 
   renderFlowerPartsList() {
@@ -435,8 +593,14 @@ export class ScienceLab {
 
       if (storyBox) {
         storyBox.innerHTML = `
-          <div class="story-step-badge">第 ${stepData.step} 幕 · ${stepData.enTitle}</div>
+          <div class="story-step-badge">${stepData.badge || "第 " + stepData.step + " 步"} · ${stepData.enTitle}</div>
           <h4>${stepData.title}</h4>
+          
+          <div class="story-step-visual">
+            <img src="${stepData.image}" alt="${stepData.title}" class="story-visual-img" />
+            <span class="story-visual-caption">${stepData.imageCaption || ""}</span>
+          </div>
+
           <p class="story-step-text">${stepData.text}</p>
         `;
       }
@@ -481,7 +645,7 @@ export class ScienceLab {
 }
 
 // ==========================================================================
-// Three.js 3D 植物细胞引擎 (独立自给自足轻量封装)
+// Three.js 3D 植物细胞引擎 (含拟真生物贴图材质与微观细节)
 // ==========================================================================
 class Cell3DScene {
   constructor(container, onPartSelect) {
@@ -495,7 +659,6 @@ class Cell3DScene {
 
     this.isDragging = false;
     this.prevPointerPos = { x: 0, y: 0 };
-    this.rotationVel = { x: 0, y: 0.005 };
     this.autoRotate = true;
 
     this.partsMeshes = new Map();
@@ -509,6 +672,146 @@ class Cell3DScene {
     this.setupScene();
   }
 
+  // ------------------------------------------------------------------------
+  // 生成高拟真细胞壁纤维素微纤丝贴图 (Cellulose Microfibril Texture)
+  // ------------------------------------------------------------------------
+  createCellWallTexture() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext("2d");
+
+    // 底色：植物细胞深草绿色
+    ctx.fillStyle = "#15803d";
+    ctx.fillRect(0, 0, 512, 512);
+
+    // 经纬向纤维素微纤丝织网 (Cellulose woven lattice)
+    ctx.strokeStyle = "rgba(74, 222, 128, 0.45)";
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 512; i += 24) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, 512);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(512, i);
+      ctx.stroke();
+    }
+
+    // 45 度对角加强纤维
+    ctx.strokeStyle = "rgba(187, 247, 208, 0.25)";
+    ctx.lineWidth = 2;
+    for (let i = -512; i < 1024; i += 36) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i + 512, 512);
+      ctx.stroke();
+    }
+
+    // 细胞砖缝边界立体浮雕
+    ctx.strokeStyle = "rgba(20, 83, 45, 0.7)";
+    ctx.lineWidth = 6;
+    ctx.strokeRect(4, 4, 504, 504);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set(2, 2);
+    return texture;
+  }
+
+  // ------------------------------------------------------------------------
+  // 生成高拟真叶绿体基粒叠层贴图 (Chloroplast Thylakoid Grana Discs)
+  // ------------------------------------------------------------------------
+  createChloroplastTexture() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+
+    // 叶绿体基质暗翠绿
+    ctx.fillStyle = "#14532d";
+    ctx.fillRect(0, 0, 256, 256);
+
+    // 叠片状基粒 (Grana Stacks)
+    for (let i = 0; i < 16; i++) {
+      const cx = 35 + (i % 4) * 60 + (i * 3) % 10;
+      const cy = 35 + Math.floor(i / 4) * 60 + (i * 5) % 10;
+      const r = 20;
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.fillStyle = "#16a34a";
+      ctx.fill();
+      ctx.strokeStyle = "#4ade80";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // 内层囊状膜
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.55, 0, Math.PI * 2);
+      ctx.fillStyle = "#86efac";
+      ctx.fill();
+    }
+
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  // ------------------------------------------------------------------------
+  // 生成液泡水波与反光贴图 (Vacuole Water Caustics Texture)
+  // ------------------------------------------------------------------------
+  createVacuoleTexture() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+
+    const grad = ctx.createRadialGradient(128, 128, 15, 128, 128, 128);
+    grad.addColorStop(0, "#e0f2fe");
+    grad.addColorStop(0.4, "#38bdf8");
+    grad.addColorStop(1, "#0284c7");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 256, 256);
+
+    // 水波纹柔光
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
+    ctx.lineWidth = 3;
+    for (let i = 0; i < 8; i++) {
+      ctx.beginPath();
+      ctx.arc(40 + i * 25, 50 + (i % 3) * 45, 28 + (i * 3), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    return new THREE.CanvasTexture(canvas);
+  }
+
+  // ------------------------------------------------------------------------
+  // 生成细胞核孔与染色质贴图 (Nucleus Pores & Chromatin Texture)
+  // ------------------------------------------------------------------------
+  createNucleusTexture() {
+    const canvas = document.createElement("canvas");
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = "#7e22ce";
+    ctx.fillRect(0, 0, 256, 256);
+
+    // 核孔小斑点 (Nuclear Pores)
+    ctx.fillStyle = "#c084fc";
+    for (let i = 0; i < 50; i++) {
+      const px = ((i * 37) % 240) + 8;
+      const py = ((i * 53) % 240) + 8;
+      ctx.beginPath();
+      ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    return new THREE.CanvasTexture(canvas);
+  }
+
   setupScene() {
     const width = this.container.clientWidth || 600;
     const height = this.container.clientHeight || 450;
@@ -520,21 +823,21 @@ class Cell3DScene {
       this.container.appendChild(this.renderer.domElement);
 
       this.scene = new THREE.Scene();
-      this.scene.background = new THREE.Color(0x0f172a); // 深空蓝，衬托鲜艳微观世界
+      this.scene.background = new THREE.Color(0x0f172a); // 深空蓝，衬托微观世界
 
       this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
       this.camera.position.set(0, 3, 9);
       this.camera.lookAt(0, 0, 0);
 
       // 灯光体系：双向冷暖补光
-      const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.25);
       this.scene.add(ambientLight);
 
       const dirLight1 = new THREE.DirectionalLight(0xffffff, 1.5);
       dirLight1.position.set(5, 8, 5);
       this.scene.add(dirLight1);
 
-      const dirLight2 = new THREE.DirectionalLight(0x38bdf8, 0.8);
+      const dirLight2 = new THREE.DirectionalLight(0x38bdf8, 0.85);
       dirLight2.position.set(-5, -3, -5);
       this.scene.add(dirLight2);
 
@@ -607,7 +910,7 @@ class Cell3DScene {
     ctx.lineWidth = 3.5;
     ctx.strokeRect(cx - 165, cy - 115, 330, 230);
 
-    // 3. 中央大液泡 (随 vacuoleTurgorScale 缩放)
+    // 3. 中央大液泡
     const vr = 65 * (this.vacuoleTurgorScale || 1.0);
     ctx.beginPath();
     ctx.arc(cx - 35, cy, Math.max(vr, 25), 0, Math.PI * 2);
@@ -651,16 +954,22 @@ class Cell3DScene {
     ctx.fillText("🌱 植物细胞微观结构图 (点击各器官即可点读查看)", cx, 30);
   }
 
-
   buildCellModel() {
-    // 1. 细胞壁 (Cell Wall)：六边形厚实城堡，带剖面开窗展示内部
+    // 生成拟真生物材质贴图
+    const cellWallTex = this.createCellWallTexture();
+    const chloroTex = this.createChloroplastTexture();
+    const vacuoleTex = this.createVacuoleTexture();
+    const nucleusTex = this.createNucleusTexture();
+
+    // 1. 细胞壁 (Cell Wall)：贴图加持的纤维素城堡外壳
     const wallGeo = new THREE.BoxGeometry(4.6, 3.4, 3.6, 4, 4, 4);
     const wallMat = new THREE.MeshStandardMaterial({
-      color: 0x16a34a,
-      roughness: 0.4,
-      metalness: 0.1,
+      color: 0x22c55e,
+      map: cellWallTex,
+      roughness: 0.45,
+      metalness: 0.05,
       transparent: true,
-      opacity: 0.35,
+      opacity: 0.42,
       side: THREE.DoubleSide
     });
     const cellWallMesh = new THREE.Mesh(wallGeo, wallMat);
@@ -668,9 +977,9 @@ class Cell3DScene {
     this.cellGroup.add(cellWallMesh);
     this.partsMeshes.set("cell-wall", cellWallMesh);
 
-    // 细胞壁立体边缘外框线 (强调多面体坚固性)
+    // 细胞壁立体边缘金色外框线 (强调多面体坚固性)
     const edges = new THREE.EdgesGeometry(wallGeo);
-    const lineMat = new THREE.LineBasicMaterial({ color: 0x4ade80, linewidth: 2 });
+    const lineMat = new THREE.LineBasicMaterial({ color: 0x86efac, linewidth: 2 });
     const wireframe = new THREE.LineSegments(edges, lineMat);
     this.cellGroup.add(wireframe);
 
@@ -688,16 +997,17 @@ class Cell3DScene {
     this.cellGroup.add(membraneMesh);
     this.partsMeshes.set("membrane", membraneMesh);
 
-    // 3. 中央大液泡 (Large Vacuole)：清澈蔚蓝水球
+    // 3. 中央大液泡 (Large Vacuole)：水波纹流光大水球
     const vacuoleGeo = new THREE.SphereGeometry(1.25, 32, 24);
     const vacuoleMat = new THREE.MeshPhysicalMaterial({
       color: 0x38bdf8,
+      map: vacuoleTex,
       emissive: 0x0284c7,
-      emissiveIntensity: 0.25,
-      roughness: 0.1,
-      transmission: 0.6,
+      emissiveIntensity: 0.2,
+      roughness: 0.15,
+      transmission: 0.65,
       transparent: true,
-      opacity: 0.75
+      opacity: 0.8
     });
     this.vacuoleMesh = new THREE.Mesh(vacuoleGeo, vacuoleMat);
     this.vacuoleMesh.position.set(-0.35, -0.1, 0.1);
@@ -706,13 +1016,14 @@ class Cell3DScene {
     this.cellGroup.add(this.vacuoleMesh);
     this.partsMeshes.set("vacuole", this.vacuoleMesh);
 
-    // 4. 细胞核 (Nucleus)：高贵深紫色球体 + 核心核仁
+    // 4. 细胞核 (Nucleus)：核孔贴图 + 深紫色球体 + 核心核仁
     const nucleusGeo = new THREE.SphereGeometry(0.72, 24, 20);
     const nucleusMat = new THREE.MeshStandardMaterial({
       color: 0xa855f7,
+      map: nucleusTex,
       emissive: 0x7e22ce,
       emissiveIntensity: 0.35,
-      roughness: 0.3
+      roughness: 0.35
     });
     const nucleusMesh = new THREE.Mesh(nucleusGeo, nucleusMat);
     nucleusMesh.position.set(1.4, 0.45, -0.3);
@@ -720,18 +1031,19 @@ class Cell3DScene {
     this.cellGroup.add(nucleusMesh);
     this.partsMeshes.set("nucleus", nucleusMesh);
 
-    // 核孔外圈小环
-    const nucleolusGeo = new THREE.SphereGeometry(0.3, 16, 16);
+    // 核仁红宝石小球
+    const nucleolusGeo = new THREE.SphereGeometry(0.28, 16, 16);
     const nucleolusMat = new THREE.MeshBasicMaterial({ color: 0xf43f5e });
     const nucleolus = new THREE.Mesh(nucleolusGeo, nucleolusMat);
     nucleusMesh.add(nucleolus);
 
-    // 5. 叶绿体 (Chloroplasts)：散布在细胞质各处的翡翠绿小飞碟 (5个)
+    // 5. 叶绿体 (Chloroplasts)：表面带有囊状基粒叠层贴图的翡翠绿小飞碟 (5个)
     const chloroGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.22, 16);
     const chloroMat = new THREE.MeshStandardMaterial({
       color: 0x15803d,
+      map: chloroTex,
       emissive: 0x22c55e,
-      emissiveIntensity: 0.4,
+      emissiveIntensity: 0.38,
       roughness: 0.3
     });
 
@@ -804,7 +1116,6 @@ class Cell3DScene {
     window.addEventListener("pointerup", (e) => {
       if (this.isDragging) {
         this.isDragging = false;
-        // 如果移动距离很小，视为点击射线命中检测
         this.checkRaycastClick(e);
       }
     });
@@ -903,4 +1214,3 @@ class Cell3DScene {
     }
   }
 }
-

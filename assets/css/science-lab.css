@@ -1058,7 +1058,591 @@
   color: #ffffff;
 }
 
-/* 响应式断点 */
+/* ==========================================================================
+   新强化功能样式：真实微观切片、解剖热点、实验操作台与图文对照
+   ========================================================================== */
+
+/* -------------------------------------------------------------------------
+   展厅 1 强化：3D vs 显微镜模式切换与微观对照视图
+   ------------------------------------------------------------------------- */
+.cell-view-toggle {
+  display: flex;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  padding: 4px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.cell-view-btn {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cell-view-btn:hover {
+  color: #ffffff;
+}
+
+.cell-view-btn.active {
+  background: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+}
+
+.cell-microscope-viewport {
+  width: 100%;
+  min-height: 480px;
+  background: #0b1120;
+  padding: 1.2rem;
+  box-sizing: border-box;
+}
+
+.microscope-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  height: 100%;
+}
+
+.microscope-diagram-card, .microscope-real-card {
+  background: #1e293b;
+  border: 1.5px solid #334155;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.microscope-card-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: rgba(34, 197, 94, 0.15);
+  color: #86efac;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 50px;
+  border: 1px solid rgba(134, 239, 172, 0.25);
+  margin-bottom: 0.75rem;
+}
+
+.microscope-img-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #090d16;
+  text-align: center;
+}
+
+.microscope-cell-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  object-fit: contain;
+}
+
+/* 显微镜热点图钉 */
+.microscope-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.9);
+  border: 2px solid #22c55e;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+  color: #ffffff;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 5;
+}
+
+.microscope-pin:hover, .microscope-pin.active {
+  transform: translate(-50%, -50%) scale(1.25);
+  background: #22c55e;
+  border-color: #ffffff;
+  box-shadow: 0 0 18px rgba(34, 197, 94, 0.9);
+}
+
+.microscope-caption {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: 0.6rem 0 0 0;
+  text-align: center;
+}
+
+.microscope-real-img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #334155;
+}
+
+.microscope-real-info {
+  margin-top: 0.75rem;
+}
+
+.microscope-real-info h5 {
+  font-size: 0.95rem;
+  color: #38bdf8;
+  margin: 0 0 0.4rem 0;
+}
+
+.microscope-real-info p {
+  font-size: 0.82rem;
+  color: #cbd5e1;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.card-part-microscope-detail {
+  background: #f0fdf4;
+  border-left: 4px solid #16a34a;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.microscope-sub-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #15803d;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.card-part-microscope-detail p {
+  font-size: 0.85rem;
+  color: #14532d;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   展厅 2 强化：叶片解剖热点、SEM 扫描电镜实拍与金鱼藻放氧实验
+   ------------------------------------------------------------------------- */
+.leaf-anatomy-interactive {
+  position: relative;
+  margin-bottom: 1.2rem;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1.5px solid #bbf7d0;
+  background: #f0fdf4;
+}
+
+.leaf-img-container {
+  position: relative;
+  width: 100%;
+}
+
+.leaf-anatomy-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.leaf-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #15803d;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  font-size: 0.85rem;
+  font-weight: 900;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 4;
+}
+
+.leaf-pin:hover, .leaf-pin.active {
+  transform: translate(-50%, -50%) scale(1.25);
+  background: #eab308;
+  color: #713f12;
+  border-color: #ffffff;
+  box-shadow: 0 0 14px rgba(234, 179, 8, 0.8);
+}
+
+.stoma-sem-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 0.9rem;
+  margin-bottom: 1.2rem;
+}
+
+.stoma-sem-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #cbd5e1;
+  flex-shrink: 0;
+}
+
+.stoma-sem-info h5 {
+  font-size: 0.9rem;
+  color: #1e293b;
+  margin: 0 0 0.35rem 0;
+}
+
+.stoma-sem-info p {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* 金鱼藻放氧实验交互面板 */
+.elodea-exp-panel {
+  display: flex;
+  gap: 1rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+  border: 1.5px solid #a7f3d0;
+  border-radius: 16px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  align-items: center;
+}
+
+.elodea-beaker-box {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #cbd5e1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.elodea-diagram-img {
+  width: 95%;
+  height: 95%;
+  object-fit: contain;
+}
+
+.elodea-bubble-spawner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.beaker-rising-bubble {
+  position: absolute;
+  bottom: 20px;
+  width: 7px;
+  height: 7px;
+  background: rgba(56, 189, 248, 0.85);
+  border: 1px solid #0284c7;
+  border-radius: 50%;
+  animation: elodeaRise 2s infinite ease-in;
+}
+
+@keyframes elodeaRise {
+  0% { transform: translateY(0) scale(0.6); opacity: 0; }
+  20% { opacity: 0.9; }
+  80% { opacity: 0.9; }
+  100% { transform: translateY(-70px) scale(1.3); opacity: 0; }
+}
+
+.elodea-data-card {
+  flex: 1;
+}
+
+.elodea-exp-badge {
+  display: inline-block;
+  background: #10b981;
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+  margin-bottom: 0.35rem;
+}
+
+.elodea-counter-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+}
+
+.elodea-counter-row strong {
+  font-size: 1.15rem;
+  color: #0284c7;
+}
+
+.elodea-exp-desc {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   展厅 3 强化：芹菜吸墨水实验台、色素粒子与双栏对照图
+   ------------------------------------------------------------------------- */
+.celery-lab-box {
+  margin-top: 1rem;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.celery-lab-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.celery-lab-header h5 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.celery-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.celery-btn {
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 50px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.celery-btn:hover {
+  background: #e2e8f0;
+}
+
+.celery-btn.active#btn-dye-water {
+  background: #0284c7;
+  border-color: #0284c7;
+  color: #ffffff;
+}
+
+.celery-btn.active#btn-dye-red {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #ffffff;
+}
+
+.celery-btn.active#btn-dye-blue {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+.celery-obs-toast {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.82rem;
+  color: #334155;
+  line-height: 1.45;
+  border-left: 3.5px solid #0284c7;
+}
+
+/* 芹菜色素流体效果 */
+.transport-pipeline-box.red-dye .pipe-particle-stream::before {
+  content: "🔴\A🔴\A🔴\A🔴\A🔴";
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.8));
+}
+
+.transport-pipeline-box.blue-dye .pipe-particle-stream::before {
+  content: "🔵\A🔵\A🔵\A🔵\A🔵";
+  filter: drop-shadow(0 0 6px rgba(59, 130, 246, 0.8));
+}
+
+.transport-figures-duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.figure-duo-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.figure-duo-badge {
+  display: inline-block;
+  align-self: flex-start;
+  background: #f0fdf4;
+  color: #15803d;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  border: 1px solid #bbf7d0;
+  margin-bottom: 0.6rem;
+}
+
+.figure-duo-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 0.6rem;
+}
+
+.figure-duo-caption {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* -------------------------------------------------------------------------
+   展厅 4 强化：花朵解剖图 vs 百合实拍对照与故事书步骤配图
+   ------------------------------------------------------------------------- */
+.flower-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.flower-box-header h4 {
+  margin: 0;
+}
+
+.flower-view-tabs {
+  display: flex;
+  gap: 0.4rem;
+  background: #fdf2f8;
+  padding: 3px;
+  border-radius: 50px;
+  border: 1px solid #fbcfe8;
+}
+
+.flower-view-tab-btn {
+  background: transparent;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #9d174d;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.flower-view-tab-btn:hover {
+  color: #831843;
+}
+
+.flower-view-tab-btn.active {
+  background: #db2777;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(219, 39, 119, 0.3);
+}
+
+.flower-figure-display-box {
+  background: #fff1f2;
+  border: 1.5px solid #fecdd3;
+  border-radius: 16px;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+.flower-current-img {
+  width: 100%;
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto 0.6rem auto;
+}
+
+.flower-figure-caption {
+  font-size: 0.8rem;
+  color: #831843;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.story-step-visual {
+  background: #ffffff;
+  border: 1px solid #fecdd3;
+  border-radius: 12px;
+  padding: 0.6rem;
+  margin: 0.8rem 0;
+  text-align: center;
+}
+
+.story-visual-img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: contain;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto 0.4rem auto;
+}
+
+.story-visual-caption {
+  font-size: 0.76rem;
+  color: #9d174d;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   响应式断点 (Mobile & Narrow Viewport)
+   ========================================================================== */
 @media (max-width: 900px) {
   .station-tabs-nav {
     grid-template-columns: repeat(2, 1fr);
@@ -1066,10 +1650,16 @@
   .cell-3d-layout {
     grid-template-columns: 1fr;
   }
+  .microscope-split-grid {
+    grid-template-columns: 1fr;
+  }
   .leaf-station-grid {
     grid-template-columns: 1fr;
   }
   .transport-layout-grid {
+    grid-template-columns: 1fr;
+  }
+  .transport-figures-duo {
     grid-template-columns: 1fr;
   }
   .flower-station-layout {
@@ -1083,6 +1673,23 @@
   }
   .science-lab-section {
     padding: 1.5rem 1rem;
+  }
+  .cell-3d-overlay-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .cell-view-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+  .stoma-sem-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .elodea-exp-panel {
+    flex-direction: column;
+    text-align: center;
   }
   .transport-toggle-row {
     flex-direction: column;
