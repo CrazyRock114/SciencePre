@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Theme 01: Plants 🌱 SciencePre 小学生自然科学英语探索营</title>
+  <meta name="description" content="SciencePre Theme 01: Plants 基于经典植物英文诗，生动形象探索根、茎、叶、花、种子，音节双速发音、互动解剖与游戏闯关！">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/plants.css">
+</head>
+<body>
+
+  <!-- 彩虹装饰线 -->
+  <div class="rainbow-bar"></div>
+
+  <!-- 顶部导航条 -->
+  <header>
+    <div class="nav-container">
+      <a href="/" class="logo-area">
+        <div class="logo-badge">🌱</div>
+        <div class="logo-text">
+          <h1>SciencePre <span class="badge-sub">Theme 01</span></h1>
+          <p>Plants: Nature's Green Magic · 植物与英文诗专题</p>
+        </div>
+      </a>
+
+      <!-- 快速切换标签 -->
+      <nav class="nav-tabs">
+        <a href="/" style="background:#ecfdf5; color:#047857;">🏠 返回主题中心</a>
+        <a href="#poem-hero">📖 读诗探险</a>
+        <a href="#stations">🔬 科学四维站</a>
+        <a href="#science-vs-poetry">💡 诗歌vs科学</a>
+        <a href="#vocab">🔤 单词魔法库</a>
+        <a href="#games">🎮 趣味游戏馆</a>
+        <a href="#cert-section">🏆 荣誉证书</a>
+      </nav>
+
+      <!-- 工具控制按钮 -->
+      <div class="nav-tools">
+        <button class="pill-btn" id="tts-speed-btn" title="切换语音朗读语速">
+          🐇 常速 1.0x
+        </button>
+        <button class="pill-btn" id="lang-toggle-btn" title="显示/隐藏中文诗意翻译">
+          🇨🇳 中英双语
+        </button>
+        <button class="pill-btn active" id="sound-btn" title="声音与音效总开关">
+          🔊 声音已开启
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 顶部横幅：主题导航与进阶互通 -->
+    <div class="announcement-banner">
+      <div class="announcement-text" style="flex:1;">
+        <span style="font-size:1.4rem;">🌱</span>
+        <div>
+          <strong>SciencePre Theme 01: Plants</strong> · 正在学习经典自然启蒙英文诗！
+          完成下方探索与游戏可解锁专属小学者荣誉证书！
+        </div>
+      </div>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
+        <a href="/" class="portal-link" style="background:#f0fdf4;">🏠 浏览所有主题 (Theme Hub)</a>
+        <a href="https://sky.igcse.xyz" target="_blank" class="portal-link">🚀 切换到高年级 IGCSE 版 →</a>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         HERO 区：左侧诗歌剧场 + 右侧植物活体探险画布 (双向联动)
+         ==================================================================== -->
+    <div class="hero-stage" id="poem-hero">
+
+      <!-- 左侧：经典英文诗伴读剧场 -->
+      <div class="poem-theater-card">
+        <div class="poem-header">
+          <div class="poem-title-box">
+            <h2>Plants · 植物的秘密</h2>
+            <p>点击任一句朗读 · 实时联动右侧植物器官共鸣</p>
+          </div>
+          <div class="poem-actions">
+            <button class="play-all-btn" id="play-poem-btn">
+              ▶ 全诗朗诵
+            </button>
+          </div>
+        </div>
+
+        <!-- 诗句列表 (JS 渲染) -->
+        <div class="poem-lines" id="poem-lines-container"></div>
+
+        <div class="poem-footer-hint">
+          💡 <strong>学习支架</strong>：点击黄色单词徽章可直接呼出词汇卡片与音节发音！
+        </div>
+      </div>
+
+      <!-- 右侧：活体植物解剖探险画布 (SVG 动态模型) -->
+      <div class="plant-canvas-card">
+        <!-- 天空背景元素 -->
+        <div class="sky-elements">
+          <div class="sun-icon" title="太阳：光能驱动源泉">☀️</div>
+          <div class="cloud-icon" title="白云与雨露">☁️</div>
+        </div>
+
+        <div class="ground-label">🌱 地表 Ground Level</div>
+
+        <!-- 矢量植物主体 -->
+        <div class="plant-svg-wrapper">
+          <svg viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="活体植物解剖交互插图">
+            <defs>
+              <linearGradient id="stemGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#15803d" />
+                <stop offset="50%" stop-color="#4ade80" />
+                <stop offset="100%" stop-color="#15803d" />
+              </linearGradient>
+              <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#22c55e" />
+                <stop offset="100%" stop-color="#166534" />
+              </linearGradient>
+            </defs>
+
+            <!-- 地下部分：泥土根系 ROOTS -->
+            <g class="hotspot" id="svg-roots">
+              <path d="M160 320 Q160 370 160 430" stroke="#78350f" stroke-width="8" stroke-linecap="round" fill="none" />
+              <path d="M160 335 Q130 355 105 385 Q90 405 75 425" stroke="#92400e" stroke-width="4.5" stroke-linecap="round" fill="none" />
+              <path d="M160 345 Q190 365 215 390 Q235 415 245 435" stroke="#92400e" stroke-width="4.5" stroke-linecap="round" fill="none" />
+              <path d="M160 370 Q140 395 125 425" stroke="#b45309" stroke-width="3" stroke-linecap="round" fill="none" />
+              <path d="M160 380 Q175 405 195 430" stroke="#b45309" stroke-width="3" stroke-linecap="round" fill="none" />
+              <!-- 根毛细支 (微观 Root Hairs 象征) -->
+              <path d="M105 385 Q85 390 70 385" stroke="#d97706" stroke-width="2" stroke-linecap="round" fill="none" />
+              <path d="M215 390 Q235 395 250 388" stroke="#d97706" stroke-width="2" stroke-linecap="round" fill="none" />
+              <circle cx="110" cy="405" r="4" fill="#38bdf8" />
+              <circle cx="210" cy="415" r="4" fill="#38bdf8" />
+              <text x="160" y="450" text-anchor="middle" font-size="12" font-weight="900" fill="#fef3c7">ROOTS 根系</text>
+            </g>
+
+            <!-- 地上部分：挺拔茎干 STEM (导管向上输水) -->
+            <g class="hotspot" id="svg-stem">
+              <rect x="153" y="110" width="14" height="210" rx="7" fill="url(#stemGrad)" />
+              <line x1="160" y1="315" x2="160" y2="120" stroke="#bae6fd" stroke-width="3" stroke-dasharray="6,4" />
+              <text x="180" y="225" font-size="12" font-weight="900" fill="#065f46">STEM 茎</text>
+            </g>
+
+            <!-- 绿叶 LEAVES (叶绿体光合作用) -->
+            <g class="hotspot" id="svg-leaves">
+              <path d="M153 230 C90 230 60 180 80 150 C120 150 150 190 155 225 Z" fill="url(#leafGrad)" stroke="#14532d" stroke-width="2" />
+              <path d="M153 230 Q110 190 80 150" stroke="#86efac" stroke-width="2" fill="none" />
+              <path d="M167 180 C230 180 260 130 240 100 C200 100 170 140 165 175 Z" fill="url(#leafGrad)" stroke="#14532d" stroke-width="2" />
+              <path d="M167 180 Q210 140 240 100" stroke="#86efac" stroke-width="2" fill="none" />
+              <text x="65" y="140" font-size="12" font-weight="900" fill="#14532d">LEAVES 叶片</text>
+            </g>
+
+            <!-- 顶端美丽大花朵 FLOWERS & 种子 SEEDS -->
+            <g class="hotspot" id="svg-flowers">
+              <path d="M160 100 C145 50 175 50 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <path d="M160 100 C205 65 220 90 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <path d="M160 100 C210 135 185 155 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <path d="M160 100 C110 135 135 155 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <path d="M160 100 C100 70 120 45 160 100" stroke="#db2777" stroke-width="2" fill="#f472b6" />
+              <circle cx="160" cy="100" r="26" fill="#fbbf24" stroke="#d97706" stroke-width="3" />
+              <text x="160" y="35" text-anchor="middle" font-size="12" font-weight="900" fill="#9d174d">FLOWERS 花朵</text>
+            </g>
+
+            <!-- 深藏受保护的种子 Seeds -->
+            <g class="hotspot" id="svg-seeds">
+              <circle cx="152" cy="94" r="3.5" fill="#78350f" />
+              <circle cx="168" cy="94" r="3.5" fill="#78350f" />
+              <circle cx="160" cy="102" r="3.5" fill="#78350f" />
+              <circle cx="152" cy="110" r="3.5" fill="#78350f" />
+              <circle cx="168" cy="110" r="3.5" fill="#78350f" />
+              <text x="160" y="117" text-anchor="middle" font-size="9" font-weight="900" fill="#78350f">SEEDS</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- 底部快速器官点击器 -->
+        <div class="anatomy-nav">
+          <button class="organ-btn active" id="btn-roots">🪱 根 Roots</button>
+          <button class="organ-btn" id="btn-stem">🎋 茎 Stem</button>
+          <button class="organ-btn" id="btn-leaves">🍃 叶 Leaves</button>
+          <button class="organ-btn" id="btn-flowers">🌸 花 Flowers</button>
+          <button class="organ-btn" id="btn-seeds">🌰 种子 Seeds</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 动态器官特工卡片 -->
+    <div class="organ-inspect-panel" id="organ-panel">
+      <div class="inspect-top">
+        <div class="inspect-title">
+          <div class="icon" id="inspect-icon">🪱</div>
+          <div>
+            <h3 id="inspect-name">Roots · 根系</h3>
+            <span class="phonetic-badge" id="inspect-phonetic">/ruːts/</span>
+          </div>
+        </div>
+        <button class="inspect-audio-btn" id="inspect-sound-btn">
+          🔊 听地道发音
+        </button>
+      </div>
+      <div class="inspect-body" id="inspect-desc"></div>
+      <div class="inspect-secret" id="inspect-secret"></div>
+    </div>
+
+    <!-- ====================================================================
+         SECTION 1: 4 大科学奇迹站
+         ==================================================================== -->
+    <section class="stations-section" id="stations" style="margin-top: 4.5rem;">
+      <div class="section-title-wrap">
+        <span class="section-tag">Science Stations · 科学启蒙</span>
+        <h2 class="section-title">4 个科学奇迹站 · 揭秘大自然</h2>
+        <p class="section-subtitle">从一首诗出发，看懂一株植物是如何喝水、运输、做食物和繁衍生命的！</p>
+      </div>
+
+      <div class="stations-grid">
+        <div class="station-card s-roots">
+          <div class="station-header">
+            <div class="station-icon-wrap">🪱</div>
+            <div class="station-title">
+              <h3>01. 地下秘密吸水特工 · 根</h3>
+              <p>Underground Drinking Straws & Anchor</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            “Roots go down beneath the ground, Drink up water, safe and sound.”
+          </div>
+          <div class="station-content">
+            • <strong>定海神针 (Anchor)</strong>：暴风雨来了，小树为什么不倒？因为地下盘根错节牢牢抓住土壤。<br>
+            • <strong>数十亿根吸水吸管 (Root Hairs)</strong>：根的尖端长满了微小的根毛，把土壤里的水和矿物质咕咚咕咚吸上来！
+          </div>
+        </div>
+
+        <div class="station-card s-stem">
+          <div class="station-header">
+            <div class="station-icon-wrap">🚀</div>
+            <div class="station-title">
+              <h3>02. 绿色摩天大楼的超高速电梯 · 茎</h3>
+              <p>The Super Water Elevator (Xylem)</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            “Stem stands straight and grows so tall, Carries water, one and all.”
+          </div>
+          <div class="station-content">
+            • <strong>植物的脊梁骨 (Support)</strong>：直挺挺地站立，让叶子能够举高高迎接太阳。<br>
+            • <strong>导管水梯 (Xylem)</strong>：水分子手拉手向上爬，一口气冲上云霄！“one and all”意味着无一例外滋养全株每一个器官！
+          </div>
+        </div>
+
+        <div class="station-card s-leaves">
+          <div class="station-header">
+            <div class="station-icon-wrap">☀️</div>
+            <div class="station-title">
+              <h3>03. 太阳能超级美食厨房 · 叶</h3>
+              <p>The Solar Food Kitchen (Photosynthesis)</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            “Green leaves catch the sunny light, Make the food day after night.”
+          </div>
+          <div class="station-content">
+            • <strong>叶绿体小厨房 (Chloroplast)</strong>：含有叶绿素分子，捕捉阳光能量。<br>
+            • <strong>光合作用配方</strong>：水 + 二氧化碳 (Carbon dioxide) + 阳光 ➔ 植物糖分食物 (Glucose) + 氧气 (Oxygen)！
+          </div>
+        </div>
+
+        <div class="station-card s-flowers">
+          <div class="station-header">
+            <div class="station-icon-wrap">🌸</div>
+            <div class="station-title">
+              <h3>04. 蜜蜂派对与生命胶囊 · 花与种子</h3>
+              <p>Pollination Party & Life Time Capsules</p>
+            </div>
+          </div>
+          <div class="station-poem-quote">
+            “Pretty flowers open wide, Seeds are hidden deep inside.”
+          </div>
+          <div class="station-content">
+            • <strong>传粉派对 (Pollination)</strong>：花朵盛开用花蜜邀请蜜蜂传粉。<br>
+            • <strong>种子成熟</strong>：花谢后子房发育成果实，保护内部沉睡的种子。遇到水、氧气和温度（WOW口诀）便会破壳萌芽！
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 1.5: 诗歌里的科学秘密 (Poetry vs Science)
+         ==================================================================== -->
+    <section class="poetry-vs-science-box" id="science-vs-poetry">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
+        <span style="font-size:2rem;">💡</span>
+        <div>
+          <h3 style="font-size:1.5rem; font-weight:900; color:#b45309;">Poetry vs Science · 诗歌里的科学秘密</h3>
+          <p style="color:#92400e; font-size:0.92rem;">科学要严谨，诗歌有美感！看看小诗背后藏着哪些真实的科学事实：</p>
+        </div>
+      </div>
+
+      <div class="vs-cards-grid" id="vs-cards-container">
+        <!-- 动态通过 JS 渲染 SCIENCE_VS_POETRY -->
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 2: 单词魔法工坊 (Word Magic Lab)
+         ==================================================================== -->
+    <section class="vocab-section" id="vocab">
+      <div class="section-title-wrap">
+        <span class="section-tag">Word Magic Lab · 单词工坊</span>
+        <h2 class="section-title">全方位单词宝盒 · 音节拼读与精解</h2>
+        <p class="section-subtitle">20 个诗歌核心词 + 9 个高阶科学词，音节积木可点击独立发音，掌握变形规律与例句！</p>
+      </div>
+
+      <div class="vocab-filter-bar">
+        <button class="vocab-filter-btn active" data-category="all">🌟 全部词汇 (All 29)</button>
+        <button class="vocab-filter-btn" data-category="poem">📖 诗歌核心词 (Core 20)</button>
+        <button class="vocab-filter-btn" data-category="science">🔬 科学高阶词 (Science 9)</button>
+        <button class="vocab-filter-btn" data-category="organ">🌱 植物器官专词 (Organs)</button>
+      </div>
+
+      <div class="vocab-grid" id="vocab-cards-grid">
+        <!-- 动态通过 JS 渲染词汇卡片 -->
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 3: 小学生专属趣味游戏乐园 (Kids Game Arcade)
+         ==================================================================== -->
+    <section class="arcade-section" id="games">
+      <div class="section-title-wrap">
+        <span class="section-tag">Kids Game Arcade · 游戏闯关</span>
+        <h2 class="section-title">植物小博士游乐园 · 闯关挑战</h2>
+        <p class="section-subtitle">玩中学、学中练！完成练习即可点亮学习进度，解锁皇家荣誉奖状！</p>
+      </div>
+
+      <div class="arcade-tabs">
+        <button class="arcade-tab-btn active" id="tab-sprout" data-mode="sprout">
+          🌱 拼写小萌芽 (Spelling Sprout)
+        </button>
+        <button class="arcade-tab-btn" id="tab-memory" data-mode="memory">
+          🃏 翻牌记忆花园 (Memory Match)
+        </button>
+        <button class="arcade-tab-btn" id="tab-quiz" data-mode="quiz">
+          🧠 植物小学者问答 (Botanist Quiz)
+        </button>
+      </div>
+
+      <div class="game-viewport">
+        <!-- 游戏 1: 拼写小萌芽 -->
+        <div id="game-sprout-view" class="sprout-game-area">
+          <div class="sprout-plant-visual stage-seed" id="sprout-stage-visual">🌰</div>
+          <div style="font-size:0.9rem; font-weight:800; color:#047857;" id="sprout-stage-desc">
+            阶段 1/5：泥土中沉睡的种子 (Seed)
+          </div>
+
+          <div class="sprout-clue">
+            <div class="sprout-zh" id="sprout-target-zh">根系</div>
+            <div class="sprout-syllable-hint" id="sprout-target-hint">长元音 /uː/</div>
+          </div>
+
+          <div class="sprout-slots" id="sprout-slots-container"></div>
+          <div class="sprout-keyboard" id="sprout-keyboard-container"></div>
+
+          <div style="display:flex; gap:0.5rem; margin-top:0.5rem; flex-wrap:wrap; justify-content:center;">
+            <button class="pill-btn" id="sprout-speak-btn">🔊 听单词发音</button>
+            <button class="pill-btn" id="sprout-hint-btn">💡 提示一个字母</button>
+            <button class="pill-btn" id="sprout-next-btn">⏭ 切换下一个词</button>
+          </div>
+        </div>
+
+        <!-- 游戏 2: 翻牌记忆花园 -->
+        <div id="game-memory-view" class="memory-game-area" style="display:none;">
+          <div class="memory-stats-bar">
+            <div>⏱️ 用时: <span id="mem-time">00:00</span></div>
+            <div>👣 步数: <span id="mem-moves">0</span></div>
+            <div>✅ 配对: <span id="mem-pairs">0/6</span></div>
+          </div>
+          <div class="memory-grid" id="memory-cards-grid"></div>
+        </div>
+
+        <!-- 游戏 3: 植物小学者问答 (安全双容器架构) -->
+        <div id="game-quiz-view" class="quiz-game-area" style="display:none;">
+          <!-- 答题容器 -->
+          <div id="quiz-card-container">
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+            </div>
+            <div class="quiz-question-card">
+              <div class="quiz-q-num" id="quiz-q-num">Question 1 of 4</div>
+              <div class="quiz-q-title" id="quiz-q-title"></div>
+            </div>
+            <div class="quiz-options" id="quiz-options-container"></div>
+            <div id="quiz-feedback-box" style="margin-top:1rem; font-weight:700; text-align:center;"></div>
+          </div>
+
+          <!-- 结算面板容器 (解决覆盖Bug) -->
+          <div id="quiz-summary-container" style="display:none;">
+            <div class="quiz-summary-card">
+              <div class="big-trophy">🏅</div>
+              <h3 style="font-size:1.8rem; font-weight:900; color:#15803d; margin-bottom:0.5rem;">
+                测验完成！得分: <span id="quiz-result-score">4/4</span>
+              </h3>
+              <p style="color:#64748b; font-size:1rem; margin-bottom:1.5rem;" id="quiz-result-msg"></p>
+              <button class="play-all-btn" id="quiz-replay-btn" style="margin: 0 auto;">
+                🔄 再练一次 (Play Again)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 4: 荣誉殿堂与证书系统 (条件解锁)
+         ==================================================================== -->
+    <section class="certificate-section" id="cert-section">
+      <div class="cert-badge-large">🏆</div>
+      <h2 style="font-size:2.2rem; font-weight:900; color:#78350f;">皇家自然小学者 · 荣誉殿堂</h2>
+      <p style="color:#92400e; font-weight:600; margin-top:0.4rem;">
+        完成本专题的诗歌、解剖、单词与游戏测验，解锁官方成就大奖状！
+      </p>
+
+      <!-- 1. 待解锁状态 Checklist 卡片 -->
+      <div class="cert-locked-card" id="cert-locked-box">
+        <div class="cert-lock-header">
+          <div class="cert-lock-icon">🔒</div>
+          <div>
+            <h4 style="font-size:1.2rem; font-weight:900; color:#0f172a;">证书目前处于锁定状态</h4>
+            <p style="font-size:0.85rem; color:#64748b;">请完成以下 5 项探索任务来点亮小学者奖状：</p>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; font-size:0.85rem; font-weight:800; color:#047857;">
+          <span>探索总进度</span>
+          <span id="cert-progress-percent">0%</span>
+        </div>
+        <div class="cert-progress-track">
+          <div class="cert-progress-bar-fill" id="cert-progress-fill"></div>
+        </div>
+
+        <div class="cert-task-list" id="cert-checklist-container"></div>
+      </div>
+
+      <!-- 2. 已解锁状态华丽奖状 -->
+      <div id="cert-unlocked-box" style="display:none;">
+        <div class="certificate-card" id="official-cert">
+          <div style="font-size:1.6rem; font-weight:900; color:#15803d; margin-bottom:0.5rem;">
+            🌱 JUNIOR BOTANIST AWARD
+          </div>
+          <p style="color:#64748b; font-size:0.9rem;">兹证明自然小学者</p>
+          <div style="margin: 0.8rem 0;">
+            <input type="text" class="cert-student-input" id="student-name-input" value="Sky" placeholder="输入姓名">
+          </div>
+          <p style="color:#334155; font-size:0.95rem; line-height:1.6;">
+            在《Plants: Nature's Green Magic》专题中深入掌握了<strong>根、茎、叶、花、种子</strong>的英文表达与科学机理，获得<strong>“皇家植物小学者”</strong>荣誉称号！
+          </p>
+          <div style="display:flex; justify-content:space-around; margin-top:1.2rem; font-size:0.85rem; color:#475569; font-weight:700;">
+            <div>📅 日期: <span id="cert-date">2026.10</span></div>
+            <div>🏅 认证机构: SciencePre (pre.igcse.xyz)</div>
+          </div>
+        </div>
+
+        <div class="cert-actions-row">
+          <button class="play-all-btn" id="cert-download-btn">
+            📥 下载高清奖状图片 (PNG)
+          </button>
+          <button class="play-all-btn" id="cert-share-btn" style="background:linear-gradient(135deg, #f59e0b, #d97706);">
+            📋 复制战报文字分享
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 统一页脚 -->
+  <footer>
+    <div class="footer-links">
+      <a href="/">🏠 返回主题中心 (Theme Hub)</a>
+      <a href="https://sky.igcse.xyz" target="_blank">🌐 Sky's Science Word Lab (初高中版)</a>
+      <a href="#poem-hero">📖 返回本诗顶部</a>
+      <a href="#vocab">🔤 查阅单词宝盒</a>
+      <a href="https://github.com/CrazyRock114/SciencePre" target="_blank">📦 GitHub 开源仓库</a>
+    </div>
+    <p>© 2026 SciencePre · 平行于 IGCSE Science Word Lab 的小学生专题自然科学探索营</p>
+    <div class="domain-note">
+      🚀 独立二级域名：<strong>pre.igcse.xyz</strong> · 对应 GitHub 开源仓库：<strong>CrazyRock114/SciencePre</strong>
+    </div>
+  </footer>
+
+  <script type="module" src="/assets/js/plants/plants-main.js"></script>
+</body>
+</html>

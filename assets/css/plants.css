@@ -1,0 +1,1206 @@
+/* ==========================================================================
+   SciencePre: Plants Theme Specific Styles (CSS)
+   包含诗歌剧场、活体SVG解剖、科学奇迹站、诗歌vs科学、单词工坊、三大游戏与证书
+   ========================================================================== */
+
+/* ==================== HERO 区：左诗歌 + 右SVG植物 ==================== */
+.hero-stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 900px) {
+  .hero-stage {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 诗歌剧场卡片 */
+.poem-theater-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border: 3px solid #bbf7d0;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.poem-header {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px dashed #e2e8f0;
+  padding-bottom: 1rem;
+}
+
+.poem-title-box h2 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: var(--primary-dark);
+  letter-spacing: -0.02em;
+}
+
+.poem-title-box p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.play-all-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.4);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.play-all-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.5);
+}
+
+.play-all-btn.playing {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.poem-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.poem-line-group {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 0.85rem 1.15rem;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.poem-line-group:focus-visible {
+  outline: 3px solid #10b981;
+}
+
+.poem-line-group:hover {
+  background: #ecfdf5;
+  border-color: #6ee7b7;
+  transform: translateX(6px);
+}
+
+.poem-line-group.active {
+  background: #ecfdf5;
+  border-color: var(--primary);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+  transform: translateX(8px) scale(1.02);
+}
+
+.poem-line-group.karaoke-current {
+  background: #fef3c7;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
+  animation: karaoke-pulse 1.2s infinite alternate;
+}
+
+@keyframes karaoke-pulse {
+  from { transform: scale(1.01); }
+  to { transform: scale(1.03); }
+}
+
+.line-tag {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #e2e8f0;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.poem-line-group.active .line-tag {
+  background: var(--primary);
+  color: white;
+}
+
+.line-en {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.line-speaker {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.line-zh {
+  font-size: 0.95rem;
+  color: #047857;
+  font-weight: 600;
+}
+
+.line-zh.hidden-zh {
+  display: none;
+}
+
+.keyword-badge {
+  display: inline-block;
+  background: #fef08a;
+  color: #854d0e;
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-weight: 800;
+  border-bottom: 2px solid #eab308;
+  cursor: pointer;
+}
+
+.keyword-badge:hover,
+.keyword-badge:focus-visible {
+  background: #fde047;
+  outline: 2px solid #b45309;
+}
+
+.poem-footer-hint {
+  background: #f0fdf4;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  color: #166534;
+}
+
+/* ==================== 右侧：活体植物解剖探险画布 ==================== */
+.plant-canvas-card {
+  background: linear-gradient(180deg, #e0f2fe 0%, #bae6fd 45%, #86efac 70%, #d4a373 70.1%, #a66a38 100%);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  border: 3px solid #7dd3fc;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 540px;
+  overflow: hidden;
+}
+
+.sky-elements {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.sun-icon {
+  font-size: 3rem;
+  cursor: pointer;
+  pointer-events: auto;
+  filter: drop-shadow(0 0 16px rgba(251, 191, 36, 0.8));
+}
+
+.cloud-icon {
+  font-size: 2.2rem;
+  opacity: 0.85;
+}
+
+.ground-label {
+  position: absolute;
+  bottom: 27%;
+  left: 15px;
+  background: rgba(0, 0, 0, 0.65);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.plant-svg-wrapper {
+  position: relative;
+  width: 100%;
+  height: 440px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.plant-svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hotspot {
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hotspot:focus-visible {
+  outline: 3px solid #f59e0b;
+}
+
+.hotspot:hover {
+  filter: brightness(1.2) drop-shadow(0 0 12px rgba(255,255,255,0.9));
+  transform: scale(1.05);
+  transform-origin: center;
+}
+
+.hotspot.active-part {
+  filter: drop-shadow(0 0 16px #f59e0b) brightness(1.15);
+}
+
+.anatomy-nav {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.6rem;
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-sm);
+}
+
+.organ-btn {
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s;
+}
+
+.organ-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary);
+  background: #f0fdf4;
+}
+
+.organ-btn.active {
+  background: var(--primary-dark);
+  color: white;
+  border-color: var(--primary-dark);
+}
+
+/* 器官特工卡片 */
+.organ-inspect-panel {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  margin-top: 1.5rem;
+  border: 2px solid #bbf7d0;
+  box-shadow: var(--shadow-md);
+}
+
+.inspect-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.inspect-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.inspect-title .icon {
+  font-size: 2rem;
+}
+
+.inspect-title h3 {
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--primary-dark);
+}
+
+.inspect-title .phonetic-badge {
+  font-family: monospace;
+  background: #f1f5f9;
+  color: #475569;
+  font-size: 0.85rem;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.inspect-audio-btn {
+  background: #ecfdf5;
+  border: 1.5px solid #a7f3d0;
+  color: #047857;
+  font-weight: 700;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+
+.inspect-body {
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+.inspect-secret {
+  margin-top: 0.6rem;
+  padding: 0.6rem 0.9rem;
+  background: #fef3c7;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* ==================== 科学四维站 & 诗歌vs科学卡片 ==================== */
+.section-title-wrap {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-tag {
+  display: inline-block;
+  background: #dcfce7;
+  color: #15803d;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+}
+
+.section-subtitle {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 700px;
+  margin: 0.5rem auto 0;
+}
+
+.stations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 850px) {
+  .stations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.station-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border: 3px solid #e2e8f0;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.station-card.s-roots { border-top: 8px solid #b45309; }
+.station-card.s-stem { border-top: 8px solid #059669; }
+.station-card.s-leaves { border-top: 8px solid #10b981; }
+.station-card.s-flowers { border-top: 8px solid #ec4899; }
+
+.station-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.station-icon-wrap {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.s-roots .station-icon-wrap { background: #fef3c7; color: #b45309; }
+.s-stem .station-icon-wrap { background: #ecfdf5; color: #059669; }
+.s-leaves .station-icon-wrap { background: #dcfce7; color: #10b981; }
+.s-flowers .station-icon-wrap { background: #fce7f3; color: #ec4899; }
+
+.station-title h3 {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.station-title p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.station-poem-quote {
+  background: #f8fafc;
+  border-left: 4px solid var(--primary);
+  padding: 0.75rem 1rem;
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.station-content {
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+
+/* 诗歌 vs 科学专栏卡片 */
+.poetry-vs-science-box {
+  background: #fffbeb;
+  border: 2px dashed #f59e0b;
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  margin-bottom: 4rem;
+}
+
+.vs-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.vs-card {
+  background: white;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  border: 1.5px solid #fde68a;
+  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.08);
+}
+
+.vs-card-header {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #b45309;
+  margin-bottom: 0.5rem;
+}
+
+.vs-poem-line {
+  font-style: italic;
+  color: #0f172a;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.vs-card-body {
+  font-size: 0.88rem;
+  color: #334155;
+  line-height: 1.6;
+}
+
+/* ==================== 单词魔法宝库网格 ==================== */
+.vocab-section {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  border: 3px solid #bbf7d0;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 4rem;
+}
+
+.vocab-filter-bar {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.vocab-filter-btn {
+  background: #f1f5f9;
+  border: 1.5px solid #cbd5e1;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vocab-filter-btn:hover {
+  background: #e2e8f0;
+}
+
+.vocab-filter-btn.active {
+  background: var(--primary);
+  border-color: var(--primary-dark);
+  color: white;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.word-card {
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: all 0.25s;
+  display: flex;
+  flex-direction: column;
+}
+
+.word-card:hover {
+  background: white;
+  border-color: #34d399;
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-highlight-pulse {
+  animation: card-pulse 1.8s ease;
+  border-color: #f59e0b !important;
+}
+
+@keyframes card-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); box-shadow: 0 0 24px rgba(245, 158, 11, 0.4); }
+}
+
+.word-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.word-en {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.word-tier-tag {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.tag-poem {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.tag-science {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.syllable-chips {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.syllable-chip-btn {
+  background: #fef3c7;
+  color: #92400e;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px dashed #f59e0b;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.syllable-chip-btn:hover {
+  background: #fde047;
+  transform: scale(1.06);
+}
+
+.word-phonetic {
+  font-family: monospace;
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.word-zh {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #047857;
+  margin-bottom: 0.75rem;
+}
+
+.word-context-box {
+  font-size: 0.85rem;
+  color: #334155;
+  background: white;
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #e2e8f0;
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+  flex: 1;
+}
+
+.transform-highlight {
+  color: #b45309;
+  font-weight: 700;
+  margin: 0.3rem 0;
+}
+
+.example-box {
+  color: #475569;
+  font-style: italic;
+}
+
+.word-phonics-rule {
+  font-size: 0.8rem;
+  color: #166534;
+  background: #f0fdf4;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  margin-bottom: 0.6rem;
+}
+
+.word-audio-actions {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: auto;
+}
+
+.audio-play-btn {
+  flex: 1;
+  background: white;
+  border: 1.5px solid #cbd5e1;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.audio-play-btn:hover {
+  background: #ecfdf5;
+  border-color: #34d399;
+}
+
+.audio-play-btn.slow-btn {
+  background: #fffbeb;
+  border-color: #fde68a;
+  color: #b45309;
+}
+
+.audio-play-btn.slow-btn:hover {
+  background: #fef3c7;
+}
+
+/* ==================== 趣味游戏馆 ==================== */
+.arcade-section {
+  margin-bottom: 4rem;
+}
+
+.arcade-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.arcade-tab-btn {
+  background: white;
+  border: 2px solid #cbd5e1;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #334155;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.arcade-tab-btn.active {
+  background: linear-gradient(135deg, #10b981, #047857);
+  border-color: #047857;
+  color: white;
+}
+
+.game-viewport {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  border: 3px solid #bbf7d0;
+  box-shadow: var(--shadow-md);
+  min-height: 480px;
+}
+
+/* 拼写小萌芽 5 阶成长形态 */
+.sprout-game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.sprout-plant-visual {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ecfdf5 0%, #d1fae5 70%, #a7f3d0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.2);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.sprout-plant-visual.stage-seed { transform: scale(0.9); }
+.sprout-plant-visual.stage-sprout { transform: scale(1.0); }
+.sprout-plant-visual.stage-stem { transform: scale(1.05) translateY(-5px); }
+.sprout-plant-visual.stage-leaves { transform: scale(1.1) translateY(-8px); }
+.sprout-plant-visual.stage-flower { transform: scale(1.2) translateY(-10px); }
+
+.blossom-pop {
+  animation: blossom-pop-anim 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes blossom-pop-anim {
+  0% { transform: scale(0.8); }
+  60% { transform: scale(1.3); }
+  100% { transform: scale(1.2); }
+}
+
+.sprout-clue {
+  text-align: center;
+}
+
+.sprout-zh {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.sprout-syllable-hint {
+  font-size: 0.95rem;
+  color: #047857;
+  font-weight: 700;
+  background: #dcfce7;
+  padding: 3px 12px;
+  border-radius: 999px;
+  display: inline-block;
+}
+
+.sprout-slots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.letter-slot {
+  width: 44px;
+  height: 52px;
+  border-bottom: 4px solid #94a3b8;
+  background: #f8fafc;
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.letter-slot.filled {
+  border-bottom-color: var(--primary);
+  background: #ecfdf5;
+  color: var(--primary-dark);
+}
+
+.sprout-keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  max-width: 520px;
+}
+
+.key-btn {
+  width: 42px;
+  height: 46px;
+  background: white;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e293b;
+  cursor: pointer;
+  box-shadow: 0 3px 0 #94a3b8;
+}
+
+.key-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 #94a3b8;
+}
+
+.key-btn.action-key {
+  width: auto;
+  padding: 0 14px;
+  font-size: 0.9rem;
+}
+
+/* 翻牌记忆花园 */
+.memory-game-area {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.memory-stats-bar {
+  display: flex;
+  justify-content: space-between;
+  background: #f8fafc;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  border: 1.5px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.memory-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+@media (max-width: 500px) {
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.memory-card {
+  height: 105px;
+  background: #f1f5f9;
+  border: 2.5px solid #cbd5e1;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #334155;
+  text-align: center;
+  padding: 0.5rem;
+  user-select: none;
+}
+
+.memory-card.flipped {
+  background: white;
+  border-color: var(--secondary);
+}
+
+.memory-card.matched {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+/* 植物小学者问答 (双容器安全切换) */
+.quiz-game-area {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.quiz-progress-bar {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #0ea5e9);
+  width: 25%;
+  transition: width 0.3s ease;
+}
+
+.quiz-question-card {
+  background: #f8fafc;
+  border-radius: 18px;
+  padding: 1.5rem;
+  border: 2px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-q-num {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #047857;
+  text-transform: uppercase;
+}
+
+.quiz-q-title {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quiz-opt-btn {
+  background: white;
+  border: 2px solid #cbd5e1;
+  padding: 0.9rem 1.25rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.opt-badge {
+  font-weight: 900;
+  color: #64748b;
+}
+
+.quiz-opt-btn.correct {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+.quiz-opt-btn.wrong {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+/* 问答结算卡片 */
+.quiz-summary-card {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: #f0fdf4;
+  border-radius: 20px;
+  border: 2px solid #86efac;
+}
+
+.quiz-summary-card .big-trophy {
+  font-size: 4rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ==================== 荣誉殿堂与证书系统 ==================== */
+.certificate-section {
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 3px dashed #f59e0b;
+  border-radius: var(--radius-lg);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 3rem;
+}
+
+.cert-badge-large {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #fbbf24, #d97706);
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+  border: 4px solid white;
+}
+
+/* 锁定状态 Checklist 样式 */
+.cert-locked-card {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  max-width: 600px;
+  margin: 1.5rem auto 0;
+  border: 2px solid #fde68a;
+  text-align: left;
+}
+
+.cert-lock-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.cert-lock-icon {
+  font-size: 2.2rem;
+}
+
+.cert-progress-track {
+  height: 10px;
+  background: #f1f5f9;
+  border-radius: 999px;
+  margin: 0.75rem 0 1.25rem;
+  overflow: hidden;
+}
+
+.cert-progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #10b981);
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+.cert-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.cert-task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+.cert-task-item.task-done {
+  background: #ecfdf5;
+  color: #065f46;
+  font-weight: 700;
+}
+
+.cert-task-item.task-todo {
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.task-info .task-name {
+  font-weight: 700;
+}
+
+.task-info .task-detail {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* 解锁后的华丽奖状 */
+.certificate-card {
+  background: white;
+  border: 4px double #10b981;
+  border-radius: 20px;
+  padding: 2.2rem 2rem;
+  max-width: 620px;
+  margin: 1.5rem auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+}
+
+.cert-student-input {
+  font-size: 1.35rem;
+  font-weight: 900;
+  text-align: center;
+  border: none;
+  border-bottom: 2px dashed #f59e0b;
+  padding: 0.3rem 0.6rem;
+  color: #0f172a;
+  outline: none;
+  width: 220px;
+  background: transparent;
+}
+
+.cert-student-input:focus {
+  border-bottom-style: solid;
+}
+
+.cert-actions-row {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
