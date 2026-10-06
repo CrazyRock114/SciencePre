@@ -74,7 +74,7 @@ function initPlants() {
 
   // 6. 绑定顶部通用控制栏 (双速语速、中英显隐、全局声音)
   bindGlobalControls(poemTheater);
-});
+}
 
 function renderScienceVsPoetry() {
   const container = document.getElementById("vs-cards-container");
