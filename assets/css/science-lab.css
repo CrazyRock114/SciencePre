@@ -1640,6 +1640,128 @@
   font-weight: 600;
 }
 
+/* -------------------------------------------------------------------------
+   LearningCell 3D 模型来源与状态栏
+   ------------------------------------------------------------------------- */
+.learningcell-credit-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.55rem 1.2rem;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.learningcell-badge a {
+  color: #86efac;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+.learningcell-badge a:hover {
+  color: #4ade80;
+}
+
+.cell-model-mode-tag {
+  background: rgba(34, 197, 94, 0.15);
+  color: #4ade80;
+  padding: 0.2rem 0.6rem;
+  border-radius: 50px;
+  font-weight: 700;
+}
+
+/* -------------------------------------------------------------------------
+   剑桥 IGCSE 进阶大纲桥梁卡片 (深度链接 www.igcse.xyz 与 sky.igcse.xyz)
+   ------------------------------------------------------------------------- */
+.curriculum-bridge-card {
+  margin-top: 2rem;
+  background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+  border: 1.5px solid #bfdbfe;
+  border-radius: 18px;
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.06);
+}
+
+.bridge-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+.bridge-tag {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #1e40af;
+  background: #dbeafe;
+  padding: 0.25rem 0.8rem;
+  border-radius: 50px;
+  border: 1px solid #bfdbfe;
+}
+
+.bridge-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.bridge-main-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.4rem 0.95rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.bridge-main-link:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+.bridge-word-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #db2777;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.4rem 0.95rem;
+  border-radius: 50px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(219, 39, 119, 0.25);
+}
+
+.bridge-word-link:hover {
+  background: #be185d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(219, 39, 119, 0.35);
+}
+
+.bridge-desc {
+  font-size: 0.86rem;
+  color: #334155;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.bridge-desc strong {
+  color: #0f172a;
+}
+
 /* ==========================================================================
    响应式断点 (Mobile & Narrow Viewport)
    ========================================================================== */

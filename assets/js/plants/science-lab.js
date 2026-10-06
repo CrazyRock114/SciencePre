@@ -8,13 +8,16 @@
 // ==========================================================================
 
 import * as THREE from "../lib/three.module.js";
+import { GLTFLoader } from "../lib/GLTFLoader.module.js";
+import { DRACOLoader } from "../lib/DRACOLoader.module.js";
 import {
   SCIENCE_STATIONS,
   PLANT_CELL_PARTS,
   LEAF_LAYERS,
   TRANSPORT_MODES,
   FLOWER_PARTS,
-  POLLINATION_STEPS
+  POLLINATION_STEPS,
+  IGCSE_CURRICULUM_BRIDGES
 } from "../data/science-knowledge.js";
 import { audio } from "../core/audio.js";
 import { progressTracker } from "../core/progress.js";
@@ -125,31 +128,48 @@ export class ScienceLab {
     // 默认展示第一个细胞结构（细胞壁）
     this.inspectCellPart(PLANT_CELL_PARTS[0].id);
 
-    // 绑定 3D 拟真模型 vs 显微镜真图对照切换
+    // 绑定 3D 拟真模型 vs 透视分件 vs 显微镜真图对照切换
     const btnView3D = document.getElementById("btn-view-3d");
+    const btnViewExploded = document.getElementById("btn-view-exploded");
     const btnViewMicroscope = document.getElementById("btn-view-microscope");
     const canvasContainer = document.getElementById("cell-3d-canvas-container");
     const microscopeContainer = document.getElementById("cell-microscope-container");
+    const modeTag = document.getElementById("cell-current-mode-tag");
 
-    if (btnView3D && btnViewMicroscope && canvasContainer && microscopeContainer) {
-      btnView3D.addEventListener("click", () => {
-        btnView3D.classList.add("active");
-        btnViewMicroscope.classList.remove("active");
-        canvasContainer.style.display = "block";
-        microscopeContainer.style.display = "none";
-        if (this.cell3D) this.cell3D.onResize();
-        audio.playTone(600, "sine", 0.08);
-      });
+    const setViewMode = (mode) => {
+      if (btnView3D) btnView3D.classList.toggle("active", mode === "3d");
+      if (btnViewExploded) btnViewExploded.classList.toggle("active", mode === "exploded");
+      if (btnViewMicroscope) btnViewMicroscope.classList.toggle("active", mode === "microscope");
 
-      btnViewMicroscope.addEventListener("click", () => {
-        btnViewMicroscope.classList.add("active");
-        btnView3D.classList.remove("active");
-        canvasContainer.style.display = "none";
-        microscopeContainer.style.display = "block";
+      if (mode === "microscope") {
+        if (canvasContainer) canvasContainer.style.display = "none";
+        if (microscopeContainer) microscopeContainer.style.display = "block";
+        if (modeTag) modeTag.textContent = "当前模式：📸 显微镜真图对照";
         audio.playTone(720, "sine", 0.08);
         audio.speak("Microscopic comparison view");
-      });
-    }
+      } else {
+        if (canvasContainer) canvasContainer.style.display = "block";
+        if (microscopeContainer) microscopeContainer.style.display = "none";
+
+        if (mode === "3d") {
+          if (this.cell3D) this.cell3D.setModelMode("learningCell");
+          if (modeTag) modeTag.textContent = "当前模式：🔬 拟真实模 (LearningCell)";
+          audio.playTone(600, "sine", 0.08);
+          audio.speak("Realistic 3D plant cell model");
+        } else if (mode === "exploded") {
+          if (this.cell3D) this.cell3D.setModelMode("exploded");
+          if (modeTag) modeTag.textContent = "当前模式：🧩 透视分件 (器官积木)";
+          audio.playTone(660, "sine", 0.08);
+          audio.speak("Exploded organelle view");
+        }
+
+        if (this.cell3D) this.cell3D.onResize();
+      }
+    };
+
+    if (btnView3D) btnView3D.addEventListener("click", () => setViewMode("3d"));
+    if (btnViewExploded) btnViewExploded.addEventListener("click", () => setViewMode("exploded"));
+    if (btnViewMicroscope) btnViewMicroscope.addEventListener("click", () => setViewMode("microscope"));
 
     // 绑定显微镜图纸热点引脚点击
     document.querySelectorAll(".microscope-pin").forEach((pin) => {
@@ -656,6 +676,12 @@ class Cell3DScene {
     this.camera = null;
     this.renderer = null;
     this.cellGroup = null;
+    this.explodedGroup = new THREE.Group();
+    this.learningCellMesh = null;
+    this.learningCellBaseScale = 1.0;
+    this.currentModelMode = "learningCell";
+    this.modelLoading = false;
+    this.isModelLoaded = false;
 
     this.isDragging = false;
     this.prevPointerPos = { x: 0, y: 0 };
@@ -842,9 +868,11 @@ class Cell3DScene {
       this.scene.add(dirLight2);
 
       this.cellGroup = new THREE.Group();
+      this.cellGroup.add(this.explodedGroup);
       this.scene.add(this.cellGroup);
 
       this.buildCellModel();
+      this.loadLearningCellGLB();
       this.bindEvents();
       this.animate();
     } catch (e) {
@@ -961,6 +989,8 @@ class Cell3DScene {
     const vacuoleTex = this.createVacuoleTexture();
     const nucleusTex = this.createNucleusTexture();
 
+    this.explodedGroup.name = "exploded-group";
+
     // 1. 细胞壁 (Cell Wall)：贴图加持的纤维素城堡外壳
     const wallGeo = new THREE.BoxGeometry(4.6, 3.4, 3.6, 4, 4, 4);
     const wallMat = new THREE.MeshStandardMaterial({
@@ -974,14 +1004,14 @@ class Cell3DScene {
     });
     const cellWallMesh = new THREE.Mesh(wallGeo, wallMat);
     cellWallMesh.name = "cell-wall";
-    this.cellGroup.add(cellWallMesh);
+    this.explodedGroup.add(cellWallMesh);
     this.partsMeshes.set("cell-wall", cellWallMesh);
 
     // 细胞壁立体边缘金色外框线 (强调多面体坚固性)
     const edges = new THREE.EdgesGeometry(wallGeo);
     const lineMat = new THREE.LineBasicMaterial({ color: 0x86efac, linewidth: 2 });
     const wireframe = new THREE.LineSegments(edges, lineMat);
-    this.cellGroup.add(wireframe);
+    this.explodedGroup.add(wireframe);
 
     // 2. 细胞膜 (Cell Membrane)：贴合内侧的轻透柔光膜
     const membraneGeo = new THREE.BoxGeometry(4.3, 3.1, 3.3);
@@ -994,7 +1024,7 @@ class Cell3DScene {
     });
     const membraneMesh = new THREE.Mesh(membraneGeo, membraneMat);
     membraneMesh.name = "membrane";
-    this.cellGroup.add(membraneMesh);
+    this.explodedGroup.add(membraneMesh);
     this.partsMeshes.set("membrane", membraneMesh);
 
     // 3. 中央大液泡 (Large Vacuole)：水波纹流光大水球
@@ -1013,7 +1043,7 @@ class Cell3DScene {
     this.vacuoleMesh.position.set(-0.35, -0.1, 0.1);
     this.vacuoleMesh.scale.set(1.1, 0.9, 1.0);
     this.vacuoleMesh.name = "vacuole";
-    this.cellGroup.add(this.vacuoleMesh);
+    this.explodedGroup.add(this.vacuoleMesh);
     this.partsMeshes.set("vacuole", this.vacuoleMesh);
 
     // 4. 细胞核 (Nucleus)：核孔贴图 + 深紫色球体 + 核心核仁
@@ -1028,7 +1058,7 @@ class Cell3DScene {
     const nucleusMesh = new THREE.Mesh(nucleusGeo, nucleusMat);
     nucleusMesh.position.set(1.4, 0.45, -0.3);
     nucleusMesh.name = "nucleus";
-    this.cellGroup.add(nucleusMesh);
+    this.explodedGroup.add(nucleusMesh);
     this.partsMeshes.set("nucleus", nucleusMesh);
 
     // 核仁红宝石小球
@@ -1060,7 +1090,7 @@ class Cell3DScene {
       chloroMesh.position.set(pos[0], pos[1], pos[2]);
       chloroMesh.rotation.set(Math.random(), Math.random(), 0);
       chloroMesh.name = "chloroplast";
-      this.cellGroup.add(chloroMesh);
+      this.explodedGroup.add(chloroMesh);
       if (i === 0) this.partsMeshes.set("chloroplast", chloroMesh);
     });
 
@@ -1084,12 +1114,104 @@ class Cell3DScene {
       mitoMesh.position.set(pos[0], pos[1], pos[2]);
       mitoMesh.rotation.set(0.5, 0.8, 0.3);
       mitoMesh.name = "mitochondria";
-      this.cellGroup.add(mitoMesh);
+      this.explodedGroup.add(mitoMesh);
       if (i === 0) this.partsMeshes.set("mitochondria", mitoMesh);
     });
 
     // 初始微微倾斜，展现立体层次
     this.cellGroup.rotation.set(0.35, 0.5, 0);
+  }
+
+  loadLearningCellGLB() {
+    this.modelLoading = true;
+    try {
+      const dracoLoader = new DRACOLoader();
+      const dracoPath = new URL("../../draco/", import.meta.url).href;
+      dracoLoader.setDecoderPath(dracoPath);
+
+      const gltfLoader = new GLTFLoader();
+      gltfLoader.setDRACOLoader(dracoLoader);
+
+      const modelUrl = new URL("../../models/plant-cell.glb", import.meta.url).href;
+
+      gltfLoader.load(
+        modelUrl,
+        (gltf) => {
+          const model = gltf.scene || gltf.scenes[0];
+          if (!model) {
+            console.warn("No scene found in plant-cell.glb");
+            return;
+          }
+
+          // 计算包围盒并居中归一化缩放
+          const box = new THREE.Box3().setFromObject(model);
+          const size = new THREE.Vector3();
+          box.getSize(size);
+          const maxDim = Math.max(size.x, size.y, size.z);
+          const targetSize = 4.4;
+          const scale = maxDim > 0 ? targetSize / maxDim : 1;
+          model.scale.setScalar(scale);
+          this.learningCellBaseScale = scale;
+
+          const center = new THREE.Vector3();
+          box.getCenter(center);
+          center.multiplyScalar(scale);
+          model.position.sub(center);
+
+          // 开启阴影和双面渲染
+          model.traverse((child) => {
+            if (child.isMesh) {
+              child.castShadow = true;
+              child.receiveShadow = true;
+              if (child.material) {
+                child.material.side = THREE.DoubleSide;
+                child.material.needsUpdate = true;
+              }
+            }
+          });
+
+          this.learningCellMesh = model;
+          this.learningCellMesh.name = "learning-cell-glb";
+          this.cellGroup.add(this.learningCellMesh);
+          this.isModelLoaded = true;
+          this.modelLoading = false;
+
+          // 全局暴露便于测试和外部校验
+          window.__learningCellMesh = this.learningCellMesh;
+
+          // 保持当前显示模式
+          this.setModelMode(this.currentModelMode);
+        },
+        undefined,
+        (err) => {
+          console.warn("Could not load plant-cell.glb, falling back to exploded view:", err);
+          this.modelLoading = false;
+          this.setModelMode("exploded");
+        }
+      );
+    } catch (err) {
+      console.warn("Error initializing GLTF/DRACO loader:", err);
+      this.modelLoading = false;
+      this.setModelMode("exploded");
+    }
+  }
+
+  setModelMode(mode) {
+    this.currentModelMode = mode;
+    if (mode === "learningCell") {
+      if (this.learningCellMesh) {
+        this.learningCellMesh.visible = true;
+        this.explodedGroup.visible = false;
+      } else {
+        // 模型尚未加载完成时，先展示分件积木，平滑过渡
+        this.explodedGroup.visible = true;
+      }
+    } else if (mode === "exploded") {
+      if (this.learningCellMesh) {
+        this.learningCellMesh.visible = false;
+      }
+      this.explodedGroup.visible = true;
+    }
   }
 
   bindEvents() {
@@ -1145,29 +1267,46 @@ class Cell3DScene {
         targetMesh = targetMesh.parent;
       }
       if (targetMesh && targetMesh.name) {
-        this.onPartSelect(targetMesh.name);
-        this.focusPart(targetMesh.name);
-        audio.playTone(660, "sine", 0.08);
+        if (targetMesh.name === "learning-cell-glb") {
+          audio.playTone(660, "sine", 0.08);
+          this.focusPart("cell-wall");
+        } else {
+          this.onPartSelect(targetMesh.name);
+          this.focusPart(targetMesh.name);
+          audio.playTone(660, "sine", 0.08);
+        }
       }
     }
   }
 
   focusPart(partId) {
     const mesh = this.partsMeshes.get(partId);
-    if (!mesh) return;
-
-    // 闪烁高亮呼吸效果
-    const originalScale = mesh.scale.clone();
-    mesh.scale.multiplyScalar(1.25);
-    setTimeout(() => {
-      mesh.scale.copy(originalScale);
-    }, 280);
+    if (mesh) {
+      // 闪烁高亮呼吸效果
+      const originalScale = mesh.scale.clone();
+      mesh.scale.multiplyScalar(1.25);
+      setTimeout(() => {
+        mesh.scale.copy(originalScale);
+      }, 280);
+    }
+    // 拟真实模状态下整体进行轻微呼吸回馈
+    if (this.learningCellMesh && this.learningCellMesh.visible && this.learningCellBaseScale) {
+      const curScale = this.learningCellMesh.scale.x;
+      this.learningCellMesh.scale.setScalar(curScale * 1.04);
+      setTimeout(() => {
+        this.learningCellMesh.scale.setScalar(curScale);
+      }, 240);
+    }
   }
 
   setVacuoleTurgor(scaleValue) {
     this.vacuoleTurgorScale = scaleValue;
     if (this.vacuoleMesh) {
       this.vacuoleMesh.scale.set(scaleValue * 1.1, scaleValue * 0.9, scaleValue * 1.0);
+    }
+    if (this.learningCellMesh && this.learningCellBaseScale) {
+      const tScale = scaleValue > 1 ? 1.06 : (scaleValue < 1 ? 0.94 : 1.0);
+      this.learningCellMesh.scale.setScalar(this.learningCellBaseScale * tScale);
     }
     if (this.isFallback2D) {
       this.renderFallback2D();

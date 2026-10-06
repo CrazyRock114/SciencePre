@@ -25,6 +25,8 @@ class CDPClient {
       } else if (data.method) {
         if (data.method === "Runtime.exceptionThrown") {
           console.error("🚨 BROWSER EXCEPTION:", JSON.stringify(data.params.exceptionDetails));
+        } else if (data.method === "Runtime.consoleAPICalled") {
+          console.log("🖥️ CONSOLE:", data.params.type, data.params.args.map(a => a.value !== undefined ? a.value : a.description).join(" "));
         }
         this.events.push(data);
       }
@@ -465,6 +467,103 @@ async function main() {
       })()
     `);
     record(29, "Station 4: 花朵结构图与真实百合解剖实拍高清照片即时切换", flowerViewToggleRes === true);
+
+    // -------------------------------------------------------------
+    // Test 30: LearningCell 3D 实模加载与 3 模式切换 (拟真实模 vs 透视分件 vs 显微镜真图)
+    // -------------------------------------------------------------
+    const learningCellRes = await cdp.eval(`
+      (async () => {
+        // 先切回 Station 1
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-cell-3d"]');
+        if (tabBtn) tabBtn.click();
+
+        const btn3D = document.getElementById('btn-view-3d');
+        const btnExploded = document.getElementById('btn-view-exploded');
+        const btnMicroscope = document.getElementById('btn-view-microscope');
+        const modeTag = document.getElementById('cell-current-mode-tag');
+
+        if (!btn3D || !btnExploded || !btnMicroscope || !modeTag) return { pass: false, error: "Missing toggle buttons" };
+
+        // 等待 LearningCell GLB 模型就绪（至多 6 秒）
+        for (let i = 0; i < 30; i++) {
+          if (window.__learningCellMesh) break;
+          await new Promise(r => setTimeout(r, 200));
+        }
+
+        const modelLoaded = window.__learningCellMesh !== null && window.__learningCellMesh !== undefined;
+
+        // 1. 测试切到拟真实模 (btn-view-3d)
+        btn3D.click();
+        await new Promise(r => setTimeout(r, 120));
+        const mode3DActive = btn3D.classList.contains('active');
+        const mode3DText = modeTag.textContent.includes('LearningCell');
+        const modelVisibleIn3D = window.__learningCellMesh ? window.__learningCellMesh.visible : false;
+
+        // 2. 测试切到透视分件 (btn-view-exploded)
+        btnExploded.click();
+        await new Promise(r => setTimeout(r, 120));
+        const modeExplodedActive = btnExploded.classList.contains('active');
+        const modeExplodedText = modeTag.textContent.includes('透视分件');
+        const modelHiddenInExploded = window.__learningCellMesh ? !window.__learningCellMesh.visible : true;
+
+        // 3. 测试切到显微镜真图 (btn-view-microscope)
+        btnMicroscope.click();
+        await new Promise(r => setTimeout(r, 120));
+        const modeMicroscopeActive = btnMicroscope.classList.contains('active');
+        const modeMicroscopeText = modeTag.textContent.includes('显微镜真图对照');
+        const canvasHidden = document.getElementById('cell-3d-canvas-container').style.display === 'none';
+
+        // 复位回 3D 模式
+        btn3D.click();
+
+        return {
+          pass: modelLoaded && mode3DActive && mode3DText && modelVisibleIn3D &&
+                modeExplodedActive && modeExplodedText && modelHiddenInExploded &&
+                modeMicroscopeActive && modeMicroscopeText && canvasHidden,
+          modelLoaded,
+          mode3DText,
+          modeExplodedText,
+          modeMicroscopeText
+        };
+      })()
+    `);
+    record(30, "LearningCell 3D 实模加载与 3 模式切换 (拟真实模 vs 透视分件 vs 显微镜真图)", learningCellRes.pass === true, JSON.stringify(learningCellRes));
+
+    // -------------------------------------------------------------
+    // Test 31: 双系统内链完整性 (www.igcse.xyz 完整教学站 + sky.igcse.xyz 单词打卡)
+    // -------------------------------------------------------------
+    const dualLinksRes = await cdp.eval(`
+      (() => {
+        // 1. 顶部公告栏内链检查
+        const topBannerLinks = Array.from(document.querySelectorAll('.announcement-banner a, .banner-sub a')).map(a => a.href);
+        const hasTopWwwLink = topBannerLinks.some(href => href.includes('www.igcse.xyz'));
+        const hasTopSkyLink = topBannerLinks.some(href => href.includes('sky.igcse.xyz'));
+
+        // 2. 4 大展厅桥接卡片 (Curriculum Bridge Cards) 检查
+        const bridgeCards = document.querySelectorAll('.curriculum-bridge-card');
+        const bridgeWwwLinks = Array.from(document.querySelectorAll('.bridge-main-link')).map(a => a.href);
+        const bridgeWordLinks = Array.from(document.querySelectorAll('.bridge-word-link')).map(a => a.href);
+        const allBridgesHaveWww = bridgeCards.length === 4 && bridgeWwwLinks.length === 4 && bridgeWwwLinks.every(href => href.includes('www.igcse.xyz'));
+        const allBridgesHaveSky = bridgeWordLinks.length === 4 && bridgeWordLinks.every(href => href.includes('sky.igcse.xyz'));
+
+        // 3. 页脚双系统内链检查
+        const footerLinks = Array.from(document.querySelectorAll('footer a, .footer-links a')).map(a => a.href);
+        const hasFooterWwwLink = footerLinks.some(href => href.includes('www.igcse.xyz'));
+        const hasFooterSkyLink = footerLinks.some(href => href.includes('sky.igcse.xyz'));
+
+        return {
+          pass: hasTopWwwLink && hasTopSkyLink && allBridgesHaveWww && allBridgesHaveSky && hasFooterWwwLink && hasFooterSkyLink,
+          bridgeCount: bridgeCards.length,
+          hasTopWwwLink,
+          hasTopSkyLink,
+          allBridgesHaveWww,
+          allBridgesHaveSky,
+          hasFooterWwwLink,
+          hasFooterSkyLink
+        };
+      })()
+    `);
+    record(31, "双系统内链完整性 (www.igcse.xyz 完整教学 + sky.igcse.xyz 单词特训)", dualLinksRes.pass === true, JSON.stringify(dualLinksRes));
 
     // -------------------------------------------------------------
     // Test 10: Spelling plant-growth progression (5 阶成长形态)

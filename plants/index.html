@@ -55,18 +55,19 @@
 
   <main class="container">
 
-    <!-- 顶部横幅：主题导航与进阶互通 -->
+    <!-- 顶部横幅：主题导航与进阶双站互通 (明确区分 www.igcse.xyz 与 sky.igcse.xyz) -->
     <div class="announcement-banner">
       <div class="announcement-text" style="flex:1;">
         <span style="font-size:1.4rem;">🌱</span>
         <div>
-          <strong>SciencePre Theme 01: Plants</strong> · 正在学习经典自然启蒙英文诗！
-          完成下方探索与游戏可解锁专属小学者荣誉证书！
+          <strong>SciencePre Theme 01: Plants</strong> · 小学生自然双语科学营！
+          已接入剑桥 IGCSE 0610 真实微观知识点与 3D 细胞实模，完成探索可解锁荣誉证书！
         </div>
       </div>
-      <div style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-        <a href="/" class="portal-link" style="background:#f0fdf4;">🏠 浏览所有主题 (Theme Hub)</a>
-        <a href="https://sky.igcse.xyz" target="_blank" class="portal-link">🚀 切换到高年级 IGCSE 版 →</a>
+      <div style="display:flex; gap:0.5rem; flex-wrap:wrap; align-items:center;">
+        <a href="/" class="portal-link" style="background:#f0fdf4;">🏠 主题中心 (Hub)</a>
+        <a href="https://www.igcse.xyz" target="_blank" class="portal-link" style="background:#eff6ff; border-color:#93c5fd; color:#1d4ed8;" title="高年级完整教学站，拥有完整教学大纲与深度实验">📚 www.igcse.xyz (完整教学站) →</a>
+        <a href="https://sky.igcse.xyz" target="_blank" class="portal-link" style="background:#fdf2f8; border-color:#fbcfe8; color:#be185d;" title="高年级单词特训岛，专门针对科学专业词汇量冲刺">🎮 sky.igcse.xyz (单词特训) →</a>
       </div>
     </div>
 
@@ -232,8 +233,9 @@
           <div class="cell-3d-stage">
             <div class="cell-3d-overlay-bar">
               <div class="cell-view-toggle">
-                <button class="cell-view-btn active" id="btn-view-3d">🎮 3D 拟真模型</button>
-                <button class="cell-view-btn" id="btn-view-microscope">🔬 显微镜真图对照</button>
+                <button class="cell-view-btn active" id="btn-view-3d" title="LearningCell 真实 3D 拟真模型">🔬 拟真实模</button>
+                <button class="cell-view-btn" id="btn-view-exploded" title="透视器官分件与点选">🧩 透视分件</button>
+                <button class="cell-view-btn" id="btn-view-microscope" title="显微镜实拍切片与微观图纸对照">📸 显微镜真图</button>
               </div>
               <div class="cell-3d-controls">
                 <button class="cell-ctrl-btn active" id="btn-cell-autospin">🔄 自动旋转</button>
@@ -243,6 +245,12 @@
 
             <!-- 3D WebGL 画布挂载点 -->
             <div class="cell-3d-viewport" id="cell-3d-canvas-container"></div>
+
+            <!-- LearningCell 模型鸣谢与状态提示条 -->
+            <div class="learningcell-credit-row">
+              <span class="learningcell-badge">✨ 3D 实模来源：<a href="https://github.com/GordenSun/LearningCell" target="_blank" rel="noopener">GordenSun/LearningCell (细胞结构工坊)</a> · Draco 高精压缩</span>
+              <span class="cell-model-mode-tag" id="cell-current-mode-tag">当前模式：🔬 拟真实模 (LearningCell)</span>
+            </div>
 
             <!-- 显微镜真实切片对照视图 (默认隐藏，切换显示) -->
             <div class="cell-microscope-viewport" id="cell-microscope-container" style="display:none;">
@@ -296,6 +304,24 @@
               <!-- JS 渲染器官详情卡片 -->
             </div>
           </div>
+        </div>
+
+        <!-- Station 1 剑桥 IGCSE 进阶大纲桥梁卡片 (深度链接 www.igcse.xyz & sky.igcse.xyz) -->
+        <div class="curriculum-bridge-card">
+          <div class="bridge-header">
+            <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
+            <div class="bridge-links">
+              <a href="https://www.igcse.xyz/lessons/0610/2-1-cells" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+                📚 前往 www.igcse.xyz 学习完整教材：2.1 细胞与显微结构 →
+              </a>
+              <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
+                🎮 前往 sky.igcse.xyz 挑战细胞单词特训 →
+              </a>
+            </div>
+          </div>
+          <p class="bridge-desc">
+            <strong>高年级完整知识点：</strong> 植物细胞多出的三大法宝（纤维素细胞壁、叶绿体、永久大液泡）；显微镜放大倍数计算公式 \(I = A \times M\)；真核植物细胞与无细胞核细菌（质粒 Plasmid）的本质区别。
+          </p>
         </div>
       </div>
 
@@ -404,6 +430,24 @@
             <div class="sim-toast normal" id="limiting-factor-toast"></div>
           </div>
         </div>
+
+        <!-- Station 2 剑桥 IGCSE 进阶大纲桥梁卡片 (深度链接 www.igcse.xyz & sky.igcse.xyz) -->
+        <div class="curriculum-bridge-card">
+          <div class="bridge-header">
+            <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
+            <div class="bridge-links">
+              <a href="https://www.igcse.xyz/lessons/0610/6-1-photosynthesis" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+                📚 前往 www.igcse.xyz 学习完整教材：6.1 光合作用与限制因素 →
+              </a>
+              <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
+                🎮 前往 sky.igcse.xyz 挑战光合词汇打卡 →
+              </a>
+            </div>
+          </div>
+          <p class="bridge-desc">
+            <strong>高年级完整知识点：</strong> 平衡化学方程式 \(6CO_2 + 6H_2O \xrightarrow{光与叶绿素} C_6H_{12}O_6 + 6O_2\)；叶绿素合成必需矿质元素镁（Magnesium）；气孔保水与进食的两难博弈；限制因素 (Limiting Factor) 决定反应上限。
+          </p>
+        </div>
       </div>
 
       <!-- 展厅 3: 水流电梯与双向甜蜜快递 -->
@@ -466,6 +510,24 @@
             </div>
           </div>
         </div>
+
+        <!-- Station 3 剑桥 IGCSE 进阶大纲桥梁卡片 (深度链接 www.igcse.xyz & sky.igcse.xyz) -->
+        <div class="curriculum-bridge-card">
+          <div class="bridge-header">
+            <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
+            <div class="bridge-links">
+              <a href="https://www.igcse.xyz/lessons/0610/8-1-transport-plants" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+                📚 前往 www.igcse.xyz 学习完整教材：8.1 植物体内的运输 →
+              </a>
+              <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
+                🎮 前往 sky.igcse.xyz 挑战运输词汇打卡 →
+              </a>
+            </div>
+          </div>
+          <p class="bridge-desc">
+            <strong>高年级完整知识点：</strong> 木质部由死细胞中空木质化导管构成，只单向向上运输水分与矿质离子；韧皮部由活细胞筛管构成，双向运输蔗糖与氨基酸；蒸腾拉力 (Transpiration Pull) 水分子内聚力；源与库 (Source & Sink) 季节转换。
+          </p>
+        </div>
       </div>
 
       <!-- 展厅 4: 花朵大解剖与小蜜蜂授粉奇遇 -->
@@ -507,6 +569,24 @@
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Station 4 剑桥 IGCSE 进阶大纲桥梁卡片 (深度链接 www.igcse.xyz & sky.igcse.xyz) -->
+        <div class="curriculum-bridge-card">
+          <div class="bridge-header">
+            <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
+            <div class="bridge-links">
+              <a href="https://www.igcse.xyz/lessons/0610/16-1-reproduction" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+                📚 前往 www.igcse.xyz 学习完整教材：16.1 植物有性生殖与传粉 →
+              </a>
+              <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
+                🎮 前往 sky.igcse.xyz 挑战生殖词汇打卡 →
+              </a>
+            </div>
+          </div>
+          <p class="bridge-desc">
+            <strong>高年级完整知识点：</strong> 虫媒花（大花瓣、蜜腺、黏性花粉）与风媒花（羽状柱头、垂挂花药、轻小花粉）的解剖结构对比；花粉管钻探受精机制；种子萌发 WOW (Water, Oxygen, Warmth) 必备三要素。
+          </p>
         </div>
       </div>
 
@@ -786,12 +866,13 @@
   <footer>
     <div class="footer-links">
       <a href="/">🏠 返回主题中心 (Theme Hub)</a>
-      <a href="https://sky.igcse.xyz" target="_blank">🌐 Sky's Science Word Lab (初高中版)</a>
+      <a href="https://www.igcse.xyz" target="_blank" style="color:#2563eb; font-weight:700;">📚 IGCSE 完整科学教学站 (www.igcse.xyz)</a>
+      <a href="https://sky.igcse.xyz" target="_blank" style="color:#db2777; font-weight:700;">🎮 Sky 科学单词打卡岛 (sky.igcse.xyz)</a>
       <a href="#poem-hero">📖 返回本诗顶部</a>
       <a href="#vocab">🔤 查阅单词宝盒</a>
       <a href="https://github.com/CrazyRock114/SciencePre" target="_blank">📦 GitHub 开源仓库</a>
     </div>
-    <p>© 2026 SciencePre · 平行于 IGCSE Science Word Lab 的小学生专题自然科学探索营</p>
+    <p>© 2026 SciencePre · 小学生双语自然科学探索营 · 深度对接 www.igcse.xyz 完整教学大纲与 sky.igcse.xyz 单词特训</p>
     <div class="domain-note">
       🚀 独立二级域名：<strong>pre.igcse.xyz</strong> · 对应 GitHub 开源仓库：<strong>CrazyRock114/SciencePre</strong>
     </div>

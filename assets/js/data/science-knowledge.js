@@ -265,3 +265,43 @@ export const POLLINATION_STEPS = [
     text: "花粉与胚珠完美结合（受精 Fertilisation）！子房膨大成水果，胚珠变成坚硬饱满的种子。当种子落入泥土，吸收水分后便破土萌芽，长成下一代健壮植株！"
   }
 ];
+
+// ==========================================================================
+// 剑桥 IGCSE 0610 进阶大纲桥梁知识库 (深度对接 www.igcse.xyz 完整教学站)
+// 帮助小学阶段建立扎实概念直觉，平滑过渡至初高中剑桥完整教材！
+// ==========================================================================
+export const IGCSE_CURRICULUM_BRIDGES = {
+  cells: {
+    stationId: "station-cell-3d",
+    syllabusCode: "0610.2.1",
+    lessonTitle: "2.1 细胞与显微结构 (Cells & Biological Molecules)",
+    officialUrl: "https://www.igcse.xyz/lessons/0610/2-1-cells",
+    summary: "植物细胞独有的'三大法宝'（纤维素细胞壁、叶绿体、大液泡），显微镜放大倍数口诀 I = A × M，以及真核细胞与细菌的区别。",
+    kidMetaphor: "城堡外墙（细胞壁）+ 太阳能厨房（叶绿体）+ 超级大水箱（液泡），三者合力让植物即便没有骨骼也能直挺挺屹立！"
+  },
+  photosynthesis: {
+    stationId: "station-leaf-photo",
+    syllabusCode: "0610.6.1",
+    lessonTitle: "6.1 光合作用与限制因素 (Photosynthesis & Limiting Factors)",
+    officialUrl: "https://www.igcse.xyz/lessons/0610/6-1-photosynthesis",
+    summary: "平衡化学方程式 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂、叶绿素合成必需元素（镁离子）、气孔'保水与进食'的两难博弈、光合限制因素木桶原理。",
+    kidMetaphor: "气孔是植物的小嘴巴：关紧它能保住水分不被晒干，却会断粮挨饿；张开它能大口吃进二氧化碳，却会不断散失水分！"
+  },
+  transport: {
+    stationId: "station-transport",
+    syllabusCode: "0610.8.1",
+    lessonTitle: "8.1 植物体内的运输 (Transport in Plants)",
+    officialUrl: "https://www.igcse.xyz/lessons/0610/8-1-transport-plants",
+    summary: "木质部（中空死导管单向向上）与韧皮部（活细胞筛管双向运输蔗糖氨基酸）、蒸腾拉力 (Transpiration Pull) 水分子内聚力、源与库 (Source & Sink)。",
+    kidMetaphor: "就像用超长吸管喝奶茶：叶片蒸发水分产生巨大的负压吸力，水分子像手拉手的小朋友排成一条坚韧不拔的水链，一口气从泥土拽到百米树梢！"
+  },
+  reproduction: {
+    stationId: "station-flower",
+    syllabusCode: "0610.16.1",
+    lessonTitle: "16.1 植物有性生殖与传粉 (Plant Reproduction)",
+    officialUrl: "https://www.igcse.xyz/lessons/0610/16-1-reproduction",
+    summary: "虫媒花适应机制、花粉管微观生长穿透花柱、受精过程与子房膨大发育为果实、种子破土萌发的 WOW 必备三要素（Water, Oxygen, Warmth）。",
+    kidMetaphor: "花瓣是机场停机坪与招牌，花蜜是甜品报酬，小蜜蜂是义务快递员，花粉管是微型钻探机，子房则是保护种子的营养摇篮！"
+  }
+};
+
