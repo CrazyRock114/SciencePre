@@ -6,21 +6,28 @@
 import { PoemTheater } from "./poem-theater.js";
 import { PlantCanvas } from "./plant-canvas.js";
 import { VocabLab } from "./vocab-lab.js";
+import { ScienceLab } from "./science-lab.js";
 import { GamesArcade } from "./games.js";
 import { CertificateController } from "./certificate.js";
 import { SCIENCE_VS_POETRY } from "../data/plants-data.js";
 import { audio } from "../core/audio.js";
+import { progressTracker } from "../core/progress.js";
 
 function initPlants() {
   let poemTheater = null;
   let plantCanvas = null;
   let vocabLab = null;
+  let scienceLab = null;
   let gamesArcade = null;
   let certController = null;
 
   // 1. 初始化单词工坊
   vocabLab = new VocabLab();
   vocabLab.init();
+
+  // 1.5. 初始化 3D 科学探险实验室 (Three.js 细胞 + 光合模拟 + 运输电梯 + 授粉绘本)
+  scienceLab = new ScienceLab();
+  scienceLab.init();
 
   // 2. 初始化诗歌剧场与活体植物画布（建立真正的双向联动）
   // Poem -> Organ: 当诗句被点击或卡拉OK滚动时，高亮植物SVG器官
@@ -71,6 +78,7 @@ function initPlants() {
 
   // 暴露到 window 方便测试与诊断
   window.__progressTracker = progressTracker;
+  window.__scienceLab = scienceLab;
 
   // 6. 绑定顶部通用控制栏 (双速语速、中英显隐、全局声音)
   bindGlobalControls(poemTheater);

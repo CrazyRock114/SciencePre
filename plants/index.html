@@ -8,6 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
   <link rel="stylesheet" href="/assets/css/base.css">
   <link rel="stylesheet" href="/assets/css/plants.css">
+  <link rel="stylesheet" href="/assets/css/science-lab.css">
 </head>
 <body>
 
@@ -29,7 +30,8 @@
       <nav class="nav-tabs">
         <a href="/" style="background:#ecfdf5; color:#047857;">🏠 返回主题中心</a>
         <a href="#poem-hero">📖 读诗探险</a>
-        <a href="#stations">🔬 科学四维站</a>
+        <a href="#science-lab" style="background:#dcfce7; color:#15803d; font-weight:800;">🔬 3D互动科学馆</a>
+        <a href="#stations">🌱 科学四维站</a>
         <a href="#science-vs-poetry">💡 诗歌vs科学</a>
         <a href="#vocab">🔤 单词魔法库</a>
         <a href="#games">🎮 趣味游戏馆</a>
@@ -202,6 +204,245 @@
       <div class="inspect-body" id="inspect-desc"></div>
       <div class="inspect-secret" id="inspect-secret"></div>
     </div>
+
+    <!-- ====================================================================
+         SECTION 0.5: 小小植物学家 3D 科学实验室 (Junior Botanist Lab)
+         融入 Cambridge IGCSE Biology 知识点，以小学生生动形象的交互口吻重塑
+         ==================================================================== -->
+    <section class="science-lab-section" id="science-lab">
+      <div class="science-lab-header">
+        <span class="lab-badge">🌟 3D & 交互科学探险馆 · IGCSE Junior Lab</span>
+        <h2>小小植物学家科学实验室</h2>
+        <p>
+          单词记牢了，自然背后的科学原理更奇妙！转动 <strong>3D 植物细胞</strong>、
+          亲手操控<strong>叶片阳光厨房</strong>、看<strong>水流电梯与甜蜜快递</strong>高速奔跑、
+          揭秘<strong>小蜜蜂授粉与种子诞生</strong>的生命奇迹！
+        </p>
+      </div>
+
+      <!-- 四大展厅选择器选项卡 -->
+      <div class="station-tabs-nav" id="science-station-tabs">
+        <!-- JS 动态渲染 4 个展厅按钮 -->
+      </div>
+
+      <!-- 展厅 1: 植物细胞 3D 展厅 -->
+      <div class="science-station-panel active" id="station-cell-3d">
+        <div class="cell-3d-layout">
+          <!-- 左侧：3D 舞台与液泡实验 -->
+          <div class="cell-3d-stage">
+            <div class="cell-3d-overlay-bar">
+              <span class="cell-3d-tip">👆 鼠标按住拖拽可 360° 旋转 · 滚轮缩放 · 点击器官点读</span>
+              <div class="cell-3d-controls">
+                <button class="cell-ctrl-btn active" id="btn-cell-autospin">🔄 自动旋转</button>
+                <button class="cell-ctrl-btn" id="btn-cell-reset">🎯 视角复位</button>
+              </div>
+            </div>
+
+            <!-- 3D WebGL 画布挂载点 -->
+            <div class="cell-3d-viewport" id="cell-3d-canvas-container"></div>
+
+            <!-- 底部：液泡充水膨胀实验 -->
+            <div class="vacuole-experiment-bar">
+              <div class="experiment-title-row">
+                <h5>🧪 科学小动手：大液泡浇水与膨压实验 (Vacuole Turgor)</h5>
+                <div class="exp-buttons">
+                  <button class="exp-btn active" id="btn-vacuole-water">💧 浇水啦！</button>
+                  <button class="exp-btn" id="btn-vacuole-drought">☀️ 干旱断水！</button>
+                </div>
+              </div>
+              <p class="exp-state-text" id="vacuole-turgor-state">
+                💧 <strong>饱满挺立 (Turgid)</strong>：大液泡大口吸饱水分，像气球一样把细胞壁撑得笔直！植物神气十足！
+              </p>
+            </div>
+          </div>
+
+          <!-- 右侧：器官选择器与详情卡片 -->
+          <div class="cell-detail-sidebar">
+            <div class="cell-pills-row" id="cell-parts-pills">
+              <!-- JS 渲染药丸按钮 -->
+            </div>
+            <div class="cell-part-card" id="cell-part-detail-card">
+              <!-- JS 渲染器官详情卡片 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 展厅 2: 叶片微观横剖面与光合实验室 -->
+      <div class="science-station-panel" id="station-leaf-photo">
+        <div class="leaf-station-grid">
+          <!-- 左侧：叶片微观横截面交互图 -->
+          <div class="leaf-diagram-box">
+            <h4>🍃 叶片微观“摩天大楼”横截面</h4>
+            <div class="section-subtext">点击下方各层结构，透视叶片每一层专属的工作使命！</div>
+            
+            <div class="leaf-svg-wrapper">
+              <svg viewBox="0 0 400 240" class="leaf-slice-svg" xmlns="http://www.w3.org/2000/svg">
+                <!-- 蜡质角质层与上表皮 -->
+                <rect x="20" y="20" width="360" height="25" rx="5" fill="#86efac" stroke="#16a34a" stroke-width="2" class="svg-leaf-slice-layer" data-layer="cuticle-epidermis" />
+                <text x="200" y="37" font-size="12" font-weight="bold" fill="#14532d" text-anchor="middle">上表皮 &amp; 角质层 Upper Epidermis (防雨冲锋衣)</text>
+
+                <!-- 栅栏组织 -->
+                <g class="svg-leaf-slice-layer" data-layer="palisade">
+                  <rect x="20" y="52" width="360" height="65" rx="4" fill="#22c55e" stroke="#15803d" stroke-width="2" />
+                  <!-- 栅栏细胞小圆柱 -->
+                  <rect x="30" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="70" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="110" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="150" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="190" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="230" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="270" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="310" y="56" width="30" height="56" rx="4" fill="#16a34a" />
+                  <rect x="350" y="56" width="22" height="56" rx="4" fill="#16a34a" />
+                  <text x="200" y="90" font-size="12" font-weight="bold" fill="#ffffff" text-anchor="middle">栅栏组织 Palisade Mesophyll (塞满叶绿体的做饭工厂)</text>
+                </g>
+
+                <!-- 海绵组织与叶脉 -->
+                <g class="svg-leaf-slice-layer" data-layer="spongy">
+                  <rect x="20" y="124" width="360" height="65" rx="4" fill="#bbf7d0" stroke="#4ade80" stroke-width="2" />
+                  <circle cx="50" cy="155" r="14" fill="#4ade80" />
+                  <circle cx="100" cy="145" r="12" fill="#4ade80" />
+                  <circle cx="300" cy="150" r="14" fill="#4ade80" />
+                  <circle cx="350" cy="160" r="13" fill="#4ade80" />
+                  <text x="130" y="160" font-size="11" font-weight="bold" fill="#166534">海绵组织 (空气穿梭游乐场)</text>
+                </g>
+
+                <!-- 叶脉管道群 -->
+                <g class="svg-leaf-slice-layer" data-layer="vein">
+                  <circle cx="200" cy="155" r="24" fill="#38bdf8" stroke="#0284c7" stroke-width="2" />
+                  <circle cx="192" cy="155" r="8" fill="#bae6fd" />
+                  <circle cx="208" cy="155" r="8" fill="#fed7aa" />
+                  <text x="200" y="159" font-size="9" font-weight="bold" fill="#0369a1" text-anchor="middle">叶脉 Vein</text>
+                </g>
+
+                <!-- 下表皮与保卫细胞/气孔 -->
+                <rect x="20" y="196" width="360" height="24" rx="4" fill="#86efac" stroke="#16a34a" stroke-width="2" class="svg-leaf-slice-layer" data-layer="cuticle-epidermis" />
+                <g class="svg-leaf-slice-layer" data-layer="stoma-guard">
+                  <!-- 气孔开孔 -->
+                  <ellipse cx="140" cy="208" rx="14" ry="7" fill="#15803d" />
+                  <ellipse cx="140" cy="208" rx="5" ry="3" fill="#0f172a" />
+                  <ellipse cx="260" cy="208" rx="14" ry="7" fill="#15803d" />
+                  <ellipse cx="260" cy="208" rx="5" ry="3" fill="#0f172a" />
+                  <text x="200" y="213" font-size="11" font-weight="bold" fill="#14532d" text-anchor="middle">保卫细胞 &amp; 气孔 Stomata (会呼吸的门卫)</text>
+                </g>
+              </svg>
+            </div>
+
+            <div class="leaf-layers-list" id="leaf-layers-container"></div>
+          </div>
+
+          <!-- 右侧：光合作用模拟器 -->
+          <div class="photosynthesis-sim-box">
+            <h4>🧪 小小科学家阳光厨房 · 模拟器</h4>
+            <div class="section-subtext">动手拖动三样原料滑块，看看叶片怎样烘焙能量甜点！</div>
+
+            <!-- 控制滑块组 -->
+            <div class="sim-controls-group">
+              <div class="slider-row">
+                <div class="slider-label-row">
+                  <span>☀️ 阳光光照 (Sunlight)</span>
+                  <span class="slider-val-tag" id="val-sunlight">80%</span>
+                </div>
+                <input type="range" min="0" max="100" value="80" class="science-range" id="slider-sunlight">
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-label-row">
+                  <span>💨 二氧化碳 (CO₂)</span>
+                  <span class="slider-val-tag" id="val-co2">60%</span>
+                </div>
+                <input type="range" min="0" max="100" value="60" class="science-range" id="slider-co2">
+              </div>
+
+              <div class="slider-row">
+                <div class="slider-label-row">
+                  <span>💧 根系水分 (Water)</span>
+                  <span class="slider-val-tag" id="val-water">90%</span>
+                </div>
+                <input type="range" min="0" max="100" value="90" class="science-range" id="slider-water">
+              </div>
+            </div>
+
+            <!-- 反应看板 -->
+            <div class="sim-reaction-board">
+              <div class="reaction-speed-header">
+                <span>⚡ 光合作用总速率 (Rate)</span>
+                <span id="photosynthesis-rate-num" style="color:#15803d; font-size:1.3rem;">60%</span>
+              </div>
+              <div class="speed-meter-track">
+                <div class="speed-meter-bar" id="photosynthesis-rate-meter"></div>
+              </div>
+
+              <!-- 气泡与产物动画 -->
+              <div class="sim-reaction-animation">
+                <div class="bubbles-cloud" id="oxygen-bubbles-cloud"></div>
+                <div class="glucose-counter-badge">🍬 葡萄糖生成中</div>
+              </div>
+            </div>
+
+            <!-- 限制因素提示 -->
+            <div class="sim-toast normal" id="limiting-factor-toast"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 展厅 3: 水流电梯与双向甜蜜快递 -->
+      <div class="science-station-panel" id="station-transport">
+        <div class="transport-station-wrapper">
+          <div class="transport-toggle-row">
+            <button class="transport-toggle-btn active" id="btn-mode-xylem">
+              💧 木质部 (Xylem) · 向上冲的水流电梯
+            </button>
+            <button class="transport-toggle-btn" id="btn-mode-phloem">
+              🍬 韧皮部 (Phloem) · 双向送达的甜蜜快递
+            </button>
+          </div>
+
+          <div class="transport-layout-grid">
+            <!-- 管道粒子动画窗口 -->
+            <div class="transport-pipeline-box xylem-mode" id="transport-pipeline-view">
+              <div class="pipe-label-top">🌿 叶片树梢 (Leaves)</div>
+              <div class="pipe-stem-tube">
+                <div class="pipe-particle-stream"></div>
+              </div>
+              <div class="pipe-label-bottom">🌱 土壤深根 (Roots)</div>
+            </div>
+
+            <!-- 科学详情网格 -->
+            <div class="transport-details-card" id="transport-mode-details"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 展厅 4: 花朵大解剖与小蜜蜂授粉奇遇 -->
+      <div class="science-station-panel" id="station-flower">
+        <div class="flower-station-layout">
+          <!-- 左侧：花朵结构卡片 -->
+          <div class="flower-parts-box">
+            <h4>🌸 花朵立体解剖 · 四大成员</h4>
+            <div class="section-subtext">点击卡片可收听英文发音，看懂花儿为什么这样红！</div>
+            <div class="flower-parts-grid" id="flower-parts-list"></div>
+          </div>
+
+          <!-- 右侧：小蜜蜂授粉故事书 -->
+          <div class="pollination-storybook-box">
+            <h4>🐝 小蜜蜂授粉与种子诞生的奇幻旅行</h4>
+            <div class="section-subtext">点击步骤数字，一步步见证花朵如何变成美味的水果与种子！</div>
+
+            <div class="pollination-carousel-wrapper">
+              <div class="pollination-step-nav" id="pollination-step-indicators"></div>
+              <div class="pollination-story-card" id="pollination-story-display"></div>
+              <div class="pollination-btns-row">
+                <button class="story-nav-btn" id="btn-pollination-prev">⬅️ 上一步</button>
+                <button class="story-nav-btn" id="btn-pollination-next">下一步 ➡️</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
 
     <!-- ====================================================================
          SECTION 1: 4 大科学奇迹站

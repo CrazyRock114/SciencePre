@@ -23,6 +23,9 @@ class CDPClient {
         if (data.error) reject(data.error);
         else resolve(data.result);
       } else if (data.method) {
+        if (data.method === "Runtime.exceptionThrown") {
+          console.error("🚨 BROWSER EXCEPTION:", JSON.stringify(data.params.exceptionDetails));
+        }
         this.events.push(data);
       }
     };
@@ -64,7 +67,8 @@ async function main() {
     "--headless=new",
     `--remote-debugging-port=${PORT}`,
     `--user-data-dir=${profileDir}`,
-    "--disable-gpu",
+    "--enable-webgl",
+    "--use-gl=angle",
     "--no-sandbox",
     "about:blank"
   ]);
@@ -144,9 +148,10 @@ async function main() {
     // 等待 ES Module 与 DOM 完全初始化就绪
     await cdp.eval(`
       new Promise((resolve) => {
-        if (window.__progressTracker) return resolve();
+        const isReady = () => window.__progressTracker && document.getElementById('poem-stanza-0');
+        if (isReady()) return resolve();
         const timer = setInterval(() => {
-          if (window.__progressTracker) {
+          if (isReady()) {
             clearInterval(timer);
             resolve();
           }
@@ -245,6 +250,103 @@ async function main() {
       })()
     `);
     record(8, "Vocabulary audio normal/slow & chunk 可点击朗读", vocabChunkRes === true);
+
+    // -------------------------------------------------------------
+    // Test 20: 3D 植物细胞 WebGL 画布加载与渲染
+    // -------------------------------------------------------------
+    const cell3DRes = await cdp.eval(`
+      (() => {
+        const canvas = document.querySelector('#cell-3d-canvas-container canvas');
+        return canvas && canvas.width > 0 && canvas.height > 0;
+      })()
+    `);
+    record(20, "3D 植物细胞 WebGL 真实画布初始化与渲染", cell3DRes === true);
+
+    // -------------------------------------------------------------
+    // Test 21: 3D 细胞器官点选与大液泡浇水膨压实验 (Turgid vs Flaccid)
+    // -------------------------------------------------------------
+    const turgorExpRes = await cdp.eval(`
+      (() => {
+        const droughtBtn = document.getElementById('btn-vacuole-drought');
+        const waterBtn = document.getElementById('btn-vacuole-water');
+        const stateEl = document.getElementById('vacuole-turgor-state');
+        if (!droughtBtn || !waterBtn || !stateEl) return false;
+        
+        droughtBtn.click();
+        const hasFlaccid = stateEl.innerText.includes('Flaccid') || stateEl.innerText.includes('萎蔫');
+        waterBtn.click();
+        const hasTurgid = stateEl.innerText.includes('Turgid') || stateEl.innerText.includes('挺立');
+        return hasFlaccid && hasTurgid;
+      })()
+    `);
+    record(21, "3D 细胞大液泡浇水膨压实验 (Turgid vs Flaccid 切换)", turgorExpRes === true);
+
+    // -------------------------------------------------------------
+    // Test 22: 叶片光合作用阳光厨房滑块与限制因素 (Limiting Factor) 实时测算
+    // -------------------------------------------------------------
+    const photoSimRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-leaf-photo"]');
+        if (tabBtn) tabBtn.click();
+
+        const sunInput = document.getElementById('slider-sunlight');
+        const co2Input = document.getElementById('slider-co2');
+        const rateNum = document.getElementById('photosynthesis-rate-num');
+        const toast = document.getElementById('limiting-factor-toast');
+        if (!sunInput || !co2Input || !rateNum || !toast) return false;
+
+        sunInput.value = '90';
+        sunInput.dispatchEvent(new Event('input'));
+        co2Input.value = '20';
+        co2Input.dispatchEvent(new Event('input'));
+
+        const rateIs20 = rateNum.textContent === '20%';
+        const toastHasLimiting = toast.textContent.includes('限制因素') || toast.textContent.includes('Limiting');
+        return rateIs20 && toastHasLimiting;
+      })()
+    `);
+    record(22, "叶片光合作用阳光厨房限制因素 (Limiting Factor) 动态发现", photoSimRes === true);
+
+    // -------------------------------------------------------------
+    // Test 23: 水流直达梯与甜蜜快递 (Xylem vs Phloem) 双向管道切换与粒子流
+    // -------------------------------------------------------------
+    const transportRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-transport"]');
+        if (tabBtn) tabBtn.click();
+
+        const btnPhloem = document.getElementById('btn-mode-phloem');
+        const btnXylem = document.getElementById('btn-mode-xylem');
+        const pipeBox = document.getElementById('transport-pipeline-view');
+        if (!btnPhloem || !btnXylem || !pipeBox) return false;
+
+        btnPhloem.click();
+        const isPhloem = pipeBox.classList.contains('phloem-mode');
+        btnXylem.click();
+        const isXylem = pipeBox.classList.contains('xylem-mode');
+        return isPhloem && isXylem;
+      })()
+    `);
+    record(23, "水流电梯与双向甜蜜快递 (Xylem vs Phloem 管道切换)", transportRes === true);
+
+    // -------------------------------------------------------------
+    // Test 24: 花朵大解剖与小蜜蜂授粉 4 步故事书步进联动
+    // -------------------------------------------------------------
+    const flowerStoryRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-flower"]');
+        if (tabBtn) tabBtn.click();
+
+        const nextBtn = document.getElementById('btn-pollination-next');
+        const storyCard = document.getElementById('pollination-story-display');
+        if (!nextBtn || !storyCard) return false;
+
+        nextBtn.click(); // 从第 1 幕切到第 2 幕
+        const isStep2 = storyCard.innerText.includes('第 2 幕') || storyCard.innerText.includes('蜜蜂');
+        return isStep2;
+      })()
+    `);
+    record(24, "花朵大解剖与小蜜蜂授粉 4 步故事书交互步进", flowerStoryRes === true);
 
     // -------------------------------------------------------------
     // Test 10: Spelling plant-growth progression (5 阶成长形态)
