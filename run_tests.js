@@ -60,6 +60,60 @@ class CDPClient {
     }
     return res.result ? res.result.value : undefined;
   }
+
+  navigate(url) {
+    return new Promise(async (resolve) => {
+      let resolved = false;
+      const onMsg = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.method === "Page.loadEventFired") {
+            this.ws.removeEventListener("message", onMsg);
+            if (!resolved) {
+              resolved = true;
+              resolve();
+            }
+          }
+        } catch (e) {}
+      };
+      this.ws.addEventListener("message", onMsg);
+      await this.send("Page.navigate", { url });
+      setTimeout(() => {
+        this.ws.removeEventListener("message", onMsg);
+        if (!resolved) {
+          resolved = true;
+          resolve();
+        }
+      }, 3000);
+    });
+  }
+
+  reload() {
+    return new Promise(async (resolve) => {
+      let resolved = false;
+      const onMsg = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.method === "Page.loadEventFired") {
+            this.ws.removeEventListener("message", onMsg);
+            if (!resolved) {
+              resolved = true;
+              resolve();
+            }
+          }
+        } catch (e) {}
+      };
+      this.ws.addEventListener("message", onMsg);
+      await this.send("Page.reload");
+      setTimeout(() => {
+        this.ws.removeEventListener("message", onMsg);
+        if (!resolved) {
+          resolved = true;
+          resolve();
+        }
+      }, 3000);
+    });
+  }
 }
 
 async function main() {
@@ -120,12 +174,13 @@ async function main() {
     // Test 1: Theme Hub -> Plants 导航可达性
     // -------------------------------------------------------------
     console.log(`Testing target URL: ${BASE_URL}`);
-    await cdp.send("Page.navigate", { url: `${BASE_URL}/` });
+    await cdp.navigate(`${BASE_URL}/`);
     await cdp.eval(`
       new Promise((resolve) => {
-        if (document.querySelector('.theme-card.active-theme .theme-enter-btn')) return resolve();
+        const isReady = () => document.querySelector('.theme-card.active-theme .theme-enter-btn');
+        if (isReady()) return resolve();
         const timer = setInterval(() => {
-          if (document.querySelector('.theme-card.active-theme .theme-enter-btn')) {
+          if (isReady()) {
             clearInterval(timer);
             resolve();
           }
@@ -143,9 +198,24 @@ async function main() {
     record(1, "Theme Hub → Plants 导航链接", hubToPlantsHref === "/plants/", `href: ${hubToPlantsHref}`);
 
     // -------------------------------------------------------------
+    // Test 33: Theme Hub 首页通用生态顶栏接入与旧版横幅清理验证
+    // -------------------------------------------------------------
+    const hubNavCheck = await cdp.eval(`
+      (() => {
+        const nav = document.querySelector('igcse-nav[active="pre"]');
+        const legacyBanner = document.querySelector('.announcement-banner');
+        return {
+          hasNav: nav !== null,
+          legacyBannerRemoved: legacyBanner === null
+        };
+      })()
+    `);
+    record(33, "Theme Hub 首页通用生态顶栏挂载且旧版横幅已清理", hubNavCheck.hasNav && hubNavCheck.legacyBannerRemoved, JSON.stringify(hubNavCheck));
+
+    // -------------------------------------------------------------
     // Test 2 & 19: Plants -> Theme Hub 导航与 /plants/ 直接刷新
     // -------------------------------------------------------------
-    await cdp.send("Page.navigate", { url: `${BASE_URL}/plants/` });
+    await cdp.navigate(`${BASE_URL}/plants/`);
 
     // 等待 ES Module 与 DOM 完全初始化就绪
     await cdp.eval(`
@@ -566,6 +636,50 @@ async function main() {
     record(31, "双系统内链完整性 (www.igcse.xyz 完整教学 + sky.igcse.xyz 单词特训)", dualLinksRes.pass === true, JSON.stringify(dualLinksRes));
 
     // -------------------------------------------------------------
+    // Test 32: 母舰全域生态通用导航顶栏 (<igcse-nav active="pre">) 挂载与四大药丸跳转验证
+    // -------------------------------------------------------------
+    const ecosystemNavRes = await cdp.eval(`
+      (async () => {
+        // 等待自定义元素解析渲染
+        for (let i = 0; i < 25; i++) {
+          const navEl = document.querySelector('igcse-nav');
+          const pills = document.querySelectorAll('.igcse-nav-pill');
+          if (navEl && pills.length >= 4) break;
+          await new Promise(r => setTimeout(r, 150));
+        }
+
+        const navEl = document.querySelector('igcse-nav');
+        if (!navEl) return { pass: false, error: "Missing <igcse-nav>" };
+
+        const pills = Array.from(document.querySelectorAll('.igcse-nav-pill'));
+        const pillHrefs = pills.map(p => p.getAttribute('href'));
+
+        const hasMain = pillHrefs.some(h => h === 'https://igcse.xyz');
+        const hasSky = pillHrefs.some(h => h === 'https://sky.igcse.xyz');
+        const hasPre = pillHrefs.some(h => h === 'https://pre.igcse.xyz');
+        const hasZperiod = pillHrefs.some(h => h === 'https://zperiod.igcse.xyz');
+
+        // 验证当前 pre 药丸是否处于激活状态 (is-active) 并带高亮呼吸灯
+        const activePill = document.querySelector('.igcse-nav-pill.is-active');
+        const activeHref = activePill ? activePill.getAttribute('href') : null;
+        const isPreActive = activeHref === 'https://pre.igcse.xyz';
+        const hasActiveDot = activePill ? !!activePill.querySelector('.igcse-nav-active-dot') : false;
+
+        return {
+          pass: hasMain && hasSky && hasPre && hasZperiod && isPreActive && hasActiveDot,
+          pillCount: pills.length,
+          hasMain,
+          hasSky,
+          hasPre,
+          hasZperiod,
+          isPreActive,
+          hasActiveDot
+        };
+      })()
+    `);
+    record(32, "通用生态导航顶栏 (<igcse-nav active=\"pre\">) 四大药丸与高亮状态", ecosystemNavRes.pass === true, JSON.stringify(ecosystemNavRes));
+
+    // -------------------------------------------------------------
     // Test 10: Spelling plant-growth progression (5 阶成长形态)
     // -------------------------------------------------------------
     const growthStagesRes = await cdp.eval(`
@@ -745,8 +859,8 @@ async function main() {
     // -------------------------------------------------------------
     // Test 16: Reload page and progress persistence
     // -------------------------------------------------------------
-    await cdp.send("Page.reload");
-    await new Promise((r) => setTimeout(r, 700));
+    await cdp.reload();
+    await new Promise((r) => setTimeout(r, 600));
     await cdp.eval(`
       new Promise((resolve) => {
         if (window.__progressTracker) return resolve();
