@@ -411,23 +411,34 @@ export class ScienceLab {
 
     // 智能限制因素侦探提示
     if (toastBox) {
+      const maxFactor = Math.max(sunlight, co2, water);
+
       if (rate === 0) {
         if (sunlight === 0) {
-          toastBox.innerHTML = `🌙 <strong>天黑啦！</strong> 没有阳光，叶绿体无法开工做饭！阳光是当前最大的限制因素！`;
+          toastBox.innerHTML = `🌙 <strong>天黑啦！</strong> 没有阳光，叶绿体无法开工做饭！阳光是当前限制因素 (Limiting Factor)！`;
         } else if (co2 === 0) {
-          toastBox.innerHTML = `💨 <strong>缺气了！</strong> 没有二氧化碳，再好的阳光也做不出糖果！二氧化碳是限制因素！`;
+          toastBox.innerHTML = `💨 <strong>缺气了！</strong> 没有二氧化碳，再好的阳光也做不出糖果！二氧化碳是当前限制因素 (Limiting Factor)！`;
         } else {
-          toastBox.innerHTML = `💧 <strong>极度干旱！</strong> 没有水分参与光合反应，工厂彻底停产！`;
+          toastBox.innerHTML = `💧 <strong>极度干旱！</strong> 没有水分参与光合反应，工厂彻底停工！水分是当前限制因素 (Limiting Factor)！`;
         }
         toastBox.className = "sim-toast limiting";
-      } else if (sunlight > 70 && co2 < 30) {
-        toastBox.innerHTML = `💡 <strong>小侦探发现限制因素 (Limiting Factor)！</strong> 虽然阳光很强，但因为二氧化碳太少，做饭速度被死死卡在 ${rate}%！试着调大二氧化碳看看！`;
+      } else if (sunlight === rate && maxFactor - sunlight >= 20) {
+        toastBox.innerHTML = `💡 <strong>小侦探发现限制因素 (Limiting Factor)！</strong> 阳光只有 ${sunlight}%，是当前木桶的最短板！即使其他原料再多也无法加速，试着调大阳光看看！`;
         toastBox.className = "sim-toast limiting";
-      } else if (rate >= 80) {
-        toastBox.innerHTML = `🎉 <strong>能量大爆发！</strong> 阳光、二氧化碳和水分全都充足！叶片正在全力制造甜甜的葡萄糖 (Glucose) 并释放大量氧气 (O₂)！`;
+      } else if (co2 === rate && maxFactor - co2 >= 20) {
+        toastBox.innerHTML = `💡 <strong>小侦探发现限制因素 (Limiting Factor)！</strong> 二氧化碳只有 ${co2}%，是当前反应的最短板！做饭速度被卡在 ${rate}%，试着增加二氧化碳原料！`;
+        toastBox.className = "sim-toast limiting";
+      } else if (water === rate && maxFactor - water >= 20) {
+        toastBox.innerHTML = `💡 <strong>小侦探发现限制因素 (Limiting Factor)！</strong> 根系水分只有 ${water}%，水太少限制了产糖速度！快给植物多浇点水吧！`;
+        toastBox.className = "sim-toast limiting";
+      } else if (rate < 40) {
+        toastBox.innerHTML = `⚠️ <strong>整体原料不足：</strong> 当前三大原料均处于较低水平（光合速率 ${rate}%）。试着全面提升原料供给以提高产糖效率！`;
+        toastBox.className = "sim-toast limiting";
+      } else if (rate >= 75) {
+        toastBox.innerHTML = `🎉 <strong>能量大爆发！</strong> 阳光 (${sunlight}%)、二氧化碳 (${co2}%) 和水分 (${water}%) 全都充足！叶片正在全力制造葡萄糖 (Glucose) 并大量释放氧气（Oxygen）！`;
         toastBox.className = "sim-toast success";
       } else {
-        toastBox.innerHTML = `🌱 <strong>平稳生产中：</strong> 光合作用速率为 ${rate}%。三样原料都在协同工作！`;
+        toastBox.innerHTML = `🌱 <strong>平稳生产中：</strong> 光合作用速率为 ${rate}%。三大原料正在协同工作，稳定制造葡萄糖并释放氧气（Oxygen）！`;
         toastBox.className = "sim-toast normal";
       }
     }

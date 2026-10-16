@@ -87,7 +87,13 @@ export class PoemTheater {
   _buildLineHtmlWithKeywords(text, keywords = []) {
     let html = text;
     keywords.forEach((kw) => {
-      const reg = new RegExp(`\\b(${kw})\\b`, "gi");
+      let pattern;
+      if (kw.toLowerCase() === "make food") {
+        pattern = "\\b(Make\\s+(?:the\\s+)?food)\\b";
+      } else {
+        pattern = `\\b(${kw.replace(/\s+/g, "\\s+")})\\b`;
+      }
+      const reg = new RegExp(pattern, "gi");
       html = html.replace(reg, (match) => {
         return `<span class="keyword-badge" data-word="${kw}" tabindex="0" role="button" aria-label="查看单词${kw}详情">${match}</span>`;
       });
@@ -119,7 +125,13 @@ export class PoemTheater {
 
   // 外部植物器官反向高亮诗节 (Organ -> Poem)
   highlightByOrgan(organKey) {
-    const targetIdx = POEM_DATA.findIndex((s) => s.organ === organKey);
+    let targetIdx = POEM_DATA.findIndex((s) => s.organ === organKey);
+    if (targetIdx === -1) {
+      targetIdx = POEM_DATA.findIndex((s) => s.lines && s.lines.some((l) => l.organ === organKey));
+    }
+    if (targetIdx === -1 && organKey === "seeds") {
+      targetIdx = 3;
+    }
     if (targetIdx !== -1) {
       this.currentLineIndex = targetIdx;
       this._highlightStanzaDom(targetIdx);

@@ -260,25 +260,29 @@
             <div class="cell-microscope-viewport" id="cell-microscope-container" style="display:none;">
               <div class="microscope-split-grid">
                 <div class="microscope-diagram-card">
-                  <span class="microscope-card-badge">📐 权威植物细胞微观结构图</span>
+                  <span class="microscope-card-badge">📐 权威标准植物细胞解剖图 (含叶绿体)</span>
                   <div class="microscope-img-wrapper" id="cell-microscope-pin-area">
-                    <img src="/assets/images/science/plant-root-hair-cell-structure.png" alt="Plant Cell Anatomical Diagram" class="microscope-cell-img" />
-                    <!-- 热点引脚 -->
-                    <button class="microscope-pin" style="top:31%; left:74%;" data-part="cell-wall" title="细胞壁 Cell Wall">🏰</button>
-                    <button class="microscope-pin" style="top:19%; left:70%;" data-part="membrane" title="细胞膜 Membrane">🛡️</button>
-                    <button class="microscope-pin" style="top:34%; left:36%;" data-part="nucleus" title="细胞核 Nucleus">🧠</button>
-                    <button class="microscope-pin" style="top:64%; left:52%;" data-part="vacuole" title="大液泡 Vacuole">💧</button>
-                    <button class="microscope-pin" style="top:22%; left:32%;" data-part="mitochondria" title="线粒体 Mitochondria">⚡</button>
+                    <img src="/assets/images/science/palisade-cell-diagram.svg" alt="Typical Plant Cell Anatomical Diagram" class="microscope-cell-img" />
+                    <!-- 热点引脚 (包含所有 6 大核心细胞结构) -->
+                    <button class="microscope-pin" style="top:20%; left:80%;" data-part="cell-wall" title="细胞壁 Cell Wall">🏰</button>
+                    <button class="microscope-pin" style="top:28%; left:75%;" data-part="membrane" title="细胞膜 Membrane">🛡️</button>
+                    <button class="microscope-pin" style="top:44%; left:38%;" data-part="chloroplast" title="叶绿体 Chloroplast">🍃</button>
+                    <button class="microscope-pin" style="top:50%; left:22%;" data-part="nucleus" title="细胞核 Nucleus">🧠</button>
+                    <button class="microscope-pin" style="top:48%; left:54%;" data-part="vacuole" title="大液泡 Vacuole">💧</button>
+                    <button class="microscope-pin" style="top:74%; left:36%;" data-part="mitochondria" title="线粒体 Mitochondria">⚡</button>
                   </div>
-                  <p class="microscope-caption">👆 点击上方图钉图标，即可联动点读右侧各器官详细科学原理！</p>
+                  <p class="microscope-caption">👆 点击上方 6 大图钉图标，即可联动点读右侧各器官详细科学原理！</p>
                 </div>
 
                 <div class="microscope-real-card">
-                  <span class="microscope-card-badge">🔬 光学显微镜实拍切片 (Micrograph)</span>
+                  <span class="microscope-card-badge">🌱 特化细胞对比与思考 (Specialised Cell)</span>
                   <img src="/assets/images/science/microscope-root-hair-cell.jpg" alt="Real root hair cell under microscope" class="microscope-real-img" />
                   <div class="microscope-real-info">
-                    <h5>🌱 植物根毛细胞 (Root Hair Cell) 显微实拍</h5>
-                    <p>看！深色小圆点正是<strong>细胞核 (Nucleus)</strong>！细长突起的根毛伸入土壤颗粒间，表面积大增，大口吸收水分！</p>
+                    <h5>🌱 为什么地下根毛细胞 (Root Hair Cell) 没有绿色的叶绿体？</h5>
+                    <p>看显微实拍！根毛细胞有坚硬的<strong>细胞壁</strong>、吸水的大表面积<strong>根毛</strong>与<strong>细胞核</strong>，却<strong>唯独没有叶绿体</strong>！</p>
+                    <div class="specialized-note">
+                      💡 <strong>科学真相：</strong>因为根埋在黑暗泥土深处，完全照不到阳光，无法进行光合作用；因此植物从不浪费宝贵能量合成叶绿体！这就是生物学核心准则——<strong>结构与功能相适应 (Adaptation)</strong>！
+                    </div>
                   </div>
                 </div>
               </div>
@@ -315,7 +319,7 @@
           <div class="bridge-header">
             <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
             <div class="bridge-links">
-              <a href="https://www.igcse.xyz/lessons/0610/2-1-cells" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+              <a href="https://www.igcse.xyz/lesson/0610/2-1-cells" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
                 📚 前往 www.igcse.xyz 学习完整教材：2.1 细胞与显微结构 →
               </a>
               <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
@@ -324,7 +328,7 @@
             </div>
           </div>
           <p class="bridge-desc">
-            <strong>高年级完整知识点：</strong> 植物细胞多出的三大法宝（纤维素细胞壁、叶绿体、永久大液泡）；显微镜放大倍数计算公式 \(I = A \times M\)；真核植物细胞与无细胞核细菌（质粒 Plasmid）的本质区别。
+            <strong>高年级完整知识点：</strong> 植物细胞多出的三大法宝（纤维素细胞壁、叶绿体、永久大液泡）；显微镜放大倍数计算公式 <i>I</i> = <i>A</i> × <i>M</i>（图像大小 = 实际大小 × 放大倍数）；真核植物细胞与无细胞核细菌（质粒 Plasmid）的本质区别。
           </p>
         </div>
       </div>
@@ -364,7 +368,7 @@
           <!-- 右侧：光合作用模拟器与金鱼藻放氧实验 -->
           <div class="photosynthesis-sim-box">
             <h4>🧪 小小科学家阳光厨房 · 模拟器</h4>
-            <div class="section-subtext">动手拖动三样原料滑块，观察金鱼藻在试管中加速冒出纯净氧气泡泡！</div>
+            <div class="section-subtext">动手拖动三样原料滑块，观察金鱼藻在试管中加速冒出氧气（Oxygen）泡泡！</div>
 
             <!-- 控制滑块组 -->
             <div class="sim-controls-group">
@@ -408,7 +412,7 @@
                   <strong id="elodea-bubble-rate-num">48 泡/分钟</strong>
                 </div>
                 <p class="elodea-exp-desc">
-                  倒扣漏斗与试管正在收集由光合作用产生的纯净氧气！光线越强，冒泡速度越快！
+                  倒扣漏斗与试管正在收集由光合作用产生的氧气（Oxygen）！光线越强，冒泡速度越快！
                 </p>
               </div>
             </div>
@@ -440,16 +444,16 @@
           <div class="bridge-header">
             <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
             <div class="bridge-links">
-              <a href="https://www.igcse.xyz/lessons/0610/6-1-photosynthesis" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+              <a href="https://www.igcse.xyz/lesson/0610/6-1-photosynthesis" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
                 📚 前往 www.igcse.xyz 学习完整教材：6.1 光合作用与限制因素 →
               </a>
-              <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
+              <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 挑战光合词汇打卡 →">
                 🎮 前往 sky.igcse.xyz 挑战光合词汇打卡 →
               </a>
             </div>
           </div>
           <p class="bridge-desc">
-            <strong>高年级完整知识点：</strong> 平衡化学方程式 \(6CO_2 + 6H_2O \xrightarrow{光与叶绿素} C_6H_{12}O_6 + 6O_2\)；叶绿素合成必需矿质元素镁（Magnesium）；气孔保水与进食的两难博弈；限制因素 (Limiting Factor) 决定反应上限。
+            <strong>高年级完整知识点：</strong> 平衡化学方程式 6CO<sub>2</sub> + 6H<sub>2</sub>O → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub>（光与叶绿素催化）；叶绿素合成必需矿质元素镁（Magnesium）；气孔保水与进食的两难博弈；限制因素 (Limiting Factor) 决定反应上限。
           </p>
         </div>
       </div>
@@ -520,7 +524,7 @@
           <div class="bridge-header">
             <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
             <div class="bridge-links">
-              <a href="https://www.igcse.xyz/lessons/0610/8-1-transport-plants" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+              <a href="https://www.igcse.xyz/lesson/0610/8-1-transport-plants" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
                 📚 前往 www.igcse.xyz 学习完整教材：8.1 植物体内的运输 →
               </a>
               <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">
@@ -580,7 +584,7 @@
           <div class="bridge-header">
             <div class="bridge-tag">🎓 剑桥 IGCSE 0610 进阶大纲桥梁 · 完整教学双站导航</div>
             <div class="bridge-links">
-              <a href="https://www.igcse.xyz/lessons/0610/16-1-reproduction" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
+              <a href="https://www.igcse.xyz/lesson/0610/16-1-reproduction" target="_blank" class="bridge-main-link" title="前往 www.igcse.xyz 完整教学站学习官方课程">
                 📚 前往 www.igcse.xyz 学习完整教材：16.1 植物有性生殖与传粉 →
               </a>
               <a href="https://sky.igcse.xyz" target="_blank" class="bridge-word-link" title="前往 sky.igcse.xyz 单词打卡岛进行词汇特训">

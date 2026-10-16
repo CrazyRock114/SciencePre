@@ -680,6 +680,177 @@ async function main() {
     record(32, "通用生态导航顶栏 (<igcse-nav active=\"pre\">) 四大药丸与高亮状态", ecosystemNavRes.pass === true, JSON.stringify(ecosystemNavRes));
 
     // -------------------------------------------------------------
+    // Test 34: 页面无裸露 LaTeX 代码且标准 HTML 科学公式呈现
+    // -------------------------------------------------------------
+    const latexCheckRes = await cdp.eval(`
+      (() => {
+        const bodyHtml = document.body.innerHTML;
+        const hasRawLatexSlash = bodyHtml.includes('\\\\(') || bodyHtml.includes('\\\\)');
+        const hasRawArrow = bodyHtml.includes('\\\\xrightarrow');
+        const station1Card = document.querySelector('#station-cell-3d .curriculum-bridge-card');
+        const hasMagnificationFormula = station1Card && station1Card.innerHTML.includes('<i>I</i> = <i>A</i> × <i>M</i>');
+        const station2Card = document.querySelector('#station-leaf-photo .curriculum-bridge-card');
+        const hasChemicalEquation = station2Card && station2Card.innerHTML.includes('6CO<sub>2</sub> + 6H<sub>2</sub>O → C<sub>6</sub>H<sub>12</sub>O<sub>6</sub> + 6O<sub>2</sub>');
+
+        return {
+          pass: !hasRawLatexSlash && !hasRawArrow && hasMagnificationFormula && hasChemicalEquation,
+          hasRawLatexSlash,
+          hasRawArrow,
+          hasMagnificationFormula,
+          hasChemicalEquation
+        };
+      })()
+    `);
+    record(34, "页面无裸露 LaTeX 源码且公式标准 HTML 优雅排印 (I=A×M 与光合反应式)", latexCheckRes.pass === true, JSON.stringify(latexCheckRes));
+
+    // -------------------------------------------------------------
+    // Test 35: 4 大展厅指向母舰的 IGCSE 0610 桥梁链接全部为单数 /lesson/0610/...
+    // -------------------------------------------------------------
+    const bridgeUrlsRes = await cdp.eval(`
+      (() => {
+        const bridgeLinks = Array.from(document.querySelectorAll('.bridge-main-link')).map(a => a.href);
+        const hasPluralLessons = bridgeLinks.some(h => h.includes('/lessons/'));
+        const allAreSingularLesson = bridgeLinks.every(h => h.includes('/lesson/0610/'));
+        const expectedUrls = [
+          'https://www.igcse.xyz/lesson/0610/2-1-cells',
+          'https://www.igcse.xyz/lesson/0610/6-1-photosynthesis',
+          'https://www.igcse.xyz/lesson/0610/8-1-transport-plants',
+          'https://www.igcse.xyz/lesson/0610/16-1-reproduction'
+        ];
+        const allMatchExpected = expectedUrls.every(url => bridgeLinks.includes(url));
+
+        return {
+          pass: !hasPluralLessons && allAreSingularLesson && allMatchExpected && bridgeLinks.length === 4,
+          bridgeLinks,
+          hasPluralLessons,
+          allAreSingularLesson,
+          allMatchExpected
+        };
+      })()
+    `);
+    record(35, "4 大展厅母舰 IGCSE 0610 进阶大纲桥梁链接全部为精准单数 /lesson/0610/ (无404断链)", bridgeUrlsRes.pass === true, JSON.stringify(bridgeUrlsRes));
+
+    // -------------------------------------------------------------
+    // Test 36: Station 1 标准植物细胞矢量图 (含全部 6 个引脚包括叶绿体) 与特化根毛细胞对比思考
+    // -------------------------------------------------------------
+    const station1CellRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-cell-3d"]');
+        if (tabBtn) tabBtn.click();
+
+        const btnMicroscope = document.getElementById('btn-view-microscope');
+        if (btnMicroscope) btnMicroscope.click();
+
+        const diagImg = document.querySelector('.microscope-cell-img');
+        const isPalisadeSvg = diagImg && diagImg.getAttribute('src').includes('palisade-cell-diagram.svg');
+        const pins = Array.from(document.querySelectorAll('.microscope-pin')).map(p => p.dataset.part);
+        const hasAll6Pins = ['cell-wall', 'membrane', 'chloroplast', 'nucleus', 'vacuole', 'mitochondria'].every(p => pins.includes(p));
+        const chloroplastPin = document.querySelector('.microscope-pin[data-part="chloroplast"]');
+        
+        // 验证特化根毛细胞思考题与真相解释
+        const realCard = document.querySelector('.microscope-real-card');
+        const hasSpecializedThought = realCard && (realCard.innerText.includes('为什么地下根毛细胞') || realCard.innerText.includes('没有绿色的叶绿体'));
+        const hasSpecializedTruth = realCard && (realCard.innerText.includes('结构与功能相适应') || realCard.innerText.includes('Adaptation'));
+
+        // 测试叶绿体引脚点击与联动
+        if (chloroplastPin) chloroplastPin.click();
+        const activePartPill = document.querySelector('.cell-pill-btn.active');
+        const isChloroplastActive = activePartPill && activePartPill.dataset.part === 'chloroplast';
+
+        return {
+          pass: isPalisadeSvg && hasAll6Pins && pins.length === 6 && hasSpecializedThought && hasSpecializedTruth && isChloroplastActive,
+          isPalisadeSvg,
+          hasAll6Pins,
+          pinCount: pins.length,
+          hasSpecializedThought,
+          hasSpecializedTruth,
+          isChloroplastActive
+        };
+      })()
+    `);
+    record(36, "Station 1 标准植物细胞图补齐叶绿体引脚(6引脚全齐)及特化根毛细胞对比思考", station1CellRes.pass === true, JSON.stringify(station1CellRes));
+
+    // -------------------------------------------------------------
+    // Test 37: 消除非规范口语“纯净氧气”与限制因子 (Limiting Factor) 多维度精准告警
+    // -------------------------------------------------------------
+    const limitingFactorRes = await cdp.eval(`
+      (() => {
+        const tabBtn = document.querySelector('.station-tab-btn[data-station="station-leaf-photo"]');
+        if (tabBtn) tabBtn.click();
+
+        const sunInput = document.getElementById('slider-sunlight');
+        const co2Input = document.getElementById('slider-co2');
+        const waterInput = document.getElementById('slider-water');
+        const toast = document.getElementById('limiting-factor-toast');
+        const station2Panel = document.getElementById('station-leaf-photo');
+
+        // 1. 验证整个 Station 2 区域无“纯净氧气”字样
+        const hasColloquialOxygen = station2Panel.innerText.includes('纯净氧气');
+
+        // 2. 测试阳光短板 (Sun=20%, CO2=90%, Water=90%)
+        sunInput.value = '20'; sunInput.dispatchEvent(new Event('input'));
+        co2Input.value = '90'; co2Input.dispatchEvent(new Event('input'));
+        waterInput.value = '90'; waterInput.dispatchEvent(new Event('input'));
+        const sunLimitingPass = toast.innerText.includes('阳光只有 20%') && toast.innerText.includes('限制因素');
+
+        // 3. 测试二氧化碳短板 (Sun=90%, CO2=15%, Water=90%)
+        sunInput.value = '90'; sunInput.dispatchEvent(new Event('input'));
+        co2Input.value = '15'; co2Input.dispatchEvent(new Event('input'));
+        waterInput.value = '90'; waterInput.dispatchEvent(new Event('input'));
+        const co2LimitingPass = toast.innerText.includes('二氧化碳只有 15%') && toast.innerText.includes('限制因素');
+
+        // 4. 测试水分短板 (Sun=90%, CO2=90%, Water=20%)
+        sunInput.value = '90'; sunInput.dispatchEvent(new Event('input'));
+        co2Input.value = '90'; co2Input.dispatchEvent(new Event('input'));
+        waterInput.value = '20'; waterInput.dispatchEvent(new Event('input'));
+        const waterLimitingPass = toast.innerText.includes('根系水分只有 20%') && toast.innerText.includes('限制因素');
+
+        // 5. 恢复平衡高产 (Sun=80%, CO2=80%, Water=80%)
+        sunInput.value = '80'; sunInput.dispatchEvent(new Event('input'));
+        co2Input.value = '80'; co2Input.dispatchEvent(new Event('input'));
+        waterInput.value = '80'; waterInput.dispatchEvent(new Event('input'));
+        const balancedHighPass = toast.classList.contains('success') && toast.innerText.includes('氧气（Oxygen）');
+
+        return {
+          pass: !hasColloquialOxygen && sunLimitingPass && co2LimitingPass && waterLimitingPass && balancedHighPass,
+          hasColloquialOxygen,
+          sunLimitingPass,
+          co2LimitingPass,
+          waterLimitingPass,
+          balancedHighPass
+        };
+      })()
+    `);
+    record(37, "消除非严谨口语'纯净氧气'且阳光/CO2/水任意单项短板精准指出限制因素", limitingFactorRes.pass === true, JSON.stringify(limitingFactorRes));
+
+    // -------------------------------------------------------------
+    // Test 38: 诗歌内 'Make the food' 关键词成功高亮与种子 (Seeds) 反向联动第 4 节
+    // -------------------------------------------------------------
+    const poemSeedsLinkRes = await cdp.eval(`
+      (() => {
+        // 1. 验证 'Make the food' 关键词标记渲染正常
+        const foodBadge = document.querySelector('.keyword-badge[data-word="make food"]');
+        const foodBadgeText = foodBadge ? foodBadge.innerText : '';
+        const hasMakeTheFood = foodBadgeText.toLowerCase().includes('make the food');
+
+        // 2. 点击种子按钮 (btn-seeds) 验证反向高亮第 4 节 (stanza 3: 0-indexed)
+        const btnSeeds = document.getElementById('btn-seeds');
+        if (btnSeeds) btnSeeds.click();
+
+        const stanza3 = document.getElementById('poem-stanza-3');
+        const isStanza3Active = stanza3 && stanza3.classList.contains('active');
+
+        return {
+          pass: hasMakeTheFood && isStanza3Active,
+          foodBadgeText,
+          hasMakeTheFood,
+          isStanza3Active
+        };
+      })()
+    `);
+    record(38, "诗歌 'Make the food' 关键词标记正常且点击种子按钮精准反向联动第4节", poemSeedsLinkRes.pass === true, JSON.stringify(poemSeedsLinkRes));
+
+    // -------------------------------------------------------------
     // Test 10: Spelling plant-growth progression (5 阶成长形态)
     // -------------------------------------------------------------
     const growthStagesRes = await cdp.eval(`

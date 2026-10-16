@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <!-- 渐变定义 -->
+    <linearGradient id="cellWallGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80" />
+      <stop offset="100%" stop-color="#15803d" />
+    </linearGradient>
+
+    <linearGradient id="cytoplasmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ecfdf5" />
+      <stop offset="100%" stop-color="#d1fae5" />
+    </linearGradient>
+
+    <linearGradient id="vacuoleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#bae6fd" stop-opacity="0.85" />
+      <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0.95" />
+    </linearGradient>
+
+    <radialGradient id="nucleusGrad" cx="40%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#e9d5ff" />
+      <stop offset="60%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#6b21a8" />
+    </radialGradient>
+
+    <radialGradient id="nucleolusGrad" cx="40%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#7e22ce" />
+      <stop offset="100%" stop-color="#3b0764" />
+    </radialGradient>
+
+    <linearGradient id="chloroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#86efac" />
+      <stop offset="40%" stop-color="#22c55e" />
+      <stop offset="100%" stop-color="#15803d" />
+    </linearGradient>
+
+    <linearGradient id="mitoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#c2410c" />
+    </linearGradient>
+
+    <!-- 滤镜阴影 -->
+    <filter id="cellShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.15" />
+    </filter>
+    <filter id="organelleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="1" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <!-- 背景底板 -->
+  <rect width="800" height="500" fill="#f8fafc" rx="16" />
+  
+  <!-- 显微镜视场网格底纹 -->
+  <g stroke="#e2e8f0" stroke-width="1" opacity="0.6">
+    <line x1="100" y1="0" x2="100" y2="500" />
+    <line x1="200" y1="0" x2="200" y2="500" />
+    <line x1="300" y1="0" x2="300" y2="500" />
+    <line x1="400" y1="0" x2="400" y2="500" />
+    <line x1="500" y1="0" x2="500" y2="500" />
+    <line x1="600" y1="0" x2="600" y2="500" />
+    <line x1="700" y1="0" x2="700" y2="500" />
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+  </g>
+
+  <!-- 植物细胞主体 (标准叶肉栅栏细胞 / 典型植物细胞) -->
+  <g id="plant-cell" filter="url(#cellShadow)">
+    <!-- 1. 细胞壁 (Cell Wall): 坚固纤维素外框 -->
+    <rect x="70" y="40" width="660" height="420" rx="36" fill="url(#cellWallGrad)" stroke="#166534" stroke-width="4" />
+    
+    <!-- 中胶层与胞间连丝纹理示意 -->
+    <rect x="80" y="50" width="640" height="400" rx="28" fill="none" stroke="#86efac" stroke-width="2" stroke-dasharray="8 4" opacity="0.7" />
+
+    <!-- 2. 细胞膜 (Cell Membrane): 紧贴细胞壁内侧 -->
+    <rect x="90" y="60" width="620" height="380" rx="22" fill="url(#cytoplasmGrad)" stroke="#059669" stroke-width="3" />
+
+    <!-- 3. 中央大液泡 (Large Central Vacuole): 占据细胞大部分空间 -->
+    <g id="vacuole" filter="url(#organelleShadow)">
+      <path d="M 320 100 
+               C 520 85, 660 110, 670 210
+               C 680 320, 620 400, 480 405
+               C 350 410, 310 350, 315 280
+               C 318 200, 240 110, 320 100 Z" 
+            fill="url(#vacuoleGrad)" 
+            stroke="#0284c7" 
+            stroke-width="2.5" />
+      <!-- 液泡水光反光弧 -->
+      <path d="M 360 130 C 480 115, 600 135, 630 190" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.6" />
+      <text x="490" y="250" fill="#0369a1" font-size="16" font-family="system-ui, sans-serif" font-weight="700" text-anchor="middle" opacity="0.85">💧 中央大液泡 (Large Vacuole)</text>
+      <text x="490" y="272" fill="#0284c7" font-size="12" font-family="system-ui, sans-serif" text-anchor="middle" opacity="0.8">充满细胞液 · 产生充盈膨压 (Turgor)</text>
+    </g>
+
+    <!-- 4. 细胞核 (Nucleus): 遗传司令部，位于左侧近边缘 -->
+    <g id="nucleus" filter="url(#organelleShadow)">
+      <!-- 核膜与染色质 -->
+      <ellipse cx="180" cy="250" rx="65" ry="60" fill="url(#nucleusGrad)" stroke="#581c87" stroke-width="3" />
+      <!-- 核膜孔与核膜双层线 -->
+      <ellipse cx="180" cy="250" rx="58" ry="53" fill="none" stroke="#d8b4fe" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.8" />
+      <!-- 核仁 (Nucleolus) -->
+      <circle cx="170" cy="242" r="18" fill="url(#nucleolusGrad)" />
+      <!-- 染色质微细丝 -->
+      <path d="M 140 260 Q 160 275 190 265 Q 210 255 220 270" fill="none" stroke="#c084fc" stroke-width="2" opacity="0.6" />
+      <text x="180" y="332" fill="#581c87" font-size="13" font-family="system-ui, sans-serif" font-weight="700" text-anchor="middle">🧠 细胞核 (Nucleus)</text>
+    </g>
+
+    <!-- 5. 叶绿体群 (Chloroplasts): 含有叶绿素光合厨房，散布在细胞质 -->
+    <!-- 叶绿体 1 (焦点标号：位于上方偏左) -->
+    <g id="chloroplast-1" filter="url(#organelleShadow)">
+      <ellipse cx="305" cy="220" rx="38" ry="24" transform="rotate(-15 305 220)" fill="url(#chloroGrad)" stroke="#14532d" stroke-width="2" />
+      <!-- 基粒类囊体层叠 (Grana / Thylakoids) -->
+      <g stroke="#14532d" stroke-width="2" stroke-linecap="round" opacity="0.75">
+        <line x1="285" y1="214" x2="300" y2="210" />
+        <line x1="287" y1="220" x2="302" y2="216" />
+        <line x1="289" y1="226" x2="304" y2="222" />
+        <line x1="312" y1="218" x2="326" y2="214" />
+        <line x1="314" y1="224" x2="328" y2="220" />
+      </g>
+    </g>
+
+    <!-- 叶绿体 2 (左上方) -->
+    <g id="chloroplast-2" filter="url(#organelleShadow)">
+      <ellipse cx="230" cy="120" rx="36" ry="22" transform="rotate(25 230 120)" fill="url(#chloroGrad)" stroke="#14532d" stroke-width="1.8" />
+      <g stroke="#14532d" stroke-width="1.8" stroke-linecap="round" opacity="0.7">
+        <line x1="215" y1="118" x2="230" y2="124" />
+        <line x1="218" y1="123" x2="233" y2="129" />
+        <line x1="235" y1="112" x2="248" y2="118" />
+      </g>
+    </g>
+
+    <!-- 叶绿体 3 (下方偏右) -->
+    <g id="chloroplast-3" filter="url(#organelleShadow)">
+      <ellipse cx="610" cy="380" rx="38" ry="24" transform="rotate(-20 610 380)" fill="url(#chloroGrad)" stroke="#14532d" stroke-width="1.8" />
+      <g stroke="#14532d" stroke-width="1.8" stroke-linecap="round" opacity="0.7">
+        <line x1="595" y1="375" x2="610" y2="370" />
+        <line x1="597" y1="381" x2="612" y2="376" />
+        <line x1="615" y1="382" x2="628" y2="378" />
+      </g>
+    </g>
+
+    <!-- 叶绿体 4 (右上方角落) -->
+    <g id="chloroplast-4" filter="url(#organelleShadow)">
+      <ellipse cx="630" cy="115" rx="35" ry="22" transform="rotate(35 630 115)" fill="url(#chloroGrad)" stroke="#14532d" stroke-width="1.8" />
+      <g stroke="#14532d" stroke-width="1.8" stroke-linecap="round" opacity="0.7">
+        <line x1="618" y1="110" x2="632" y2="120" />
+        <line x1="622" y1="115" x2="636" y2="125" />
+      </g>
+    </g>
+
+    <!-- 6. 线粒体群 (Mitochondria): 呼吸发电站，双层膜与内褶嵴 -->
+    <!-- 线粒体 1 (焦点标号：位于左下方) -->
+    <g id="mitochondria-1" filter="url(#organelleShadow)">
+      <rect x="260" y="350" width="56" height="30" rx="15" transform="rotate(-10 288 365)" fill="url(#mitoGrad)" stroke="#9a3412" stroke-width="2" />
+      <!-- 内膜折叠 (Cristae) 嵴结构 -->
+      <path d="M 270 358 Q 278 368 270 376 M 282 355 Q 290 367 282 377 M 294 356 Q 302 366 294 374" fill="none" stroke="#7c2d12" stroke-width="1.8" stroke-linecap="round" />
+    </g>
+
+    <!-- 线粒体 2 (左侧上方) -->
+    <g id="mitochondria-2" filter="url(#organelleShadow)">
+      <rect x="125" y="110" width="48" height="26" rx="13" transform="rotate(40 149 123)" fill="url(#mitoGrad)" stroke="#9a3412" stroke-width="1.6" />
+      <path d="M 136 116 Q 142 124 136 130 M 145 118 Q 151 126 145 132" fill="none" stroke="#7c2d12" stroke-width="1.5" stroke-linecap="round" />
+    </g>
+
+    <!-- 细胞质流向微箭头 (Cytoplasmic Streaming) -->
+    <g stroke="#10b981" stroke-width="1.5" fill="none" opacity="0.5" stroke-dasharray="3 3">
+      <path d="M 120 200 C 115 160, 160 85, 260 75" marker-end="url(#arrow)" />
+      <path d="M 240 420 C 350 435, 580 435, 690 350" />
+    </g>
+  </g>
+
+  <!-- 顶部水准标注横幅 -->
+  <rect x="70" y="8" width="660" height="26" rx="6" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1" />
+  <text x="400" y="26" fill="#475569" font-size="12" font-family="system-ui, sans-serif" font-weight="600" text-anchor="middle">
+    🌿 标准真核植物细胞 (Typical Plant Cell / Palisade Mesophyll Cell) · 拥有叶绿体、细胞壁与大液泡三大标志性结构
+  </text>
+</svg>

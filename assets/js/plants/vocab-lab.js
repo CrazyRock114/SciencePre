@@ -153,7 +153,8 @@ export class VocabLab {
 
   // 外部高亮特定单词并平滑滚动
   inspectWord(wordText) {
-    const cleanWord = (wordText || "").toLowerCase().trim();
+    let cleanWord = (wordText || "").toLowerCase().trim();
+    if (cleanWord === "make the food") cleanWord = "make food";
     const targetCard = document.getElementById(`word-card-${cleanWord.replace(/\s+/g, "-")}`);
     if (targetCard) {
       targetCard.scrollIntoView({ behavior: "smooth", block: "center" });

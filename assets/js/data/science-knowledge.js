@@ -53,7 +53,7 @@ export const PLANT_CELL_PARTS = [
     funQuestion: "如果植物没有细胞壁会怎样？",
     funAnswer: "就会像一滩软软的水泥一样趴在地上，根本长不高！",
     microscopeDetail: "显微镜下的细胞壁呈现规则的坚韧边界，像一堵用纤维素砌成的厚城墙，支持细胞承受强大的内部水压！",
-    microscopePin: { x: 74, y: 31 }
+    microscopePin: { x: 80, y: 20 }
   },
   {
     id: "chloroplast",
@@ -81,7 +81,7 @@ export const PLANT_CELL_PARTS = [
     funQuestion: "浇水能让蔫掉的花重新立起来吗？",
     funAnswer: "能！水流经导管进入大液泡，把细胞重新撑圆，花枝就重新直立了！",
     microscopeDetail: "在成熟植物细胞中，中央大液泡占据了整整 80%~90% 的内部空间，将细胞核和细胞质紧紧挤压在边缘！",
-    microscopePin: { x: 52, y: 64 }
+    microscopePin: { x: 54, y: 48 }
   },
   {
     id: "nucleus",
@@ -95,7 +95,7 @@ export const PLANT_CELL_PARTS = [
     funQuestion: "细胞核负责做什么？",
     funAnswer: "它是指挥官！发布生长、分裂和修补伤口的最高指令！",
     microscopeDetail: "在染色剂（如碘液或甲基蓝）下，细胞核会染成鲜明的深紫色或深褐色圆球，位置通常贴靠细胞膜边缘！",
-    microscopePin: { x: 36, y: 34 }
+    microscopePin: { x: 22, y: 50 }
   },
   {
     id: "membrane",
@@ -109,7 +109,7 @@ export const PLANT_CELL_PARTS = [
     funQuestion: "细胞壁和细胞膜哪个在外面？",
     funAnswer: "细胞壁在最外面，细胞膜在里面紧紧包裹着细胞质！",
     microscopeDetail: "细胞膜极其微薄（仅约 7 纳米），紧贴细胞壁内缘，在发生质壁分离时会明显脱离细胞壁！",
-    microscopePin: { x: 70, y: 19 }
+    microscopePin: { x: 75, y: 28 }
   },
   {
     id: "mitochondria",
@@ -123,7 +123,7 @@ export const PLANT_CELL_PARTS = [
     funQuestion: "植物晚上做不做呼吸作用？",
     funAnswer: "做！植物白天和夜晚都在呼吸，无时无刻不在用线粒体发电！",
     microscopeDetail: "线粒体呈米粒状小椭圆，内部有折叠的嵴结构，是细胞呼吸作用释放能量的微型引擎！",
-    microscopePin: { x: 32, y: 22 }
+    microscopePin: { x: 36, y: 74 }
   }
 ];
 
@@ -275,7 +275,7 @@ export const IGCSE_CURRICULUM_BRIDGES = {
     stationId: "station-cell-3d",
     syllabusCode: "0610.2.1",
     lessonTitle: "2.1 细胞与显微结构 (Cells & Biological Molecules)",
-    officialUrl: "https://www.igcse.xyz/lessons/0610/2-1-cells",
+    officialUrl: "https://www.igcse.xyz/lesson/0610/2-1-cells",
     summary: "植物细胞独有的'三大法宝'（纤维素细胞壁、叶绿体、大液泡），显微镜放大倍数口诀 I = A × M，以及真核细胞与细菌的区别。",
     kidMetaphor: "城堡外墙（细胞壁）+ 太阳能厨房（叶绿体）+ 超级大水箱（液泡），三者合力让植物即便没有骨骼也能直挺挺屹立！"
   },
@@ -283,7 +283,7 @@ export const IGCSE_CURRICULUM_BRIDGES = {
     stationId: "station-leaf-photo",
     syllabusCode: "0610.6.1",
     lessonTitle: "6.1 光合作用与限制因素 (Photosynthesis & Limiting Factors)",
-    officialUrl: "https://www.igcse.xyz/lessons/0610/6-1-photosynthesis",
+    officialUrl: "https://www.igcse.xyz/lesson/0610/6-1-photosynthesis",
     summary: "平衡化学方程式 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂、叶绿素合成必需元素（镁离子）、气孔'保水与进食'的两难博弈、光合限制因素木桶原理。",
     kidMetaphor: "气孔是植物的小嘴巴：关紧它能保住水分不被晒干，却会断粮挨饿；张开它能大口吃进二氧化碳，却会不断散失水分！"
   },
@@ -291,7 +291,7 @@ export const IGCSE_CURRICULUM_BRIDGES = {
     stationId: "station-transport",
     syllabusCode: "0610.8.1",
     lessonTitle: "8.1 植物体内的运输 (Transport in Plants)",
-    officialUrl: "https://www.igcse.xyz/lessons/0610/8-1-transport-plants",
+    officialUrl: "https://www.igcse.xyz/lesson/0610/8-1-transport-plants",
     summary: "木质部（中空死导管单向向上）与韧皮部（活细胞筛管双向运输蔗糖氨基酸）、蒸腾拉力 (Transpiration Pull) 水分子内聚力、源与库 (Source & Sink)。",
     kidMetaphor: "就像用超长吸管喝奶茶：叶片蒸发水分产生巨大的负压吸力，水分子像手拉手的小朋友排成一条坚韧不拔的水链，一口气从泥土拽到百米树梢！"
   },
@@ -299,7 +299,7 @@ export const IGCSE_CURRICULUM_BRIDGES = {
     stationId: "station-flower",
     syllabusCode: "0610.16.1",
     lessonTitle: "16.1 植物有性生殖与传粉 (Plant Reproduction)",
-    officialUrl: "https://www.igcse.xyz/lessons/0610/16-1-reproduction",
+    officialUrl: "https://www.igcse.xyz/lesson/0610/16-1-reproduction",
     summary: "虫媒花适应机制、花粉管微观生长穿透花柱、受精过程与子房膨大发育为果实、种子破土萌发的 WOW 必备三要素（Water, Oxygen, Warmth）。",
     kidMetaphor: "花瓣是机场停机坪与招牌，花蜜是甜品报酬，小蜜蜂是义务快递员，花粉管是微型钻探机，子房则是保护种子的营养摇篮！"
   }
