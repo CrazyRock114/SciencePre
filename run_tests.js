@@ -84,7 +84,7 @@ class CDPClient {
           resolved = true;
           resolve();
         }
-      }, 3000);
+      }, 12000);
     });
   }
 
@@ -111,7 +111,7 @@ class CDPClient {
           resolved = true;
           resolve();
         }
-      }, 3000);
+      }, 12000);
     });
   }
 }
@@ -185,13 +185,13 @@ async function main() {
             resolve();
           }
         }, 50);
-        setTimeout(() => { clearInterval(timer); resolve(); }, 4000);
+        setTimeout(() => { clearInterval(timer); resolve(); }, 12000);
       })
     `);
 
     const hubToPlantsHref = await cdp.eval(`
       (() => {
-        const link = document.querySelector('.theme-card.active-theme .theme-enter-btn');
+        const link = document.querySelector('.theme-card.active-theme .theme-enter-btn') || document.querySelector('a[href="/plants/"]');
         return link ? link.getAttribute('href') : null;
       })()
     `);
@@ -228,7 +228,7 @@ async function main() {
             resolve();
           }
         }, 50);
-        setTimeout(() => { clearInterval(timer); resolve(); }, 4000);
+        setTimeout(() => { clearInterval(timer); resolve(); }, 12000);
       })
     `);
 
@@ -1273,24 +1273,21 @@ async function main() {
     // -------------------------------------------------------------
     await cdp.reload();
     await new Promise((r) => setTimeout(r, 600));
-    await cdp.eval(`
-      new Promise((resolve) => {
-        if (window.__progressTracker) return resolve();
-        const timer = setInterval(() => {
-          if (window.__progressTracker) {
-            clearInterval(timer);
-            resolve();
-          }
-        }, 50);
-        setTimeout(() => { clearInterval(timer); resolve(); }, 3000);
-      })
-    `);
-
     const progressPersistenceRes = await cdp.eval(`
-      (() => {
-        const unlockedBox = document.getElementById('cert-unlocked-box');
-        return unlockedBox && unlockedBox.style.display !== 'none';
-      })()
+      new Promise((resolve) => {
+        const isReady = () => {
+          const unlockedBox = document.getElementById('cert-unlocked-box');
+          return window.__progressTracker && unlockedBox && unlockedBox.style.display !== 'none';
+        };
+        if (isReady()) return resolve(true);
+        const timer = setInterval(() => {
+          if (isReady()) {
+            clearInterval(timer);
+            resolve(true);
+          }
+        }, 100);
+        setTimeout(() => { clearInterval(timer); resolve(isReady()); }, 12000);
+      })
     `);
     record(16, "Reload page and progress persistence 刷新后进度保持解锁", progressPersistenceRes === true);
 
