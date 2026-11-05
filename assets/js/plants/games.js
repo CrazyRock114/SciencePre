@@ -440,6 +440,7 @@ export class GamesArcade {
   showQuizComplete() {
     const cardContainer = document.getElementById("quiz-card-container");
     const summaryContainer = document.getElementById("quiz-summary-container");
+    const passed = (this.quizScore / QUIZ_DATA.length) >= 0.75;
 
     if (cardContainer) cardContainer.style.display = "none";
     if (summaryContainer) {
@@ -449,10 +450,13 @@ export class GamesArcade {
 
       if (scoreEl) scoreEl.innerText = `${this.quizScore} / ${QUIZ_DATA.length}`;
       if (msgEl) {
-        msgEl.innerText =
-          this.quizScore === QUIZ_DATA.length
-            ? "太棒了！满分通关！你已经完全掌握了植物的科学奥秘！"
-            : "恭喜完成测验！你已经迈出了成为植物科学家的坚实步伐！";
+        if (this.quizScore === QUIZ_DATA.length) {
+          msgEl.innerText = "太棒了！满分通关！你已经完全掌握了植物的科学奥秘！";
+        } else if (passed) {
+          msgEl.innerText = "恭喜达到及格线 (≥75%)！你已经迈出了成为植物科学家的坚实步伐！";
+        } else {
+          msgEl.innerText = "测验未达到及格线（需答对 75% 即至少 3 题才能点亮通关成就）哦，点击下方再练一次重新挑战吧！";
+        }
       }
 
       // 绑定“再练一次”按钮
@@ -462,7 +466,11 @@ export class GamesArcade {
       }
     }
 
-    audio.playVictory();
-    progressTracker.markQuizCompleted(this.quizScore);
+    if (passed) {
+      audio.playVictory();
+    } else {
+      audio.playTone(320, "triangle", 0.3);
+    }
+    progressTracker.markQuizCompleted(this.quizScore, QUIZ_DATA.length);
   }
 }

@@ -79,9 +79,11 @@ class ProgressTracker {
     this.save();
   }
 
-  markQuizCompleted(score) {
-    this.data.quizCompleted = true;
+  markQuizCompleted(score, total = 4) {
+    const isPassed = typeof score === "number" && (score / (total || 4)) >= 0.75;
+    this.data.quizCompleted = isPassed;
     this.data.quizScore = score;
+    this.data.quizTotal = total;
     this.save();
   }
 
@@ -128,7 +130,11 @@ class ProgressTracker {
         id: "quiz",
         label: "植物小学者问答 (Final Quiz Completed)",
         done: !!this.data.quizCompleted,
-        detail: this.data.quizCompleted ? `通关测试 (${this.data.quizScore}/4 题)` : "完成 4 道科学小测验"
+        detail: this.data.quizCompleted
+          ? `通关测试 (${this.data.quizScore}/4 题 · 及格 ≥75%)`
+          : (typeof this.data.quizScore === "number" && this.data.quizScore < 3 && this.data.quizScore >= 0 && this.data.quizTotal
+              ? `测验未及格 (${this.data.quizScore}/4 题)，需答对 3 题以上`
+              : "完成 4 道科学小测验 (需及格 ≥75%)")
       }
     ];
 

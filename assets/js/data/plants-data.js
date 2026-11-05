@@ -258,6 +258,16 @@ export const CORE_POEM_WORDS = [
     phonicsRule: "双音节 car-ries，重音在第一音节，ies 发 /iz/。"
   },
   {
+    word: "one and all",
+    ipa: "/wʌn ænd ɔːl/",
+    chunks: ["one", "and", "all"],
+    zh: "大家 / 无一例外 / 全体",
+    poemContext: "诗中指茎内部的导管把水分滋润到植物的每一个部分，无一遗漏。",
+    transformation: "英语成语习语；同义词 everyone / without exception",
+    example: "The teacher wished good morning to one and all.",
+    phonicsRule: "one 发音特殊为 /wʌn/，and 弱读为 /ənd/，all 发 /ɔːl/。"
+  },
+  {
     word: "leaves",
     ipa: "/liːvz/",
     chunks: ["leaves"],
@@ -306,6 +316,16 @@ export const CORE_POEM_WORDS = [
     transformation: "动宾短语；make ➔ made (过去式)",
     example: "Leaves make food during the day when the sun shines.",
     phonicsRule: "make 中 a_e 开音节发 /eɪ/，food 中 oo 发长音 /uː/。"
+  },
+  {
+    word: "day after night",
+    ipa: "/deɪ ˈɑːftər naɪt/",
+    chunks: ["day", "af", "ter", "night"],
+    zh: "日日夜夜 / 连绵不绝 / 寒来暑往",
+    poemContext: "诗中赞美绿叶日夜不知疲倦地通过光合作用制造能量并储藏。",
+    transformation: "时间短语；同义短语 day in, day out / round the clock",
+    example: "The gentle river flows quietly, day after night.",
+    phonicsRule: "day 开音节发 /deɪ/，after 发 /ˈɑːftər/，night 中 igh 发 /naɪt/。"
   },
   {
     word: "pretty",

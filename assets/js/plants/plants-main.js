@@ -79,6 +79,7 @@ function initPlants() {
   // 暴露到 window 方便测试与诊断
   window.__progressTracker = progressTracker;
   window.__scienceLab = scienceLab;
+  window.__vocabLab = vocabLab;
 
   // 6. 绑定顶部通用控制栏 (双速语速、中英显隐、全局声音)
   bindGlobalControls(poemTheater);

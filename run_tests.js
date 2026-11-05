@@ -851,6 +851,236 @@ async function main() {
     record(38, "诗歌 'Make the food' 关键词标记正常且点击种子按钮精准反向联动第4节", poemSeedsLinkRes.pass === true, JSON.stringify(poemSeedsLinkRes));
 
     // -------------------------------------------------------------
+    // Test 39: 儿童端 44px 最小触控热区验证 (Touch Targets >= 44px)
+    // -------------------------------------------------------------
+    const touchTargetRes = await cdp.eval(`
+      (() => {
+        // 检查具有 ::after 扩展热区的关键元素及主控按钮
+        // 1. .leaf-pin ::after (min 44x44)
+        const leafPin = document.querySelector('.leaf-pin');
+        let leafPinAfterMin = false;
+        if (leafPin) {
+          const afterStyle = window.getComputedStyle(leafPin, '::after');
+          const minW = parseInt(afterStyle.minWidth || afterStyle.width || '0');
+          const minH = parseInt(afterStyle.minHeight || afterStyle.height || '0');
+          leafPinAfterMin = minW >= 44 && minH >= 44;
+        }
+
+        // 2. .microscope-pin ::after (min 44x44)
+        const microPin = document.querySelector('.microscope-pin');
+        let microPinAfterMin = false;
+        if (microPin) {
+          const afterStyle = window.getComputedStyle(microPin, '::after');
+          const minW = parseInt(afterStyle.minWidth || afterStyle.width || '0');
+          const minH = parseInt(afterStyle.minHeight || afterStyle.height || '0');
+          microPinAfterMin = minW >= 44 && minH >= 44;
+        }
+
+        // 3. .story-dot ::after (min 44x44)
+        const storyDot = document.querySelector('.story-dot');
+        let storyDotAfterMin = false;
+        if (storyDot) {
+          const afterStyle = window.getComputedStyle(storyDot, '::after');
+          const minW = parseInt(afterStyle.minWidth || afterStyle.width || '0');
+          const minH = parseInt(afterStyle.minHeight || afterStyle.height || '0');
+          storyDotAfterMin = minW >= 44 && minH >= 44;
+        }
+
+        // 4. .syllable-chip-btn ::after (min 44x44)
+        const syllableChip = document.querySelector('.syllable-chip-btn');
+        let syllableChipAfterMin = false;
+        if (syllableChip) {
+          const afterStyle = window.getComputedStyle(syllableChip, '::after');
+          const minW = parseInt(afterStyle.minWidth || afterStyle.width || '0');
+          const minH = parseInt(afterStyle.minHeight || afterStyle.height || '0');
+          syllableChipAfterMin = minW >= 44 && minH >= 44;
+        }
+
+        // 5. 控制按钮 minHeight >= 44px
+        const sampleBtn = document.querySelector('.cell-ctrl-btn') || document.querySelector('.celery-btn');
+        let sampleBtnMin = false;
+        if (sampleBtn) {
+          const style = window.getComputedStyle(sampleBtn);
+          const minH = parseInt(style.minHeight || style.height || '0');
+          sampleBtnMin = minH >= 44;
+        }
+
+        const pass = leafPinAfterMin && microPinAfterMin && storyDotAfterMin && syllableChipAfterMin && sampleBtnMin;
+        return {
+          pass,
+          leafPinAfterMin,
+          microPinAfterMin,
+          storyDotAfterMin,
+          syllableChipAfterMin,
+          sampleBtnMin
+        };
+      })()
+    `);
+    record(39, "儿童端 44px 最小触控热区验证 (图钉/故事步进点/音节药丸/控制按钮均 >= 44px)", touchTargetRes.pass === true, JSON.stringify(touchTargetRes));
+
+    // -------------------------------------------------------------
+    // Test 40: 证书解锁防空刷与及格线门槛 (未及格 <75% 不点亮通关成就)
+    // -------------------------------------------------------------
+    const quizGatingRes = await cdp.eval(`
+      (() => {
+        const tracker = window.__progressTracker;
+        if (!tracker) return { pass: false, error: 'Tracker not found' };
+
+        // 1. 得 0 分或 2 分 (<75%) 时
+        tracker.markQuizCompleted(0, 4);
+        const status0 = tracker.getStatus();
+        const quizItem0 = (status0.checklist || []).find(i => i.id === 'quiz');
+        const pass0 = quizItem0 && quizItem0.done === false;
+
+        tracker.markQuizCompleted(2, 4);
+        const status2 = tracker.getStatus();
+        const quizItem2 = (status2.checklist || []).find(i => i.id === 'quiz');
+        const pass2 = quizItem2 && quizItem2.done === false;
+
+        // 2. 达到 3/4 (75%) 及格线时
+        tracker.markQuizCompleted(3, 4);
+        const status3 = tracker.getStatus();
+        const quizItem3 = (status3.checklist || []).find(i => i.id === 'quiz');
+        const pass3 = quizItem3 && quizItem3.done === true;
+
+        // 恢复为 0 待后续完整测验点亮
+        tracker.markQuizCompleted(0, 4);
+
+        return {
+          pass: pass0 && pass2 && pass3,
+          pass0,
+          pass2,
+          pass3
+        };
+      })()
+    `);
+    record(40, "证书防空刷机制 (问答得 0 分或 2 分未达及格线 75% 绝不点亮通关成就)", quizGatingRes.pass === true, JSON.stringify(quizGatingRes));
+
+    // -------------------------------------------------------------
+    // Test 41: 切换展厅标签不误标记诗歌已探索 (防偷跑)
+    // -------------------------------------------------------------
+    const tabSwitchPoemRes = await cdp.eval(`
+      (() => {
+        const tracker = window.__progressTracker;
+        const lab = window.__scienceLab;
+        if (!tracker || !lab) return { pass: false };
+
+        // 清理 poemExplored 状态
+        tracker.data.poemExplored = false;
+        tracker.save();
+
+        // 切换不同展厅
+        lab.switchStation('station-leaf-kitchen');
+        lab.switchStation('station-stem-express');
+        lab.switchStation('station-flower-story');
+        lab.switchStation('station-cell-3d');
+
+        const status = tracker.getStatus();
+        const poemItem = (status.checklist || []).find(i => i.id === 'poem');
+        const isNotTriggered = poemItem && poemItem.done === false;
+
+        return {
+          pass: isNotTriggered,
+          poemDone: poemItem ? poemItem.done : null
+        };
+      })()
+    `);
+    record(41, "展厅标签切换时不误触发诗歌探索成就 (防空刷偷跑)", tabSwitchPoemRes.pass === true, JSON.stringify(tabSwitchPoemRes));
+
+    // -------------------------------------------------------------
+    // Test 42: 3D WebGL 渲染循环调度与内存清理 (切走暂停/切回恢复/dispose能力)
+    // -------------------------------------------------------------
+    const webglLifecycleRes = await cdp.eval(`
+      (() => {
+        const cell3D = window.__cell3D;
+        const lab = window.__scienceLab;
+        if (!cell3D || !lab) return { pass: false, error: 'cell3D or lab not found' };
+
+        // 1. 初始在 station-cell-3d 时正在运行
+        lab.switchStation('station-cell-3d');
+        const runningInitially = cell3D.isRunning === true && cell3D.isPaused === false;
+
+        // 2. 切走展厅 -> 暂停 rAF
+        lab.switchStation('station-leaf-kitchen');
+        const pausedOnSwitch = cell3D.isPaused === true;
+
+        // 3. 切回 station-cell-3d -> 恢复 rAF
+        lab.switchStation('station-cell-3d');
+        const resumedOnReturn = cell3D.isPaused === false;
+
+        // 4. 手动调用 pauseAnimation
+        cell3D.pauseAnimation();
+        const manualPause = cell3D.isPaused === true && cell3D.rafId === null;
+
+        // 5. 恢复
+        cell3D.resumeAnimation();
+        const manualResume = cell3D.isPaused === false && cell3D.isRunning === true;
+
+        // 6. 检查 dispose 函数定义完整
+        const hasDispose = typeof cell3D.dispose === 'function';
+
+        return {
+          pass: runningInitially && pausedOnSwitch && resumedOnReturn && manualPause && manualResume && hasDispose,
+          runningInitially,
+          pausedOnSwitch,
+          resumedOnReturn,
+          manualPause,
+          manualResume,
+          hasDispose
+        };
+      })()
+    `);
+    record(42, "3D WebGL 渲染循环调度与内存释放 (展厅切走自动暂停/切回恢复/dispose健全)", webglLifecycleRes.pass === true, JSON.stringify(webglLifecycleRes));
+
+    // -------------------------------------------------------------
+    // Test 43: 诗歌高亮短语成语卡片弹窗与发音联动 ("one and all", "day after night")
+    // -------------------------------------------------------------
+    const phrasePopupRes = await cdp.eval(`
+      (() => {
+        const vocabLab = window.__vocabLab;
+        if (!vocabLab) return { pass: false, error: 'vocabLab not found' };
+
+        // 1. 点击诗歌中的 'one and all' 药丸
+        const oneAndAllBadge = document.querySelector('.keyword-badge[data-word="one and all"]');
+        if (!oneAndAllBadge) return { pass: false, error: 'one and all badge not found' };
+        oneAndAllBadge.click();
+
+        const overlay = document.getElementById('phrase-popup-overlay');
+        const isOverlayActive1 = overlay && overlay.classList.contains('active');
+        const title1 = overlay ? (overlay.querySelector('#phrase-popup-title') || {}).innerText : '';
+        const hasOneAndAll = title1.toLowerCase().includes('one and all');
+
+        // 关闭弹窗
+        const closeBtn1 = overlay ? overlay.querySelector('#phrase-popup-close') : null;
+        if (closeBtn1) closeBtn1.click();
+        const isClosed1 = overlay && !overlay.classList.contains('active');
+
+        // 2. 点击诗歌中的 'day after night' 药丸
+        const dayBadge = document.querySelector('.keyword-badge[data-word="day after night"]');
+        if (!dayBadge) return { pass: false, error: 'day after night badge not found' };
+        dayBadge.click();
+
+        const isOverlayActive2 = overlay && overlay.classList.contains('active');
+        const title2 = overlay ? (overlay.querySelector('#phrase-popup-title') || {}).innerText : '';
+        const hasDayAfterNight = title2.toLowerCase().includes('day after night');
+
+        // 关闭弹窗
+        const closeBtn2 = overlay ? overlay.querySelector('#phrase-popup-close') : null;
+        if (closeBtn2) closeBtn2.click();
+
+        return {
+          pass: isOverlayActive1 && hasOneAndAll && isClosed1 && isOverlayActive2 && hasDayAfterNight,
+          isOverlayActive1,
+          hasOneAndAll,
+          isClosed1,
+          isOverlayActive2,
+          hasDayAfterNight
+        };
+      })()
+    `);
+    record(43, "诗歌短语成语卡片弹窗联动 ('one and all' & 'day after night' 弹窗/读音/意境完备)", phrasePopupRes.pass === true, JSON.stringify(phrasePopupRes));
+
+    // -------------------------------------------------------------
     // Test 10: Spelling plant-growth progression (5 阶成长形态)
     // -------------------------------------------------------------
     const growthStagesRes = await cdp.eval(`
@@ -969,8 +1199,19 @@ async function main() {
     record(13, "Quiz Play Again and complete second round (无DOM丢失连续两轮)", quizTwoRoundsRes.pass === true);
 
     // -------------------------------------------------------------
-    // Test 14: Certificate locked before completion (此时尚未完成3个单词，证书必须处于锁定状态)
+    // Test 14: Certificate locked before completion (重置单词探索，验证未满 3 个单词时证书锁定)
     // -------------------------------------------------------------
+    await cdp.eval(`
+      (() => {
+        const tracker = window.__progressTracker;
+        if (tracker) {
+          tracker.data.exploredVocab = {};
+          tracker.save();
+        }
+      })()
+    `);
+    await new Promise((r) => setTimeout(r, 150));
+
     const certLockedInitialRes = await cdp.eval(`
       (() => {
         const lockedBox = document.getElementById('cert-locked-box');

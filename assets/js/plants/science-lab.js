@@ -81,13 +81,16 @@ export class ScienceLab {
 
     this.updateStationVisibility();
 
-    // 触发 3D 画布尺寸更新
-    if (stationId === "station-cell-3d" && this.cell3D) {
-      setTimeout(() => this.cell3D.onResize(), 60);
-    }
-
-    if (progressTracker && typeof progressTracker.markPoemExplored === "function") {
-      progressTracker.markPoemExplored();
+    // 触发 3D 画布尺寸更新与渲染循环调度
+    if (this.cell3D) {
+      if (stationId === "station-cell-3d") {
+        this.cell3D.resumeAnimation();
+        setTimeout(() => {
+          this.cell3D.onResize();
+        }, 60);
+      } else {
+        this.cell3D.pauseAnimation();
+      }
     }
   }
 
@@ -107,6 +110,7 @@ export class ScienceLab {
     this.cell3D = new Cell3DScene(container, (partId) => {
       this.inspectCellPart(partId);
     });
+    window.__cell3D = this.cell3D;
 
     // 渲染细胞结构选择器药丸按钮
     const pillsContainer = document.getElementById("cell-parts-pills");
@@ -145,6 +149,7 @@ export class ScienceLab {
         if (canvasContainer) canvasContainer.style.display = "none";
         if (microscopeContainer) microscopeContainer.style.display = "block";
         if (modeTag) modeTag.textContent = "当前模式：📸 显微镜真图对照";
+        if (this.cell3D) this.cell3D.pauseAnimation();
         audio.playTone(720, "sine", 0.08);
         audio.speak("Microscopic comparison view");
       } else {
@@ -163,7 +168,10 @@ export class ScienceLab {
           audio.speak("Exploded organelle view");
         }
 
-        if (this.cell3D) this.cell3D.onResize();
+        if (this.cell3D) {
+          this.cell3D.onResize();
+          this.cell3D.resumeAnimation();
+        }
       }
     };
 
@@ -706,6 +714,17 @@ class Cell3DScene {
     this.vacuoleTurgorScale = 1.0;
     this.isFallback2D = false;
 
+    this.isRunning = false;
+    this.isPaused = false;
+    this.rafId = null;
+    this.isDisposed = false;
+    this.handleVisibilityChange = null;
+    this.handlePointerDown = null;
+    this.handlePointerMove = null;
+    this.handlePointerUp = null;
+    this.handleWheel = null;
+    this.handleResize = null;
+
     this.setupScene();
   }
 
@@ -885,7 +904,7 @@ class Cell3DScene {
       this.buildCellModel();
       this.loadLearningCellGLB();
       this.bindEvents();
-      this.animate();
+      this.startAnimation();
     } catch (e) {
       console.warn("WebGL unavailable, falling back to 2D Canvas cell view:", e);
       this.setupFallback2D(width, height);
@@ -1229,13 +1248,14 @@ class Cell3DScene {
     const dom = this.renderer.domElement;
 
     // 鼠标与触摸拖拽旋转
-    dom.addEventListener("pointerdown", (e) => {
+    this.handlePointerDown = (e) => {
       this.isDragging = true;
       this.autoRotate = false;
       this.prevPointerPos = { x: e.clientX, y: e.clientY };
-    });
+    };
+    dom.addEventListener("pointerdown", this.handlePointerDown);
 
-    window.addEventListener("pointermove", (e) => {
+    this.handlePointerMove = (e) => {
       if (!this.isDragging) return;
       const dx = e.clientX - this.prevPointerPos.x;
       const dy = e.clientY - this.prevPointerPos.y;
@@ -1244,24 +1264,44 @@ class Cell3DScene {
       this.cellGroup.rotation.x += dy * 0.008;
 
       this.prevPointerPos = { x: e.clientX, y: e.clientY };
-    });
+    };
+    window.addEventListener("pointermove", this.handlePointerMove);
 
-    window.addEventListener("pointerup", (e) => {
+    this.handlePointerUp = (e) => {
       if (this.isDragging) {
         this.isDragging = false;
         this.checkRaycastClick(e);
       }
-    });
+    };
+    window.addEventListener("pointerup", this.handlePointerUp);
 
     // 滚轮缩放
-    dom.addEventListener("wheel", (e) => {
+    this.handleWheel = (e) => {
       e.preventDefault();
       const zoomDelta = e.deltaY * 0.005;
       this.camera.position.z = Math.min(Math.max(this.camera.position.z + zoomDelta, 4.5), 15);
-    });
+    };
+    dom.addEventListener("wheel", this.handleWheel);
 
     // 窗口尺寸自适应
-    window.addEventListener("resize", () => this.onResize());
+    this.handleResize = () => this.onResize();
+    window.addEventListener("resize", this.handleResize);
+
+    // 监听页面可见性，隐藏时暂停渲染循环，避免发热与耗电
+    this.handleVisibilityChange = () => {
+      if (document.hidden) {
+        this.pauseAnimation();
+      } else {
+        const station = document.getElementById("station-cell-3d");
+        const canvasContainer = document.getElementById("cell-3d-canvas-container");
+        const isStationActive = station && station.classList.contains("active");
+        const isCanvasVisible = canvasContainer && canvasContainer.style.display !== "none";
+        if (isStationActive && isCanvasVisible) {
+          this.resumeAnimation();
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", this.handleVisibilityChange);
   }
 
   checkRaycastClick(e) {
@@ -1351,9 +1391,46 @@ class Cell3DScene {
     this.renderer.setSize(width, height);
   }
 
+  startAnimation() {
+    if (this.isFallback2D || this.isDisposed) return;
+    this.isRunning = true;
+    this.isPaused = false;
+    if (!this.rafId) {
+      this.animate();
+    }
+  }
+
+  pauseAnimation() {
+    this.isPaused = true;
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+  }
+
+  resumeAnimation() {
+    if (this.isFallback2D || this.isDisposed) return;
+    this.isPaused = false;
+    this.isRunning = true;
+    if (!this.rafId) {
+      this.animate();
+    }
+  }
+
+  stopAnimation() {
+    this.isRunning = false;
+    this.isPaused = true;
+    if (this.rafId) {
+      cancelAnimationFrame(this.rafId);
+      this.rafId = null;
+    }
+  }
+
   animate() {
-    if (this.isFallback2D) return;
-    requestAnimationFrame(() => this.animate());
+    if (this.isFallback2D || !this.isRunning || this.isPaused || this.isDisposed) {
+      this.rafId = null;
+      return;
+    }
 
     if (this.autoRotate && !this.isDragging && this.cellGroup) {
       this.cellGroup.rotation.y += 0.004;
@@ -1361,6 +1438,58 @@ class Cell3DScene {
 
     if (this.renderer && this.scene && this.camera) {
       this.renderer.render(this.scene, this.camera);
+    }
+
+    this.rafId = requestAnimationFrame(() => this.animate());
+  }
+
+  dispose() {
+    this.isDisposed = true;
+    this.stopAnimation();
+
+    if (this.handleVisibilityChange) {
+      document.removeEventListener("visibilitychange", this.handleVisibilityChange);
+    }
+    if (this.handlePointerDown && this.renderer && this.renderer.domElement) {
+      this.renderer.domElement.removeEventListener("pointerdown", this.handlePointerDown);
+    }
+    if (this.handleWheel && this.renderer && this.renderer.domElement) {
+      this.renderer.domElement.removeEventListener("wheel", this.handleWheel);
+    }
+    if (this.handlePointerMove) {
+      window.removeEventListener("pointermove", this.handlePointerMove);
+    }
+    if (this.handlePointerUp) {
+      window.removeEventListener("pointerup", this.handlePointerUp);
+    }
+    if (this.handleResize) {
+      window.removeEventListener("resize", this.handleResize);
+    }
+
+    if (this.scene) {
+      this.scene.traverse((obj) => {
+        if (obj.geometry) {
+          obj.geometry.dispose();
+        }
+        if (obj.material) {
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((mat) => {
+              if (mat.map) mat.map.dispose();
+              mat.dispose();
+            });
+          } else {
+            if (obj.material.map) obj.material.map.dispose();
+            obj.material.dispose();
+          }
+        }
+      });
+    }
+
+    if (this.renderer) {
+      this.renderer.dispose();
+      if (this.renderer.domElement && this.renderer.domElement.parentNode) {
+        this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
+      }
     }
   }
 }
